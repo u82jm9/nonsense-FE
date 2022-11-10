@@ -61,6 +61,23 @@
   height: 170px;
 }
 
+.switch {
+  background-color: rgb(246, 183, 183);
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  width: 180px;
+  border-radius: 15px;
+  border: 1px solid black;
+  margin-bottom: 10px;
+  font-size: xx-small;
+}
+
+.switch h1 {
+  font-size: 2em;
+  margin: 0 1.5px 0 1.5px;
+}
+
 .delete-button {
   position: relative;
   border-radius: 2px;

@@ -1,5 +1,5 @@
 import React from "react";
-import SwitchPages from "../component/SwitchPages";
+import SwitchPages from "../component/SwitchPages/SwitchPages";
 import StickyNoteComponent from "../component/StickyNote/StickyNoteComponent";
 
 const HomePage = () => {

@@ -40,6 +40,7 @@ class DailyJokeComponent extends React.Component {
   }
 
   getJokeByCategory() {
+    console.log(this.state.category);
     DailyJokeService.getJokeByCategory(this.state.category)
       .then((e) => {
         console.log(e.data);
@@ -59,7 +60,7 @@ class DailyJokeComponent extends React.Component {
   }
 
   componentDidMount() {
-    this.getRandomJoke();
+    // this.getRandomJoke();
   }
 
   render() {
@@ -68,15 +69,21 @@ class DailyJokeComponent extends React.Component {
         <h1>Daily Joke</h1>
         <p>{this.state.randomJoke.setup}</p>
         <p>{this.state.randomJoke.punchline}</p>
+
         <Form
           onClick={(e) => {
             e.preventDefault();
-            this.setState({ category: e.target.value });
-            this.getJokeByCategory();
+            // this.getJokeByCategory();
             this.setState({ category: "" });
           }}
         >
-          <Form.Select>
+          <Form.Select
+            onSelect={(e) => {
+              console.log(e);
+              e.preventDefault();
+              this.setState({ category: e.target.value });
+            }}
+          >
             <option>Select Joke Category</option>
             {this.state.categories.map((c) => (
               <option value={c}>{c}</option>

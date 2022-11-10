@@ -184,22 +184,13 @@ class WeatherDisplayComponent extends React.Component {
               onChange={(e) => this.handleOnChange(e)}
               value={this.state.tempCity}
             />
-            <Button
-              type="submit"
-              // onClick={() => {
-              //   this.setState({ city: this.state.tempCity });
-              //   this.getWeatherForecast();
-              //   this.setState({ tempCity: "" });
-              // }}
-            >
-              Search
-            </Button>
+            <Button type="submit">Search</Button>
           </Form>
         </div>
       );
     } else if (this.state.tableSize === "2") {
       return (
-        <div className="component">
+        <div>
           <MediumWeatherDisplayTable
             city={this.state.city}
             data={this.state.weatherForecastDays}
@@ -236,7 +227,7 @@ class WeatherDisplayComponent extends React.Component {
       );
     } else {
       return (
-        <div className="component">
+        <div>
           <LargeWeatherDisplayTable
             city={this.state.city}
             data={this.state.weatherForecastDays}
