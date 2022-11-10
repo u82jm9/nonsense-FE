@@ -31,7 +31,6 @@ class DailyJokeComponent extends React.Component {
   getRandomJoke() {
     DailyJokeService.getRandomJoke()
       .then((e) => {
-        console.log(e.data.body[0]);
         this.setState({ randomJoke: e.data.body[0] });
       })
       .catch(function (error) {
@@ -39,12 +38,11 @@ class DailyJokeComponent extends React.Component {
       });
   }
 
-  getJokeByCategory() {
-    console.log(this.state.category);
-    DailyJokeService.getJokeByCategory(this.state.category)
+  getJokeByCategory(category) {
+    console.log(category);
+    DailyJokeService.getJokeByCategory(category)
       .then((e) => {
-        console.log(e.data);
-        this.getSingleJokeFromList(e.data);
+        this.getSingleJokeFromList(e.data.results);
       })
       .catch(function (error) {
         console.error(error);
@@ -53,44 +51,50 @@ class DailyJokeComponent extends React.Component {
 
   getSingleJokeFromList(listJokes) {
     const numberOfJokes = listJokes.length;
-    const r = 0 + Math.random * numberOfJokes;
+    let r = 0 + Math.floor(Math.random() * numberOfJokes);
     const joke = listJokes[r];
-    console.log(joke);
-    this.setState({ categoryJoke: joke });
+    this.setState({ categoryJoke: joke.body });
   }
 
   componentDidMount() {
-    // this.getRandomJoke();
+    this.getRandomJoke();
   }
 
   render() {
     return (
       <div>
-        <h1>Daily Joke</h1>
-        <p>{this.state.randomJoke.setup}</p>
-        <p>{this.state.randomJoke.punchline}</p>
-
+        <h1>Daily Joke</h1>{" "}
         <Form
-          onClick={(e) => {
-            e.preventDefault();
-            // this.getJokeByCategory();
-            this.setState({ category: "" });
+          onSubmit={(e) => {
+            console.log("Submitting category: ");
+            console.log(this.state.category);
+            console.log(e);
           }}
         >
           <Form.Select
-            onSelect={(e) => {
-              console.log(e);
+            value={this.state.category}
+            onChange={(e) => {
+              console.log(e.target.value);
               e.preventDefault();
               this.setState({ category: e.target.value });
+              this.getJokeByCategory(e.target.value);
             }}
           >
             <option>Select Joke Category</option>
             {this.state.categories.map((c) => (
               <option value={c}>{c}</option>
             ))}
+            <input type="submit" value="Submit"></input>
           </Form.Select>
         </Form>
-        <p>{this.state.categoryJoke}</p>
+        {this.state.categoryJoke === "" ? (
+          <>
+            <h2>{this.state.randomJoke.setup}</h2>
+            <h3>{this.state.randomJoke.punchline}</h3>
+          </>
+        ) : (
+          <h3>{this.state.categoryJoke}</h3>
+        )}
       </div>
     );
   }

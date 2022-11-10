@@ -52,7 +52,6 @@ class StickyNoteComponent extends React.Component {
   }
 
   updateStickyNotes() {
-    console.log("updateStickyNote method!");
     setTimeout(() => {
       StickyNoteService.getStickyNotes().then((e) => {
         this.setState({ stickyNotes: e.data });
@@ -65,7 +64,6 @@ class StickyNoteComponent extends React.Component {
 
   componentDidMount() {
     this.updateStickyNotes();
-    console.log("componentDidMount method!");
   }
 
   componentDidUpdate() {
