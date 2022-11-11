@@ -78,49 +78,55 @@ class StickyNoteComponent extends React.Component {
   render() {
     return (
       <>
-        {this.state.updateNotes === true ? (
-          <div className="component display-gif">
-            <img src={dragonBallGif} alt="Sweet leveling up gif!" />
-          </div>
+        {this.state.stickyNotes.length === 0 ? (
+          <></>
         ) : (
-          <div className="component">
-            {this.state.showForm === true ? (
-              <>
-                <StickyNoteForm addNote={this.addNewNote} />
+          <div>
+            {this.state.updateNotes === true ? (
+              <div className="component display-gif">
+                <img src={dragonBallGif} alt="Sweet leveling up gif!" />
+              </div>
+            ) : (
+              <div className="component">
+                {this.state.showForm === true ? (
+                  <>
+                    <StickyNoteForm addNote={this.addNewNote} />
+                    <Button
+                      onClick={() => {
+                        this.showAddForm();
+                      }}
+                    >
+                      Hide Add Note
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    onClick={() => {
+                      this.showAddForm();
+                    }}
+                  >
+                    Add Note
+                  </Button>
+                )}
                 <Button
                   onClick={() => {
-                    this.showAddForm();
+                    this.deleteAllNotes();
                   }}
                 >
-                  Hide Add Note
+                  Delete All
                 </Button>
-              </>
-            ) : (
-              <Button
-                onClick={() => {
-                  this.showAddForm();
-                }}
-              >
-                Add Note
-              </Button>
+                <div>
+                  {this.state.stickyNotes.map((note, i) => (
+                    <StickyNoteCard
+                      note={note}
+                      editNote={this.editNote}
+                      deleteNote={this.deleteNote}
+                      key={i}
+                    />
+                  ))}
+                </div>
+              </div>
             )}
-            <Button
-              onClick={() => {
-                this.deleteAllNotes();
-              }}
-            >
-              Delete All
-            </Button>
-            <div>
-              {this.state.stickyNotes.map((note, i) => (
-                <StickyNoteCard
-                  note={note}
-                  editNote={this.editNote}
-                  deleteNote={this.deleteNote}
-                  key={i}
-                />
-              ))}
-            </div>
           </div>
         )}
       </>

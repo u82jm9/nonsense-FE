@@ -149,26 +149,8 @@ class WeatherDisplayComponent extends React.Component {
   render() {
     if (this.state.tableSize === "1") {
       return (
-        <div>
-          <SmallWeatherDisplayTable
-            city={this.state.city}
-            data={this.state.weatherForecastDays}
-          />
-          <Button
-            onClick={() => {
-              this.changeTableSize("2");
-            }}
-          >
-            More
-          </Button>
-          <Button
-            onClick={() => {
-              this.changeTableSize("3");
-            }}
-          >
-            Most
-          </Button>
-          <br />
+        <div className="weather-table">
+          <h1>{this.state.city}</h1>
           <Form
             onSubmit={(e) => {
               e.preventDefault();
@@ -186,11 +168,44 @@ class WeatherDisplayComponent extends React.Component {
             />
             <Button type="submit">Search</Button>
           </Form>
+          <SmallWeatherDisplayTable data={this.state.weatherForecastDays} />
+          <Button
+            onClick={() => {
+              this.changeTableSize("2");
+            }}
+          >
+            More
+          </Button>
+          <Button
+            onClick={() => {
+              this.changeTableSize("3");
+            }}
+          >
+            Most
+          </Button>
         </div>
       );
     } else if (this.state.tableSize === "2") {
       return (
-        <div>
+        <div className="weather-table">
+          <h1>{this.state.city}</h1>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              this.setState({ city: this.state.tempCity });
+              this.getWeatherForecast();
+              this.setState({ tempCity: "" });
+            }}
+          >
+            <input
+              placeholder="Search for City"
+              type="text"
+              id="city"
+              onChange={(e) => this.handleOnChange(e)}
+              value={this.state.tempCity}
+            />
+            <Button type="submit">Search</Button>
+          </Form>
           <MediumWeatherDisplayTable
             city={this.state.city}
             data={this.state.weatherForecastDays}
@@ -209,25 +224,29 @@ class WeatherDisplayComponent extends React.Component {
           >
             More
           </Button>
-          <br />
-          <input
-            placeholder="Search for City"
-            type="text"
-            id="city"
-            onChange={(e) => this.handleOnChange(e)}
-          />
-          <Button
-            onClick={() => {
-              this.getWeatherForecast();
-            }}
-          >
-            Search
-          </Button>
         </div>
       );
     } else {
       return (
-        <div>
+        <div className="weather-table">
+          <h1>{this.state.city}</h1>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              this.setState({ city: this.state.tempCity });
+              this.getWeatherForecast();
+              this.setState({ tempCity: "" });
+            }}
+          >
+            <input
+              placeholder="Search for City"
+              type="text"
+              id="city"
+              onChange={(e) => this.handleOnChange(e)}
+              value={this.state.tempCity}
+            />
+            <Button type="submit">Search</Button>
+          </Form>
           <LargeWeatherDisplayTable
             city={this.state.city}
             data={this.state.weatherForecastDays}
@@ -247,20 +266,6 @@ class WeatherDisplayComponent extends React.Component {
             }}
           >
             Least
-          </Button>
-          <br />
-          <input
-            placeholder="Search for City"
-            type="text"
-            id="city"
-            onChange={(e) => this.handleOnChange(e)}
-          />
-          <Button
-            onClick={() => {
-              this.getWeatherForecast();
-            }}
-          >
-            Search
           </Button>
         </div>
       );
