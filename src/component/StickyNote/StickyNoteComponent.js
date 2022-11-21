@@ -77,17 +77,18 @@ class StickyNoteComponent extends React.Component {
 
   render() {
     return (
-      <>
+      <div className="component">
         {this.state.stickyNotes.length === 0 ? (
           <></>
         ) : (
-          <div>
+          <div className="note-component">
+            <h1>Sticky Notes!</h1>
             {this.state.updateNotes === true ? (
-              <div className="component display-gif">
+              <div className="display-gif">
                 <img src={dragonBallGif} alt="Sweet leveling up gif!" />
               </div>
             ) : (
-              <div className="component">
+              <div className="">
                 {this.state.showForm === true ? (
                   <>
                     <StickyNoteForm addNote={this.addNewNote} />
@@ -129,7 +130,7 @@ class StickyNoteComponent extends React.Component {
             )}
           </div>
         )}
-      </>
+      </div>
     );
   }
 }
