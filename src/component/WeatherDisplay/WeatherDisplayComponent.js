@@ -36,8 +36,8 @@ function WeatherDisplayComponent() {
       console.log("Got the Forecast!");
       changeConditionDayText(w.data.forecast.forecastday);
       setActualCity(w.data.location.name);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     }
   }
 
@@ -106,6 +106,7 @@ function WeatherDisplayComponent() {
         hotHour.time = changeTimeFormat(h.time);
         hotHour.temp = h.temp_c;
       }
+      return h;
     });
     return hotHour;
   }
@@ -117,6 +118,7 @@ function WeatherDisplayComponent() {
         coldHour.time = changeTimeFormat(h.time);
         coldHour.temp = h.temp_c;
       }
+      return h;
     });
     return coldHour;
   }
@@ -138,7 +140,6 @@ function WeatherDisplayComponent() {
   return (
     <div className="weather-table">
       <WeatherCitySearch city={actualCity} changeCity={changeCity} />
-
       {tableSize === "1" ? (
         <SmallWeatherDisplay
           data={weatherData}

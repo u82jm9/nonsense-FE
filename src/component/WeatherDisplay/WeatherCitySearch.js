@@ -6,7 +6,6 @@ const WeatherCitySearch = ({ city, changeCity }) => {
   const [tempCity, setTempCity] = useState("");
   return (
     <div>
-      <h1>Hello!</h1>
       <h1>{city}</h1>
       <Form
         onSubmit={(e) => {

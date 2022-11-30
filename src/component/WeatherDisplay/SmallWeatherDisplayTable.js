@@ -1,11 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import moment from "moment/moment";
 import { Button } from "react-bootstrap";
 
 const SmallWeatherDisplayTable = ({ data, changeTableSize }) => {
-  useEffect(() => {
-    console.log(data);
-  });
   return (
     <div className="small-table">
       <table>

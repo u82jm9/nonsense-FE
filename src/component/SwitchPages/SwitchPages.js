@@ -1,6 +1,6 @@
 import React from "react";
 import Switch from "react-switch";
-import DailyJokeComponent from "../DailyJoke/DailyJokeComponent";
+import JokeComponent from "../DailyJoke/JokeComponent";
 import WeatherDisplayComponent from "../WeatherDisplay/WeatherDisplayComponent";
 
 class SwitchPages extends React.Component {
@@ -33,7 +33,7 @@ class SwitchPages extends React.Component {
         {this.state.checked === false ? (
           <WeatherDisplayComponent />
         ) : (
-          <DailyJokeComponent />
+          <JokeComponent />
         )}
       </div>
     );
