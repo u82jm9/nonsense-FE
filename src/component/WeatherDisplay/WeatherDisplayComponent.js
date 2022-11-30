@@ -1,53 +1,59 @@
-import React from "react";
-import { Button, Form } from "react-bootstrap";
-import WeatherDisplayService from "../../services/WeatherDisplayService";
-import LargeWeatherDisplayTable from "./LargeWeatherDisplayTable";
-import MediumWeatherDisplayTable from "./MediumWeatherDisplayTable";
-import SmallWeatherDisplayTable from "./SmallWeatherDisplayTable";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import WeatherCitySearch from "./WeatherCitySearch";
+import SmallWeatherDisplay from "./SmallWeatherDisplayTable";
+import MediumWeatherDisplay from "./MediumWeatherDisplayTable";
+import LargeWeatherDisplay from "./LargeWeatherDisplayTable";
 
-class WeatherDisplayComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      weatherForecastDays: [],
-      tableSize: "1",
-      hotHour: { time: "", temp: 0 },
-      coldHour: { time: "", temp: 100 },
-      city: "Edinburgh",
-      tempCity: "Edinburgh",
-    };
-    this.handleOnChange = this.handleOnChange.bind(this);
-    this.changeTableSize = this.changeTableSize.bind(this);
-    this.getWeatherForecast = this.getWeatherForecast.bind(this);
-    this.changeWeatherConditionDayText =
-      this.changeWeatherConditionDayText.bind(this);
-    this.changeWeatherConditionHourText =
-      this.changeWeatherConditionHourText.bind(this);
-    this.findColdestHour = this.findColdestHour.bind(this);
-    this.findHottestHour = this.findHottestHour.bind(this);
-    this.convertTo12Hr = this.convertTo12Hr.bind(this);
+const WEATHER_API_URL = "https://weatherapi-com.p.rapidapi.com/forecast.json";
+function WeatherDisplayComponent() {
+  const [actualCity, setActualCity] = useState("");
+  const [weatherData, setWeatherData] = useState([]);
+  const [tableSize, setTableSize] = useState("1");
+  const [hottestHours, setHottestHours] = useState([]);
+  const [coldestHours, setColdestHours] = useState([]);
+  useEffect(() => {
+    if (weatherData.length === 0) {
+      getWeatherForecast("Edinburgh");
+    }
+  });
+
+  async function getWeatherForecast(city) {
+    let w;
+    try {
+      console.log("Getting Weather Forecast for: " + city);
+      const options = {
+        method: "GET",
+        url: WEATHER_API_URL,
+        params: { q: city, days: "3" },
+        headers: {
+          "X-RapidAPI-Key":
+            "2e1ecbe8d9msh8883e96a112d435p1360e2jsn1d90503594e6",
+          "X-RapidAPI-Host": "weatherapi-com.p.rapidapi.com",
+        },
+      };
+      w = await axios.request(options);
+      console.log("Got the Forecast!");
+      changeConditionDayText(w.data.forecast.forecastday);
+      setActualCity(w.data.location.name);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  changeTableSize(newSize) {
-    this.setState({ tableSize: newSize });
+  function changeTableSize(newSize) {
+    setTableSize(newSize);
   }
 
-  getWeatherForecast() {
-    WeatherDisplayService.getForcast(this.state.tempCity)
-      .then((e) => {
-        this.changeWeatherConditionDayText(e.data.forecast.forecastday);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
-    this.setState({ tempCity: "" });
+  function changeCity(newCity) {
+    getWeatherForecast(newCity);
   }
 
-  changeWeatherConditionDayText(day) {
-    day.map((d) => {
-      this.changeWeatherConditionHourText(d.hour);
-      this.findHottestHour(d.hour);
-      this.findColdestHour(d.hour);
+  function changeConditionDayText(days) {
+    days.map((d) => {
+      hottestHours.push(calculateHotHour(d.hour));
+      coldestHours.push(calculateColdHour(d.hour));
+      changeConditionHourText(d.hour);
       if (d.day.condition.text.includes("rain")) {
         d.day.condition.text = "Rain";
       } else if (
@@ -65,14 +71,12 @@ class WeatherDisplayComponent extends React.Component {
       } else {
         d.day.condition.text = "Cloudy";
       }
+      setWeatherData(days);
       return d;
-    });
-    this.setState({
-      weatherForecastDays: day,
     });
   }
 
-  changeWeatherConditionHourText(hours) {
+  function changeConditionHourText(hours) {
     hours.map((h) => {
       if (h.condition.text.includes("rain")) {
         h.condition.text = "Rain";
@@ -93,38 +97,31 @@ class WeatherDisplayComponent extends React.Component {
       }
       return h;
     });
-    this.setState({
-      weatherForecastDays: hours,
-    });
   }
 
-  findHottestHour(hours) {
-    const tempHour = { ...this.state.hotHour };
+  function calculateHotHour(hours) {
+    let hotHour = { time: "", temp: 0 };
     hours.map((h) => {
-      if (h.temp_c > tempHour.temp) {
-        h.time = this.convertTo12Hr(h.time);
-        tempHour.temp = h.temp_c;
-        tempHour.time = h.time;
+      if (h.temp_c > hotHour.temp) {
+        hotHour.time = changeTimeFormat(h.time);
+        hotHour.temp = h.temp_c;
       }
-      return h;
     });
-    this.setState({ hotHour: tempHour });
+    return hotHour;
   }
 
-  findColdestHour(hours) {
-    const tempHour = { ...this.state.coldHour };
+  function calculateColdHour(hours) {
+    let coldHour = { time: "", temp: 100 };
     hours.map((h) => {
-      if (h.temp_c < tempHour.temp) {
-        h.time = this.convertTo12Hr(h.time);
-        tempHour.temp = h.temp_c;
-        tempHour.time = h.time;
+      if (h.temp_c < coldHour.temp) {
+        coldHour.time = changeTimeFormat(h.time);
+        coldHour.temp = h.temp_c;
       }
-      return h;
     });
-    this.setState({ coldHour: tempHour });
+    return coldHour;
   }
 
-  convertTo12Hr(time) {
+  function changeTimeFormat(time) {
     time = time.slice(11);
     time = time
       .toString()
@@ -138,139 +135,30 @@ class WeatherDisplayComponent extends React.Component {
     return time;
   }
 
-  componentDidMount() {
-    this.getWeatherForecast();
-  }
+  return (
+    <div className="weather-table">
+      <WeatherCitySearch city={actualCity} changeCity={changeCity} />
 
-  handleOnChange(e) {
-    this.setState({ tempCity: e.target.value });
-  }
-
-  render() {
-    if (this.state.tableSize === "1") {
-      return (
-        <div className="weather-table">
-          <h1>{this.state.city}</h1>
-          <Form
-            onSubmit={(e) => {
-              e.preventDefault();
-              this.setState({ city: this.state.tempCity });
-              this.getWeatherForecast();
-              this.setState({ tempCity: "" });
-            }}
-          >
-            <input
-              placeholder="Search for City"
-              type="text"
-              id="city"
-              onChange={(e) => this.handleOnChange(e)}
-              value={this.state.tempCity}
-            />
-            <Button type="submit">Search</Button>
-          </Form>
-          <SmallWeatherDisplayTable data={this.state.weatherForecastDays} />
-          <Button
-            onClick={() => {
-              this.changeTableSize("2");
-            }}
-          >
-            More
-          </Button>
-          <Button
-            onClick={() => {
-              this.changeTableSize("3");
-            }}
-          >
-            Most
-          </Button>
-        </div>
-      );
-    } else if (this.state.tableSize === "2") {
-      return (
-        <div className="weather-table">
-          <h1>{this.state.city}</h1>
-          <Form
-            onSubmit={(e) => {
-              e.preventDefault();
-              this.setState({ city: this.state.tempCity });
-              this.getWeatherForecast();
-              this.setState({ tempCity: "" });
-            }}
-          >
-            <input
-              placeholder="Search for City"
-              type="text"
-              id="city"
-              onChange={(e) => this.handleOnChange(e)}
-              value={this.state.tempCity}
-            />
-            <Button type="submit">Search</Button>
-          </Form>
-          <MediumWeatherDisplayTable
-            city={this.state.city}
-            data={this.state.weatherForecastDays}
-          />
-          <Button
-            onClick={() => {
-              this.changeTableSize("1");
-            }}
-          >
-            Less
-          </Button>
-          <Button
-            onClick={() => {
-              this.changeTableSize("3");
-            }}
-          >
-            More
-          </Button>
-        </div>
-      );
-    } else {
-      return (
-        <div className="weather-table">
-          <h1>{this.state.city}</h1>
-          <Form
-            onSubmit={(e) => {
-              e.preventDefault();
-              this.setState({ city: this.state.tempCity });
-              this.getWeatherForecast();
-              this.setState({ tempCity: "" });
-            }}
-          >
-            <input
-              placeholder="Search for City"
-              type="text"
-              id="city"
-              onChange={(e) => this.handleOnChange(e)}
-              value={this.state.tempCity}
-            />
-            <Button type="submit">Search</Button>
-          </Form>
-          <LargeWeatherDisplayTable
-            city={this.state.city}
-            data={this.state.weatherForecastDays}
-            hotHour={this.state.hotHour}
-            coldHour={this.state.coldHour}
-          />
-          <Button
-            onClick={() => {
-              this.changeTableSize("2");
-            }}
-          >
-            Less
-          </Button>
-          <Button
-            onClick={() => {
-              this.changeTableSize("1");
-            }}
-          >
-            Least
-          </Button>
-        </div>
-      );
-    }
-  }
+      {tableSize === "1" ? (
+        <SmallWeatherDisplay
+          data={weatherData}
+          changeTableSize={changeTableSize}
+        />
+      ) : tableSize === "2" ? (
+        <MediumWeatherDisplay
+          data={weatherData}
+          changeTableSize={changeTableSize}
+        />
+      ) : (
+        <LargeWeatherDisplay
+          data={weatherData}
+          changeTableSize={changeTableSize}
+          hotHours={hottestHours}
+          coldHours={coldestHours}
+        />
+      )}
+    </div>
+  );
 }
 
 export default WeatherDisplayComponent;

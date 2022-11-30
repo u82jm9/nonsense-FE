@@ -1,7 +1,13 @@
 import React from "react";
 import moment from "moment/moment";
+import { Button } from "react-bootstrap";
 
-const LargeWeatherDisplayTable = ({ city, data, hotHour, coldHour }) => {
+const LargeWeatherDisplayTable = ({
+  changeTableSize,
+  data,
+  hotHours,
+  coldHours,
+}) => {
   return (
     <div className="large-table">
       <table>
@@ -20,7 +26,7 @@ const LargeWeatherDisplayTable = ({ city, data, hotHour, coldHour }) => {
               <br />
               Temp (°C)
             </th>
-            <th colSpan={7}>Conditions</th>
+            <th colSpan={7}>Hourly Conditions</th>
             <th colSpan={2}>Hottest!</th>
             <th colSpan={2}>Coldest!</th>
           </tr>
@@ -102,14 +108,28 @@ const LargeWeatherDisplayTable = ({ city, data, hotHour, coldHour }) => {
                 <br />
                 {data.hour[19].condition.text}
               </td>
-              <td>{hotHour.time}</td>
-              <td>{hotHour.temp}</td>
-              <td>{coldHour.time}</td>
-              <td>{coldHour.temp}</td>
+              <td>{hotHours[i].time}</td>
+              <td>{hotHours[i].temp}</td>
+              <td>{coldHours[i].time}</td>
+              <td>{coldHours[i].temp}</td>
             </tr>
           ))}
         </tbody>
       </table>
+      <Button
+        onClick={() => {
+          changeTableSize("1");
+        }}
+      >
+        Least
+      </Button>
+      <Button
+        onClick={() => {
+          changeTableSize("2");
+        }}
+      >
+        Less
+      </Button>
     </div>
   );
 };
