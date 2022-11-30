@@ -9,7 +9,7 @@ const GET_JOKE_BY_CATEGORY_API_URL =
   "https://world-of-jokes1.p.rapidapi.com/v1/jokes/jokes-by-category";
 function JokeComponent() {
   const [randomJoke, setRandomJoke] = useState({});
-  const [categoryJoke, setCategoryJoke] = useState({});
+  const [categoryJoke, setCategoryJoke] = useState("");
   const [listOfCategoryJokes, setListOfCategoryJokes] = useState([]);
   const categories = [
     "Puns",
@@ -25,7 +25,7 @@ function JokeComponent() {
     "Marriage",
   ];
   useEffect(() => {
-    if (randomJoke === null) {
+    if (Object.keys(randomJoke).length === 0) {
       getRandomJoke();
     }
   });
