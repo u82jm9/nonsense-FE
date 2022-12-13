@@ -1,12 +1,34 @@
 import "./css/App.css";
 import HomePage from "./pages/HomePage";
+import React, { useState, useEffect } from "react";
+import dragonBallGif from "./gifs/dragon_ball_form.gif";
 
-function App() {
+const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="App">
+        <div className="page">
+          <div className="component">
+            <img src={dragonBallGif} alt="Sweet leveling up gif!" />
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="App">
       <HomePage />
     </div>
   );
-}
+};
 
 export default App;

@@ -50,6 +50,7 @@ function WeatherDisplayComponent() {
   }
 
   function changeConditionDayText(days) {
+    console.log(days);
     days.map((d) => {
       hottestHours.push(calculateHotHour(d.hour));
       coldestHours.push(calculateColdHour(d.hour));
@@ -66,8 +67,14 @@ function WeatherDisplayComponent() {
         d.day.condition.text.includes("Wind")
       ) {
         d.day.condition.text = "Windy";
-      } else if (d.day.maxtemp_c > 29) {
+      } else if (d.day.avgtemp_c > 20) {
         d.day.condition.text = "Hot";
+      } else if (d.day.avgtemp_c < 5 && d.day.avgtemp_c > -3) {
+        d.day.condition.text = "Cold";
+      } else if (d.day.avgtemp_c <= -3) {
+        d.day.condition.text = "Freezing";
+      } else if (d.day.daily_chance_of_snow > 75) {
+        d.day.condition.text = "Snow";
       } else {
         d.day.condition.text = "Cloudy";
       }

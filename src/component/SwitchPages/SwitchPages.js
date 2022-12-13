@@ -1,43 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import Switch from "react-switch";
-import JokeComponent from "../DailyJoke/JokeComponent";
-import WeatherDisplayComponent from "../WeatherDisplay/WeatherDisplayComponent";
 
-class SwitchPages extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { checked: false };
-    this.handleChange = this.handleChange.bind(this);
-  }
+const SwitchPages = ({ text1, text2, comp1, comp2 }) => {
+  const [checked, setChecked] = useState(false);
 
-  handleChange() {
-    this.setState({ checked: !this.state.checked });
-  }
-
-  render() {
-    return (
-      <div className="component">
-        <div className="switch">
-          <h1>Weather</h1>
-          <Switch
-            offColor="#888"
-            onColor="#888"
-            uncheckedIcon={false}
-            checkedIcon={false}
-            className="switch-toggle"
-            checked={this.state.checked}
-            onChange={this.handleChange}
-          />
-          <h1>Jokes</h1>
-        </div>
-        {this.state.checked === false ? (
-          <WeatherDisplayComponent />
-        ) : (
-          <JokeComponent />
-        )}
+  return (
+    <div className="component">
+      <div className="switch">
+        <h1>{text1}</h1>
+        <Switch
+          offColor="#9BCA31"
+          onColor="#E3E545"
+          uncheckedIcon={false}
+          checkedIcon={false}
+          className="switch-toggle"
+          checked={checked}
+          onChange={() => {
+            setChecked(!checked);
+          }}
+        />
+        <h1>{text2}</h1>
       </div>
-    );
-  }
-}
+      {checked === false ? comp1 : comp2}
+    </div>
+  );
+};
 
 export default SwitchPages;

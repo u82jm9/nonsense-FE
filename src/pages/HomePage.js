@@ -1,14 +1,45 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import SwitchPages from "../component/SwitchPages/SwitchPages";
+import WeatherDisplayComponent from "../component/WeatherDisplay/WeatherDisplayComponent";
+import JokeComponent from "../component/DailyJoke/JokeComponent";
 import StickyNoteComponent from "../component/StickyNote/StickyNoteComponent";
+import BikeBuilderComponent from "../component/BikeBuilderComponent/BikeBuilderComponent";
 
-const HomePage = () => {
+const BACK_END_TEST_API = "http://localhost:8088/demo/Test/";
+function HomePage() {
+  const [backendOn, setBackendOn] = useState(false);
+  useEffect(() => {
+    isBackendOn();
+  });
+
+  async function isBackendOn() {
+    try {
+      let r = await axios.get(BACK_END_TEST_API + "IsThisThingOn");
+      setBackendOn(r.data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
   return (
     <div className="page">
-      <SwitchPages />
-      <StickyNoteComponent />
+      <div>
+        <SwitchPages
+          text1={"Weather"}
+          text2={"Jokes"}
+          comp1={WeatherDisplayComponent()}
+          comp2={JokeComponent()}
+        />
+        <SwitchPages
+          text1={"Notes"}
+          text2={"Bikes"}
+          comp1={StickyNoteComponent()}
+          comp2={BikeBuilderComponent()}
+        />
+        {backendOn ? <></> : <h1>Please Turn on Back end1</h1>}
+      </div>
     </div>
   );
-};
+}
 
 export default HomePage;
