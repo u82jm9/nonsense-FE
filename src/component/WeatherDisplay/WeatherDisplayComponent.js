@@ -51,11 +51,21 @@ function WeatherDisplayComponent() {
 
   function changeConditionDayText(days) {
     console.log(days);
+    let tempHots = [];
+    let tempColds = [];
     days.map((d) => {
-      hottestHours.push(calculateHotHour(d.hour));
-      coldestHours.push(calculateColdHour(d.hour));
+      tempHots.push(calculateHotHour(d.hour));
+      tempColds.push(calculateColdHour(d.hour));
       changeConditionHourText(d.hour);
-      if (d.day.condition.text.includes("rain")) {
+      if (d.day.avgtemp_c < 5 && d.day.avgtemp_c > -3) {
+        d.day.condition.text = "Cold";
+      } else if (d.day.avgtemp_c <= -3) {
+        d.day.condition.text = "Freezing";
+      } else if (d.day.daily_chance_of_snow > 75) {
+        d.day.condition.text = "Snow";
+      } else if (d.day.avgtemp_c > 20) {
+        d.day.condition.text = "Hot";
+      } else if (d.day.condition.text.includes("rain")) {
         d.day.condition.text = "Rain";
       } else if (
         d.day.condition.text.includes("sun") ||
@@ -67,25 +77,28 @@ function WeatherDisplayComponent() {
         d.day.condition.text.includes("Wind")
       ) {
         d.day.condition.text = "Windy";
-      } else if (d.day.avgtemp_c > 20) {
-        d.day.condition.text = "Hot";
-      } else if (d.day.avgtemp_c < 5 && d.day.avgtemp_c > -3) {
-        d.day.condition.text = "Cold";
-      } else if (d.day.avgtemp_c <= -3) {
-        d.day.condition.text = "Freezing";
-      } else if (d.day.daily_chance_of_snow > 75) {
-        d.day.condition.text = "Snow";
       } else {
         d.day.condition.text = "Cloudy";
       }
       setWeatherData(days);
+      setHottestHours(tempHots);
+      setColdestHours(tempColds);
       return d;
     });
   }
 
   function changeConditionHourText(hours) {
     hours.map((h) => {
-      if (h.condition.text.includes("rain")) {
+      if (h.temp_c < 5 && h.temp_c > -3) {
+        h.condition.text = "Cold";
+      } else if (h.temp_c <= -3) {
+        h.condition.text = "Freezing";
+      } else if (h.temp_c > 20) {
+        h.condition.text = "Hot";
+      }
+      if (h.temp_c > 29) {
+        h.condition.text = "Hot";
+      } else if (h.condition.text.includes("rain")) {
         h.condition.text = "Rain";
       } else if (
         h.condition.text.includes("sun") ||
@@ -97,8 +110,6 @@ function WeatherDisplayComponent() {
         h.condition.text.includes("Wind")
       ) {
         h.condition.text = "Windy";
-      } else if (h.temp_c > 29) {
-        h.condition.text = "Hot";
       } else {
         h.condition.text = "Cloudy";
       }

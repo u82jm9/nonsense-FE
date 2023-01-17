@@ -37,7 +37,7 @@
 }
 
 .card {
-  background-color: rgb(237, 243, 118);
+  background-color: rgb(237, 231, 159);
   margin-left: 0.5%;
   margin-right: 0.5%;
   margin-top: 10px;
@@ -80,12 +80,19 @@
   border-radius: 15px;
   border: 1px solid black;
   margin-bottom: 10px;
-  font-size: xx-small;
+  font-size: x-small;
 }
 
 .switch h1 {
   font-size: 2em;
-  margin: 0 1.5px 0 1.5px;
+  margin-left: 2%;
+}
+
+.switch svg {
+  /* top | right | bottom | left */
+  padding: 5% 0 0 10%;
+  width: 90%;
+  height: 90%;
 }
 
 .delete-button {

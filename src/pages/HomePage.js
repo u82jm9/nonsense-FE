@@ -24,19 +24,21 @@ function HomePage() {
   return (
     <div className="page">
       <div>
-        <SwitchPages
+        {/* <SwitchPages
+        switchedOn={backendOn}
           text1={"Weather"}
           text2={"Jokes"}
           comp1={WeatherDisplayComponent()}
           comp2={JokeComponent()}
-        />
+        /> */}
         <SwitchPages
+          switchedOn={backendOn}
           text1={"Notes"}
           text2={"Bikes"}
           comp1={StickyNoteComponent()}
           comp2={BikeBuilderComponent()}
         />
-        {backendOn ? <></> : <h1>Please Turn on Back end1</h1>}
+        {backendOn ? <></> : <h1>Please Turn on Back end!</h1>}
       </div>
     </div>
   );

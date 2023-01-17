@@ -14,21 +14,19 @@ function StickyNoteComponent() {
     message: "",
   });
   const [showForm, setShowForm] = useState(false);
-  const [showGif, setShowGif] = useState(true);
+  const [showGif, setShowGif] = useState(false);
 
   useEffect(() => {
-    getStickyNotes();
-    const timer = setTimeout(() => {
-      setShowGif(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
+    if (stickyNotes.length === 0) {
+      getStickyNotes();
+    }
+  });
 
   async function getStickyNotes() {
     console.log("Getting all Sticky Notes!");
     try {
       let r = await axios.get(STICKY_NOTE_API_URL + "GetAll");
-      console.log(r.data);
+      console.log("Got Sticky Notes!");
       setStickyNotes(r.data);
     } catch (err) {
       console.error(err);
@@ -78,7 +76,7 @@ function StickyNoteComponent() {
               <StickyNoteForm addNote={addNewStickyNote} />
               <Button
                 onClick={() => {
-                  setShowForm = false;
+                  setShowForm(false);
                 }}
               >
                 Hide Add Note
@@ -87,7 +85,7 @@ function StickyNoteComponent() {
           ) : (
             <Button
               onClick={() => {
-                setShowForm = true;
+                setShowForm(true);
               }}
             >
               Add Note

@@ -25,10 +25,8 @@ function JokeComponent() {
     "Marriage",
   ];
   useEffect(() => {
-    if (Object.keys(randomJoke).length === 0) {
-      getRandomJoke();
-    }
-  });
+    getRandomJoke();
+  }, [randomJoke]);
 
   async function getRandomJoke() {
     let j;
@@ -96,7 +94,7 @@ function JokeComponent() {
   }
 
   return (
-    <div>
+    <div className="component">
       <h1>Jokes!</h1>
       <Form.Select
         onClick={(e) => {
