@@ -59,7 +59,7 @@
 
 .bike-display {
   align-content: center;
-  min-height: 800px;
+  min-height: 500px;
   background-image: url(../images/stage-background.jpg);
   background-size: contain;
   background-repeat: no-repeat;

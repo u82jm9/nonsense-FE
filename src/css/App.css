@@ -36,6 +36,15 @@
   border-radius: 10px;
 }
 
+.note-task:hover {
+  background-color: rgb(238, 225, 82);
+  cursor: pointer;
+}
+
+.note-done {
+  text-decoration: line-through;
+}
+
 .card {
   background-color: rgb(237, 231, 159);
   margin-left: 0.5%;

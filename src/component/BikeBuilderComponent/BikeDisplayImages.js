@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import { useState } from "react";
 
-const BikeDisplayImages = ({ pics, bike }) => {
+const BikeDisplayImages = ({ pics }) => {
   const [imageRef, setImageRef] = useState(0);
   return (
     <div className="bike-display">
@@ -39,8 +39,6 @@ const BikeDisplayImages = ({ pics, bike }) => {
             </Button>
           </div>
         </div>
-
-        <h2>Displaying: {bike.bikeName}</h2>
       </div>
     </div>
   );

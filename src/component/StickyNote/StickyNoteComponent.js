@@ -8,106 +8,112 @@ import StickyNoteCard from "./StickyNoteCard";
 const STICKY_NOTE_API_URL = "http://localhost:8088/demo/StickyNotes/";
 function StickyNoteComponent() {
   const [stickyNotes, setStickyNotes] = useState([]);
-  const [noteBeingedited, setNoteBeingEdited] = useState({
-    stickyNoteId: "",
-    title: "",
-    message: "",
-  });
   const [showForm, setShowForm] = useState(false);
   const [showGif, setShowGif] = useState(false);
 
   useEffect(() => {
-    if (stickyNotes.length === 0) {
-      getStickyNotes();
-    }
-  });
+    getStickyNotes();
+  }, []);
 
   async function getStickyNotes() {
     console.log("Getting all Sticky Notes!");
     try {
       let r = await axios.get(STICKY_NOTE_API_URL + "GetAll");
       console.log("Got Sticky Notes!");
+      console.log(r.data);
       setStickyNotes(r.data);
     } catch (err) {
       console.error(err);
     }
   }
 
-  function addNewStickyNote(note) {
-    console.log("Adding New Note.");
-    return axios.post(STICKY_NOTE_API_URL + "AddNote", {
-      title: note.title,
-      message: note.message,
-    });
-  }
-
-  function deleteStickyNote(note) {
-    console.log("Deleting note!!");
-    return axios.delete(
-      STICKY_NOTE_API_URL + "DeleteNote/" + note.stickyNoteId
-    );
-  }
-
-  function deleteAllNotes() {
-    console.log("Deleting all notes!!!");
-    return axios.delete(STICKY_NOTE_API_URL + "DeleteAllNotes");
-  }
-
-  function editStickyNote(note) {
+  async function editStickyNote(note) {
     console.log("Edit note Service method");
-    return axios.post(STICKY_NOTE_API_URL + "EditNote", {
-      stickyNoteId: note.stickyNoteId,
-      title: note.title,
-      message: note.message,
-    });
+    console.log(note);
+    try {
+      await axios.post(STICKY_NOTE_API_URL + "EditNote", {
+        stickyNoteId: note.stickyNoteId,
+        title: note.title,
+        messageMap: note.messageMap,
+        complete: note.complete,
+      });
+      getStickyNotes();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function deleteStickyNote(note) {
+    console.log("Deleting note!!");
+    try {
+      await axios.delete(
+        STICKY_NOTE_API_URL + "DeleteNote/" + note.stickyNoteId
+      );
+      getStickyNotes();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function deleteAllNotes() {
+    console.log("Deleting all notes!!!");
+    try {
+      await axios.delete(STICKY_NOTE_API_URL + "DeleteAllNotes");
+      getStickyNotes();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function createNewNote(data) {
+    setShowGif(true);
+    setShowForm(false);
+    console.log("Creating new note!!");
+    try {
+      await axios.post(STICKY_NOTE_API_URL + "AddNote", {
+        noteTitle: data.title,
+        noteMessage: data.message,
+        noteComplete: false,
+      });
+      getStickyNotes();
+      setTimeout(() => {
+        setShowGif(false);
+      }, 2250);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
     <div className="note-component">
       <h1>Sticky Notes!</h1>
-      {showGif === true ? (
-        <div className="display-gif">
-          <img src={dragonBallGif} alt="Sweet leveling up gif!" />
-        </div>
+      {showGif ? (
+        <img src={dragonBallGif} alt="Sweet leveling up gif!" />
       ) : (
         <div>
-          {showForm === true ? (
-            <>
-              <StickyNoteForm addNote={addNewStickyNote} />
-              <Button
-                onClick={() => {
-                  setShowForm(false);
-                }}
-              >
-                Hide Add Note
-              </Button>
-            </>
-          ) : (
-            <Button
-              onClick={() => {
-                setShowForm(true);
-              }}
-            >
-              Add Note
-            </Button>
-          )}
           <Button
             onClick={() => {
-              deleteAllNotes();
+              console.log("Show Form");
+              setShowForm(true);
             }}
           >
-            Delete All
+            Create Note
           </Button>
-          <div>
-            {stickyNotes.map((note, i) => (
-              <StickyNoteCard
-                note={note}
-                editNote={editStickyNote}
-                deleteNote={deleteStickyNote}
-                key={i}
-              />
-            ))}
-          </div>
+          <Button onClick={() => deleteAllNotes()}>Delete All</Button>
+          {showForm ? (
+            <StickyNoteForm addNote={createNewNote} />
+          ) : (
+            <div>
+              {stickyNotes.map((note, i) => (
+                <StickyNoteCard
+                  deleteNote={deleteStickyNote}
+                  updateNote={editStickyNote}
+                  note={note}
+                  key={i}
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>

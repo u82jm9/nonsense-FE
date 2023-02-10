@@ -1,88 +1,68 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "react-bootstrap";
-import OutsideClickHandler from "react-outside-click-handler";
 
-const StickyNoteCard = ({ note, editNote, deleteNote }) => {
-  const [editStickyNote, setEditStickyNote] = useState({ stickyNoteId: "" });
-
-  function handleOnChange(e) {
-    const tempNote = { ...editStickyNote };
-    tempNote[e.target.id] = e.target.value;
-    setEditStickyNote(tempNote);
-  }
+const StickyNoteCard = ({ note, updateNote, deleteNote }) => {
+  const handleClick = async (message) => {
+    try {
+      let updatedMessageMap = { ...note.messageMap };
+      updatedMessageMap[message] = !updatedMessageMap[message];
+      const updatedNote = await {
+        ...note,
+        messageMap: updatedMessageMap,
+      };
+      console.log(updatedNote);
+      updateNote(updatedNote);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
-    <>
-      <div className="card">
-        <OutsideClickHandler
-          onOutsideClick={() => {
-            setEditStickyNote({ stickyNoteId: "" });
-          }}
-        >
-          <Button
-            className="delete-button"
-            onClick={() => {
-              deleteNote(note);
-            }}
-          >
-            X
-          </Button>
-          <div
-            onClick={() => {
-              setEditStickyNote(note);
-            }}
-          >
-            {editStickyNote.stickyNoteId === note.stickyNoteId ? (
-              <>
-                <input
-                  type="text"
-                  id="title"
-                  onChange={(e) => handleOnChange(e)}
-                  value={editStickyNote.title}
-                />
-              </>
-            ) : (
-              <h1>{note.title}</h1>
-            )}
-            {editStickyNote.stickyNoteId === note.stickyNoteId ? (
-              <textarea
-                type="text"
-                id="message"
-                rows={6}
-                onChange={(e) => handleOnChange(e)}
-                value={editStickyNote.message}
-                placeholder={editStickyNote.message}
-              />
-            ) : (
-              note.message.split(". ").map((m, i) => <p key={i}>{m}</p>)
-            )}
-            <br />
-            {editStickyNote.stickyNoteId === note.stickyNoteId ? (
-              <>
-                <Button
-                  onClick={() => {
-                    editNote(editStickyNote);
-                    setTimeout(
-                      () =>
-                        setEditStickyNote({
-                          stickyNoteId: "",
-                          title: null,
-                          message: null,
-                        }),
-                      50
-                    );
-                  }}
-                >
-                  Edit Note
-                </Button>
-              </>
-            ) : (
-              <></>
-            )}
-          </div>
-        </OutsideClickHandler>
+    <div className="card">
+      <Button
+        className="delete-button"
+        onClick={() => {
+          deleteNote(note);
+        }}
+      >
+        X
+      </Button>
+      {note.complete ? (
+        <div className="note-done">
+          <h1>{note.title}</h1>
+        </div>
+      ) : (
+        <div>
+          <h1>{note.title}</h1>
+        </div>
+      )}
+
+      <div>
+        {Object.entries(note.messageMap).map(([message, done], i) =>
+          done ? (
+            <div
+              onClick={() => {
+                handleClick(message);
+              }}
+              key={i}
+              className="note-task note-done"
+            >
+              <p>{message}</p>
+            </div>
+          ) : (
+            <div
+              onClick={() => {
+                handleClick(message);
+              }}
+              key={i}
+              className="note-task"
+            >
+              <p>{message}</p>
+            </div>
+          )
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

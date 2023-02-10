@@ -11,7 +11,7 @@ function HomePage() {
   const [backendOn, setBackendOn] = useState(false);
   useEffect(() => {
     isBackendOn();
-  });
+  }, []);
 
   async function isBackendOn() {
     try {
@@ -38,8 +38,8 @@ function HomePage() {
           comp1={StickyNoteComponent()}
           comp2={BikeBuilderComponent()}
         />
-        {backendOn ? <></> : <h1>Please Turn on Back end!</h1>}
       </div>
+      {backendOn ? <></> : <h1>Please Turn on Back End!</h1>}
     </div>
   );
 }
