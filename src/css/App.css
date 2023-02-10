@@ -27,29 +27,11 @@
   padding: 5% 5px 5% 5px;
 }
 
-.note-component {
-  background-color: rgb(246, 183, 183);
-  padding: 2.5%;
-  width: 80%;
-  display: block;
-  margin: auto;
-  border-radius: 10px;
-}
-
-.note-task:hover {
-  background-color: rgb(238, 225, 82);
-  cursor: pointer;
-}
-
-.note-done {
-  text-decoration: line-through;
-}
-
 .card {
   background-color: rgb(237, 231, 159);
   margin-left: 0.5%;
   margin-right: 0.5%;
-  margin-top: 10px;
+  margin-top: 50px;
   width: 260px;
   border: 1px solid black;
   border-radius: 10px;
@@ -70,6 +52,39 @@
   margin-top: 2px;
 }
 
+.card.rotate {
+  transform: rotate(360deg);
+  transition: all 1s ease-in-out;
+}
+
+.note-component {
+  background-color: rgb(246, 183, 183);
+  padding: 2.5%;
+  width: 80%;
+  display: block;
+  margin: auto;
+  border-radius: 10px;
+}
+
+.note-edit {
+  padding-top: 25px;
+  font-weight: bold;
+}
+
+.note-task {
+  transition: height 0.5s ease-in-out, font-weight 0.5s ease-in-out;
+  height: 25px;
+}
+
+.note-task:hover {
+  font-weight: bolder;
+  height: 40px;
+  cursor: pointer;
+}
+
+.note-done {
+  text-decoration: line-through;
+}
 .form-field {
   flex-direction: column;
   width: 85%;
