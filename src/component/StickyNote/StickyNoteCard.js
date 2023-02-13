@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import OutsideClickHandler from "react-outside-click-handler";
 
-const StickyNoteCard = ({ note, updateNote, deleteNote }) => {
+const StickyNoteCard = ({ note, updateNote, deleteNote, showAlert }) => {
   const [editing, setEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(note.title);
   const [editedMessages, setEditedMessages] = useState(
@@ -11,10 +11,6 @@ const StickyNoteCard = ({ note, updateNote, deleteNote }) => {
   const [newMessage, setNewMessage] = useState("");
   const [rotate, setRotate] = useState(false);
 
-  const handleDoubleClick = () => {
-    setEditing(true);
-    setRotate(!rotate);
-  };
   const handleClick = async (message) => {
     try {
       let updatedMessageMap = { ...note.messageMap };
@@ -67,6 +63,7 @@ const StickyNoteCard = ({ note, updateNote, deleteNote }) => {
   return (
     <div
       className={`card ${rotate ? "rotate" : ""}`}
+      onMouseEnter={() => showAlert("Double Click to Edit Note!")}
       onDoubleClick={() => {
         setEditing(true);
         setRotate(true);

@@ -3,7 +3,7 @@ import Switch from "react-switch";
 import { FaGreaterThan, FaLessThan } from "react-icons/fa";
 
 const SwitchPages = ({ switchedOn, text1, text2, comp1, comp2 }) => {
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
 
   return (
     <div>

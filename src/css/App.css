@@ -64,11 +64,31 @@
   display: block;
   margin: auto;
   border-radius: 10px;
+  z-index: 0;
 }
 
 .note-edit {
   padding-top: 25px;
   font-weight: bold;
+}
+
+.alert {
+  z-index: 1;
+  position: relative;
+  background-color: rgb(122, 204, 247);
+  display: inline-flex;
+  height: 20px;
+  border-radius: 10px;
+  color: white;
+  width: 95%;
+  align-items: center;
+}
+
+.alert h1 {
+  margin: auto;
+  height: 18px;
+  font-weight: bolder;
+  font-size: small;
 }
 
 .note-task {
@@ -117,6 +137,20 @@
   padding: 5% 0 0 10%;
   width: 90%;
   height: 90%;
+}
+
+.dismiss-button {
+  position: absolute;
+  right: 0;
+  border-radius: 10px;
+  border: 0;
+  opacity: 0.5;
+}
+
+.dismiss-button:hover {
+  opacity: 2;
+  border-color: black;
+  background-color: darkred;
 }
 
 .delete-button {
