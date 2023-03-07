@@ -3,8 +3,8 @@
   background-color: rgb(248, 226, 226);
   align-items: center;
   justify-content: center;
-  display: flex;
-  min-height: 100vh;
+  display: inline-flex;
+  min-height: 600px;
   color: white;
   width: 100%;
 }
@@ -13,18 +13,18 @@
   background-color: #d37373;
   border: 1px solid darkblue;
   border-radius: 15px;
-  margin: 2%;
   padding: 5px;
-  justify-items: flex-start;
   min-width: 750px;
   min-height: 200px;
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
 }
 
 .component {
-  display: block;
-  margin: auto;
   /* top | right | bottom | left */
-  padding: 5% 5px 5% 5px;
+  width: fit-content;
 }
 
 .card {
@@ -185,4 +185,11 @@
   border: 1px solid;
   border-color: black;
   width: 50px;
+}
+
+.text-box {
+  /* top | right | bottom | left */
+  padding: 5px 5px 0 5px;
+  border-right: 1px solid black;
+  align-content: center;
 }

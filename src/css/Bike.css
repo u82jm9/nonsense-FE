@@ -1,38 +1,30 @@
 .bike-component {
   background-color: rgb(246, 183, 183);
-  /* top | right | bottom | left */
-  padding: 0 1% 5% 1%;
-  width: 80%;
-  display: block;
-  margin: auto;
+  width: fit-content;
   border-radius: 10px;
+  justify-content: center;
 }
 
 .bike-menu {
-  width: 95%;
   display: inline-flex;
   margin-bottom: 10px;
   border: 1px solid black;
   border-radius: 5px;
-  /* top | right | bottom | left */
-  padding: 1px 0 2px 0;
+  width: fit-content;
 }
 
 .bike-menu ul {
   margin: 0;
   padding: 0;
   list-style-type: none;
+  display: inline-flex;
 }
 
-.bike-menu p {
-  display: inline-block;
-}
-
-.menu-item {
+.menu-item-select {
   /* top | right | bottom | left */
-  padding: 0 15px 0 5px;
+  padding: 0 5px 0 5px;
   border-right: 1px solid black;
-  display: inline-block;
+  align-content: center;
 }
 
 .clickable:hover {
@@ -43,14 +35,8 @@
   cursor: crosshair;
 }
 
-.display-bottom {
-  position: absolute;
-  width: 592px;
-  margin-top: 400px;
-}
-
 .bike-form {
-  padding-top: 3px;
+  align-items: center;
   display: inline-flex;
   height: 26px;
   overflow: hidden;
@@ -58,15 +44,22 @@
 }
 
 .bike-display {
-  align-content: center;
-  min-height: 500px;
-  background-image: url(../images/stage-background.jpg);
-  background-size: contain;
-  background-repeat: no-repeat;
+  min-height: 450px;
 }
 
-.bike-display img {
-  margin-bottom: 125px;
-  width: 280px;
-  height: 203px;
+.image-container {
+  background-image: url(../images/stage-background.jpg);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  width: 450px;
+  height: 550px;
+  margin: auto;
+}
+
+.images img {
+  height: 300px;
+}
+
+.images {
+  padding-top: 100px;
 }

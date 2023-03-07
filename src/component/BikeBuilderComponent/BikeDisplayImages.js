@@ -5,40 +5,40 @@ const BikeDisplayImages = ({ pics }) => {
   const [imageRef, setImageRef] = useState(0);
   return (
     <div className="bike-display">
-      <h2>Your Bike components!</h2>
-      <div className="display-bottom">
+      <div className="image-container">
         <div className="slider">
+          <h1>{pics[imageRef].altText}</h1>
           <div className="images">
             <img
-              src={require(`../../images/${pics[imageRef].src}.png`)}
+              src={require(`../../images/${pics[imageRef].src}`)}
               alt={pics[imageRef].altText}
             />
           </div>
-          <div className="controls">
-            <Button
-              onClick={() => {
-                if (imageRef !== 0) {
-                  setImageRef(imageRef - 1);
-                } else {
-                  setImageRef(pics.length - 1);
-                }
-              }}
-            >
-              Back
-            </Button>
-            <Button
-              onClick={() => {
-                if (imageRef === pics.length - 1) {
-                  setImageRef(0);
-                } else {
-                  setImageRef(imageRef + 1);
-                }
-              }}
-            >
-              Next
-            </Button>
-          </div>
         </div>
+      </div>
+      <div className="controls">
+        <Button
+          onClick={() => {
+            if (imageRef !== 0) {
+              setImageRef(imageRef - 1);
+            } else {
+              setImageRef(pics.length - 1);
+            }
+          }}
+        >
+          Back
+        </Button>
+        <Button
+          onClick={() => {
+            if (imageRef === pics.length - 1) {
+              setImageRef(0);
+            } else {
+              setImageRef(imageRef + 1);
+            }
+          }}
+        >
+          Next
+        </Button>
       </div>
     </div>
   );

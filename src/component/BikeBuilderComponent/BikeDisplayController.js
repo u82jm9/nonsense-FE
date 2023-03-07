@@ -21,15 +21,13 @@ const BikeDisplayController = ({ bike }) => {
   }
 
   function chooseBrakes(b) {
-    console.log("Choose Brakes");
-    console.log(b);
     let obj;
     switch (b.groupsetBrand) {
       case "SHIMANO":
         obj = {
           place: 2,
           component: "Brakes",
-          src: "shimano_xxx",
+          src: "shimano_xxx.png",
           altText: "Shimano xxx Brakes",
         };
         break;
@@ -37,7 +35,7 @@ const BikeDisplayController = ({ bike }) => {
         obj = {
           place: 2,
           component: "Brakes",
-          src: "sram_xxx",
+          src: "sram_xxx.png",
           altText: "Sram xxx Brakes",
         };
         break;
@@ -45,7 +43,7 @@ const BikeDisplayController = ({ bike }) => {
         obj = {
           place: 2,
           component: "Brakes",
-          src: "campag_xxx",
+          src: "campag_xxx.png",
           altText: "Campagnolo xxx Brakes",
         };
         break;
@@ -53,7 +51,7 @@ const BikeDisplayController = ({ bike }) => {
         obj = {
           place: 2,
           component: "Brakes",
-          src: "other_xxx",
+          src: "other_xxx.png",
           altText: "None Branded xxx Brakes",
         };
         break;
@@ -61,12 +59,21 @@ const BikeDisplayController = ({ bike }) => {
         obj = {
           place: 2,
           component: "Brakes",
-          src: "tumbleweed",
-          altText: "Nope",
+          src: "no_image.png",
+          altText: "No Brakes Selected",
         };
         break;
     }
-    if ((b.brakeType = "RIM")) {
+
+    if (b.brakeType === "NOT_REQUIRED") {
+      obj = {
+        place: 2,
+        component: "Brakes",
+        src: "no_image.png",
+        altText: "No Brakes Required! Brave :) ",
+      };
+    }
+    if (b.brakeType === "RIM") {
       obj = {
         ...obj,
         src: obj.src.replace("xxx", "Rim"),
@@ -79,8 +86,6 @@ const BikeDisplayController = ({ bike }) => {
         altText: obj.altText.replace("xxx", "Disc"),
       };
     }
-    console.log("Returning: ");
-    console.log(obj);
     return obj;
   }
 
@@ -90,43 +95,43 @@ const BikeDisplayController = ({ bike }) => {
         return {
           place: 1,
           component: "Bars",
-          src: "flared_bars",
+          src: "flared_bars.png",
           altText: "Flared Bars",
         };
       case "DROPS":
         return {
           place: 1,
           component: "Bars",
-          src: "drop_bars",
+          src: "drop_bars.png",
           altText: "Drop Bars",
         };
       case "BULLHORNS":
         return {
           place: 1,
           component: "Bars",
-          src: "bullhorn_bars",
+          src: "bullhorn_bars.png",
           altText: "Bull Horn Bars",
         };
       case "FLAT":
         return {
           place: 1,
           component: "Bars",
-          src: "flat_bars",
+          src: "flat_bars.png",
           altText: "Flat Bars",
         };
       case "NONE_SELECTED":
         return {
           place: 1,
           component: "Bars",
-          src: "tumbleweed",
+          src: "no_image.png",
           altText: "No Bars Selected",
         };
       default:
         return {
           place: 1,
           component: "Bars",
-          src: "tumbleweed",
-          altText: "Nope",
+          src: "no_image.png",
+          altText: "No Bars Selected",
         };
     }
   }
@@ -137,46 +142,47 @@ const BikeDisplayController = ({ bike }) => {
         return {
           place: 0,
           component: "Frame",
-          src: "tour_frame",
+          src: "tour_frame.png",
           altText: "Tour Frame",
         };
       case "SINGLE_SPEED":
         return {
           place: 0,
           component: "Frame",
-          src: "fixie_frame",
+          src: "fixie_frame.png",
           altText: "Single Speed Frame",
         };
       case "ROAD":
         return {
           place: 0,
           component: "Frame",
-          src: "road_disc",
+          src: "road_disc.png",
           altText: "Road Frame",
         };
       case "GRAVEL":
         return {
           place: 0,
           component: "Frame",
-          src: "gravel_disc",
+          src: "gravel_disc.png",
           altText: "Gravel Frame",
         };
       case "NONE_SELECTED":
         return {
           place: 0,
           component: "Frame",
-          src: "tumbleweed",
+          src: "no_image.png",
           altText: "No Frame Selected",
         };
       default:
         return {
           place: 0,
           component: "Frame",
-          src: "tumbleweed",
-          altText: "Nope",
+          src: "no_image.png",
+          altText: "No Frame Selected",
         };
     }
   }
+
   return (
     <div>
       {listOfImages.length === 0 ? (
