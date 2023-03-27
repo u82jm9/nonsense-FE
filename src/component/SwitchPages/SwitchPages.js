@@ -3,14 +3,14 @@ import Switch from "react-switch";
 import { FaGreaterThan, FaLessThan } from "react-icons/fa";
 
 const SwitchPages = ({ switchedOn, text1, text2, comp1, comp2 }) => {
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(false);
 
   return (
-    <div>
+    <div className="component">
       {!switchedOn ? (
         <></>
       ) : (
-        <div className="component">
+        <div className="switch-container">
           <div className="switch">
             <h1>{text1}</h1>
             <Switch

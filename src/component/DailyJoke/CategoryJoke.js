@@ -1,17 +1,9 @@
 import React from "react";
-import { Button } from "react-bootstrap";
 
-const CategoryJoke = ({ joke, anotherJoke }) => {
+const CategoryJoke = ({ joke }) => {
   return (
     <div>
       <h2>{joke}</h2>
-      <Button
-        onClick={() => {
-          anotherJoke();
-        }}
-      >
-        Another!
-      </Button>
     </div>
   );
 };

@@ -1,14 +1,15 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import RandomJoke from "./RandomJoke";
 import CategoryJoke from "./CategoryJoke";
-import { Form } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 
 const RANDOM_JOKE_API_URL = "https://dad-jokes.p.rapidapi.com/random/joke";
 const GET_JOKE_BY_CATEGORY_API_URL =
   "https://world-of-jokes1.p.rapidapi.com/v1/jokes/jokes-by-category";
+
 function JokeComponent() {
-  const [randomJoke, setRandomJoke] = useState({});
+  const [randomJoke, setRandomJoke] = useState(getRandomJoke());
   const [categoryJoke, setCategoryJoke] = useState("");
   const [listOfCategoryJokes, setListOfCategoryJokes] = useState([]);
   const categories = [
@@ -24,9 +25,6 @@ function JokeComponent() {
     "Medical",
     "Marriage",
   ];
-  useEffect(() => {
-    getRandomJoke();
-  }, [randomJoke]);
 
   async function getRandomJoke() {
     let j;
@@ -77,12 +75,16 @@ function JokeComponent() {
     }
   }
 
-  function pickCategoryJoke(jokeList) {
+  async function pickCategoryJoke(jokeList) {
     const numberOfJokes = jokeList.length;
     let r = 0 + Math.floor(Math.random() * numberOfJokes);
-    const joke = jokeList[r];
-    setCategoryJoke(joke.body);
-    console.log("Category Joke: ", joke.body);
+    try {
+      let joke = await jokeList[r];
+      setCategoryJoke(joke.body);
+      console.log("Category Joke: ", joke.body);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   function getAnotherRandomJoke() {
@@ -90,11 +92,12 @@ function JokeComponent() {
   }
 
   function getAnotherJokeFromCategory() {
+    setCategoryJoke("");
     pickCategoryJoke(listOfCategoryJokes);
   }
 
   return (
-    <div className="component">
+    <div className="note-component">
       <h1>Jokes!</h1>
       <Form.Select
         onClick={(e) => {
@@ -108,12 +111,34 @@ function JokeComponent() {
         ))}
       </Form.Select>
       {categoryJoke === "" ? (
-        <RandomJoke joke={randomJoke} anotherJoke={getAnotherRandomJoke} />
+        <div>
+          <RandomJoke joke={randomJoke} anotherJoke={getAnotherRandomJoke} />
+          <Button
+            onClick={() => {
+              getAnotherRandomJoke();
+            }}
+          >
+            Surprise me!
+          </Button>
+        </div>
       ) : (
-        <CategoryJoke
-          joke={categoryJoke}
-          anotherJoke={getAnotherJokeFromCategory}
-        />
+        <div>
+          <CategoryJoke joke={categoryJoke} />
+          <Button
+            onClick={() => {
+              getAnotherJokeFromCategory();
+            }}
+          >
+            Next in category!
+          </Button>
+          <Button
+            onClick={() => {
+              getAnotherRandomJoke();
+            }}
+          >
+            Surprise me!
+          </Button>
+        </div>
       )}
     </div>
   );

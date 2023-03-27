@@ -15,16 +15,6 @@ const LargeWeatherDisplayTable = ({
             <th rowSpan={2}>Day</th>
             <th rowSpan={2}>Sunrise</th>
             <th rowSpan={2}>Sunset</th>
-            <th rowSpan={2}>
-              Max
-              <br />
-              Temp (°C)
-            </th>
-            <th rowSpan={2}>
-              Min
-              <br />
-              Temp (°C)
-            </th>
             <th colSpan={7}>Hourly Conditions</th>
             <th colSpan={2}>Hottest!</th>
             <th colSpan={2}>Coldest!</th>
@@ -49,8 +39,6 @@ const LargeWeatherDisplayTable = ({
               <td>{moment(data.date).format("dddd")}</td>
               <td>{data.astro.sunrise}</td>
               <td>{data.astro.sunset}</td>
-              <td>{data.day.maxtemp_c}</td>
-              <td>{data.day.mintemp_c}</td>
               <td>
                 <img
                   src={require(`../../gifs/${data.hour[7].condition.text}.gif`)}

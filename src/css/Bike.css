@@ -1,6 +1,8 @@
 .bike-component {
   background-color: rgb(246, 183, 183);
   width: fit-content;
+  display: block;
+  border: 1px solid black;
   border-radius: 10px;
   justify-content: center;
 }
@@ -11,6 +13,7 @@
   border: 1px solid black;
   border-radius: 5px;
   width: fit-content;
+  margin: 0 10px 0 10px;
 }
 
 .bike-menu ul {
@@ -20,9 +23,10 @@
   display: inline-flex;
 }
 
-.menu-item-select {
+.menu-item {
   /* top | right | bottom | left */
   padding: 0 5px 0 5px;
+  border-left: 1px solid black;
   border-right: 1px solid black;
   align-content: center;
 }
@@ -51,8 +55,8 @@
   background-image: url(../images/stage-background.jpg);
   background-size: 100%;
   background-repeat: no-repeat;
-  width: 450px;
-  height: 550px;
+  width: 500px;
+  height: 600px;
   margin: auto;
 }
 
@@ -61,5 +65,6 @@
 }
 
 .images {
-  padding-top: 100px;
+  padding-top: 150px;
+  width: auto;
 }
