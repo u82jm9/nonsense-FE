@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import quotes from "./quotes.json";
 import DisplayQuoteList from "./DisplayQuoteList";
 import { Button } from "react-bootstrap";
+import QuoteDisplayer from "./QuoteDisplayer";
 
 function FilmQuoteComponent() {
-  const [quoteList, setQuoteList] = useState(quotes.quotes);
+  const quoteList = quotes.quotes;
   const [randomQuote, setRandomQuote] = useState(quotes.quotes[0]);
   const [showList, setShowList] = useState(false);
 
@@ -30,7 +31,7 @@ function FilmQuoteComponent() {
         </div>
       ) : (
         <div>
-          <h1>Quote: "{randomQuote.line}"</h1>
+          <QuoteDisplayer quote={randomQuote} />
           <Button onClick={() => setShowList(true)}>Show quote list</Button>
         </div>
       )}

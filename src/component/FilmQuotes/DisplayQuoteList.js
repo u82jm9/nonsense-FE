@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import QuoteDisplayer from "./QuoteDisplayer";
 
 const DisplayQuoteList = ({ quoteList }) => {
   const [tempList, setTempList] = useState(quoteList);
@@ -105,9 +106,7 @@ const DisplayQuoteList = ({ quoteList }) => {
       {tempList.map((quote, index) => {
         return (
           <div key={index}>
-            <h1>Quote: "{quote.line}"</h1>
-            <h2>In Film: {quote.film}</h2>
-            <h3>By Actor: {quote.actor}</h3>
+            <QuoteDisplayer quote={quote} />
           </div>
         );
       })}
