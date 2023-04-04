@@ -1,131 +1,416 @@
+import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import { GiCartwheel } from "react-icons/gi";
-const BikeMenuBar = ({ groupSets, brakes, bars, frames, bike, updateBike }) => {
+const BikeMenuBar = ({
+  showingBike,
+  frameSize,
+  tireClearance,
+  numFrontGears,
+  numRearGears,
+  shimanoGroupsets,
+  sramGroupsets,
+  campagGroupsets,
+  groupSets,
+  brakes,
+  bars,
+  frames,
+  bike,
+  updateBike,
+}) => {
+  const [showChangeName, setShowChangeName] = useState(true);
+  const [showFrameStyle, setShowFrameStyle] = useState(true);
+  const [showBar, setShowBar] = useState(false);
+  const [showBrake, setShowBrake] = useState(false);
+  const [showGroupset, setShowGroupset] = useState(false);
+  const [showTireClearance, setShowTireClearance] = useState(false);
+  const [showNumFrontGears, setShowNumFrontGears] = useState(false);
+  const [showNumRearGears, setShowNumRearGears] = useState(false);
+  const [showFrameSize, setShowFrameSize] = useState(false);
+  const [showShimanoGroupset, setShowShimanoGroupset] = useState(false);
+  const [showSramGroupset, setShowSramGroupset] = useState(false);
+  const [showCampagGroupset, setShowCampagGroupset] = useState(false);
+  const [editBike, setEditBike] = useState({});
+  let timer = null;
+
+  useEffect(() => {
+    if (showingBike) {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        console.log("Updating from Menu Bar");
+        updateBike(editBike);
+      }, 500);
+    }
+  }, [editBike]);
+
+  useEffect(() => {
+    if (showingBike) {
+      setEditBike(bike);
+    }
+  }, [bike]);
+
+  // function exitEditMode() {
+  //   console.log("EXIT edit mode");
+  //   setShowChangeName(false);
+  //   setShowFrameStyle(false);
+  //   setShowBar(false);
+  //   setShowBrake(false);
+  //   setShowGroupset(false);
+  //   setShowTireClearance(false);
+  //   setShowNumFrontGears(false);
+  //   setShowNumRearGears(false);
+  //   setShowFrameSize(false);
+  //   setShowShimanoGroupset(false);
+  //   setShowSramGroupset(false);
+  //   setShowCampagGroupset(false);
+  // }
+
   async function handleNameChange(e) {
     try {
-      let tempBike = { ...bike };
-      tempBike[e.target.id] = e.target.value;
-      const updatedBike = await { ...bike, ...tempBike };
-      updateBike(updatedBike);
-      console.log(updatedBike);
+      const { id, value } = e.target;
+      const tempBike = await { ...editBike, [id]: value };
+      setEditBike(tempBike);
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        setShowChangeName(false);
+      }, 3000);
     } catch (err) {
-      console.error(err);
+      console.log(err);
     }
   }
 
   async function handleFrameClick(e) {
     try {
-      let tempFrame = { ...bike.frame };
-      tempFrame[e.target.id] = e.target.value.toUpperCase().replace(" ", "_");
-      const updatedBike = await { ...bike, frame: tempFrame };
-      updateBike(updatedBike);
+      console.log(editBike);
+      const fieldId = e.target.id;
+      const fieldValue = e.target.value;
+      const tempFrame = await {
+        ...editBike.bike.frame,
+        [fieldId]: fieldValue.toUpperCase().replace(" ", "_"),
+      };
+      const tempBike = await { ...editBike.bike, frame: tempFrame };
+      console.log(tempBike);
+      setEditBike(tempBike);
     } catch (err) {
-      console.error(err);
+      console.log(err);
+    }
+  }
+
+  async function handleGearsClick(e) {
+    try {
+      console.log("Gears Click");
+      console.log(e.target);
+      const fieldId = e.target.id;
+      const fieldValue = e.target.value;
+      const tempFront = {
+        ...editBike.bike.frontGears,
+        [fieldId]: fieldValue.toUpperCase().replace(" ", "_"),
+      };
+      const tempRear = {
+        ...editBike.bike.rearGears,
+        [fieldId]: fieldValue.toUpperCase().replace(" ", "_"),
+      };
+      let tempBike = await {
+        ...editBike.bike,
+        frontGears: tempFront,
+        rearGears: tempRear,
+      };
+      setEditBike(tempBike);
+    } catch (err) {
+      console.log(err);
     }
   }
 
   async function handleClick(e) {
-    console.log(bike);
-    let tempBike = { ...bike };
-    tempBike[e.target.id] = e.target.value.toUpperCase().replace(" ", "_");
     try {
-      const updatedBike = await {
-        ...tempBike,
+      const { id, value } = e.target;
+      const tempBike = await {
+        ...editBike.bike,
+        [id]: value.toUpperCase().replace(" ", "_"),
       };
-      console.log("Updated");
-      console.log(updatedBike);
-      updateBike(updatedBike);
+      setEditBike(tempBike);
     } catch (err) {
-      console.error(err);
+      console.log(err);
+    }
+  }
+
+  function checkShowFlags(bike) {
+    if (bike.frame.frameStyle === "SINGLE_SPEED") {
+      setShowNumFrontGears(false);
+      setShowNumRearGears(false);
+      setShowGroupset(false);
+    }
+    if (bike.groupsetBrand === "SHIMANO") {
+      setShowShimanoGroupset(true);
+    } else if (bike.groupsetBrand === "SRAM") {
+      setShowSramGroupset(true);
+    } else if (bike.groupsetBrand === "CAMPAGNOLO") {
+      setShowCampagGroupset(true);
     }
   }
 
   return (
     <div className="bike-menu">
-      <div className="menu-item-select">
+      <div
+        onClick={() => {
+          setShowChangeName(true);
+          setShowFrameStyle(true);
+        }}
+        className="icon menu-item"
+      >
         <GiCartwheel />
       </div>
-      <div className="text-box">
-        <Form className="bike-form">
-          <Form.Group>
-            <textarea
-              rows="1"
-              id="bikeName"
-              onChange={(e) => handleNameChange(e)}
-              placeholder="Change Bike Name"
-            ></textarea>
-          </Form.Group>
-        </Form>
-      </div>
-      <div className="frame menu-item-select clickable">
-        <ul>
-          <select
-            name="frame-style"
-            id="frameStyle"
-            onChange={(e) => handleFrameClick(e)}
-          >
-            <option value="">Choose Your Frame</option>
-            {frames.map((f, i) => (
-              <option value={f} key={i}>
-                {f}
-              </option>
-            ))}
-          </select>
-        </ul>
-      </div>
-      <div className="bars menu-item-select clickable">
-        <ul>
-          <select
-            name="bar-type"
-            id="handleBarType"
-            onChange={(e) => handleClick(e)}
-          >
-            <option value="">Choose Your Bars</option>
-            {bars.map((b, i) => (
-              <option value={b} key={i}>
-                {b}
-              </option>
-            ))}
-          </select>
-        </ul>
-      </div>
-      {bike.frame.frameStyle === "NONE_SELECTED" ? (
-        <></>
-      ) : (
-        <>
-          <div className="groupset menu-item-select clickable">
-            <ul>
-              <select
-                name="group-sets"
-                id="groupsetBrand"
-                onChange={(e) => handleClick(e)}
-              >
-                <option value="">Choose Your Groupset</option>
-                {groupSets.map((g, i) => (
-                  <option value={g} key={i}>
-                    {g}
-                  </option>
-                ))}
-              </select>
-            </ul>
-          </div>
-          <div className="brakes menu-item-select clickable">
-            <ul>
-              <select
-                name="brake-type"
-                id="brakeType"
-                onChange={(e) => handleClick(e)}
-              >
-                <option value="">Choose Your Brakes</option>
-                {brakes.map((br, i) => (
-                  <option value={br} key={i}>
-                    {br}
-                  </option>
-                ))}
-              </select>
-            </ul>
-          </div>
-        </>
+      {showChangeName && (
+        <div className="menu-item text-box">
+          <Form className="bike-form">
+            <Form.Group>
+              <textarea
+                rows="1"
+                id="bikeName"
+                onChange={(e) => handleNameChange(e)}
+                onBlur={() => setShowChangeName(false)}
+                placeholder="Change Bike Name"
+              ></textarea>
+            </Form.Group>
+          </Form>
+        </div>
+      )}
+      {showFrameStyle && (
+        <div className="frame menu-item clickable">
+          <ul>
+            <select
+              name="frame-style"
+              id="frameStyle"
+              onChange={(e) => {
+                handleFrameClick(e);
+                setShowFrameStyle(false);
+                setShowFrameSize(true);
+                setShowBar(true);
+                setShowBrake(true);
+                setShowGroupset(true);
+              }}
+            >
+              <option value="">Choose Your Frame</option>
+              {frames.map((f, i) => (
+                <option value={f} key={i}>
+                  {f}
+                </option>
+              ))}
+            </select>
+          </ul>
+        </div>
+      )}
+      {showGroupset && (
+        <div className="groupset menu-item clickable">
+          <ul>
+            <select
+              name="group-sets"
+              id="groupsetBrand"
+              onChange={(e) => {
+                handleClick(e);
+                setShowNumFrontGears(true);
+                setShowNumRearGears(true);
+                setShowGroupset(false);
+              }}
+            >
+              <option value="">Choose Your Groupset Brand</option>
+              {groupSets.map((g, i) => (
+                <option value={g} key={i}>
+                  {g}
+                </option>
+              ))}
+            </select>
+          </ul>
+        </div>
+      )}
+      {showShimanoGroupset && (
+        <div className="shimano menu-item clickable">
+          <ul>
+            <select
+              name="shimano-groupset"
+              id="shimanoGroupset"
+              onChange={(e) => {
+                handleGearsClick(e);
+                setShowShimanoGroupset(false);
+              }}
+            >
+              <option value="">Choose Your Series</option>
+              {shimanoGroupsets.map((s, i) => (
+                <option value={s} key={i}>
+                  {s}
+                </option>
+              ))}
+            </select>
+          </ul>
+        </div>
+      )}
+      {showSramGroupset && (
+        <div className="sram menu-item clickable">
+          <ul>
+            <select
+              name="sram-groupset"
+              id="sramGroupset"
+              onChange={(e) => {
+                handleClick(e);
+                setShowSramGroupset(false);
+              }}
+            >
+              <option value="">Choose Your Series</option>
+              {sramGroupsets.map((s, i) => (
+                <option value={s} key={i}>
+                  {s}
+                </option>
+              ))}
+            </select>
+          </ul>
+        </div>
+      )}
+      {showCampagGroupset && (
+        <div className="campag menu-item clickable">
+          <ul>
+            <select
+              name="campag-groupset"
+              id="campagnoloGroupset"
+              onChange={(e) => {
+                handleClick(e);
+                setShowCampagGroupset(false);
+              }}
+            >
+              <option value="">Choose Your Bars</option>
+              {campagGroupsets.map((c, i) => (
+                <option value={c} key={i}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </ul>
+        </div>
+      )}
+      {showFrameSize && (
+        <div className="frame-size menu-item clickable">
+          <ul>
+            <select
+              name="framesize"
+              id="size"
+              onChange={(e) => {
+                handleFrameClick(e);
+                setShowTireClearance(true);
+                setShowFrameSize(false);
+              }}
+            >
+              <option value="">Choose Your Size</option>
+              {frameSize.map((g, i) => (
+                <option value={g} key={i}>
+                  {g}
+                </option>
+              ))}
+            </select>
+          </ul>
+        </div>
+      )}
+      {showBar && (
+        <div className="bars menu-item clickable">
+          <ul>
+            <select
+              name="bar-type"
+              id="handleBarType"
+              onChange={(e) => {
+                handleClick(e);
+                setShowBar(false);
+              }}
+            >
+              <option value="">Choose Your Bars</option>
+              {bars.map((b, i) => (
+                <option value={b} key={i}>
+                  {b}
+                </option>
+              ))}
+            </select>
+          </ul>
+        </div>
+      )}
+      {showBrake && (
+        <div className="brakes menu-item clickable">
+          <ul>
+            <select
+              name="brake-type"
+              id="brakeType"
+              onChange={(e) => {
+                handleClick(e);
+                setShowBrake(false);
+              }}
+            >
+              <option value="">Choose Your Brakes</option>
+              {brakes.map((br, i) => (
+                <option value={br} key={i}>
+                  {br}
+                </option>
+              ))}
+            </select>
+          </ul>
+        </div>
+      )}
+      {showTireClearance && (
+        <div className="clearance menu-item clickable">
+          <ul>
+            <select
+              name="clearance"
+              id="tireClearance"
+              onChange={(e) => {
+                handleFrameClick(e);
+                setShowTireClearance(false);
+              }}
+            >
+              <option value="">Choose Tire Clearance</option>
+              {tireClearance.map((g, i) => (
+                <option value={g} key={i}>
+                  {g}
+                </option>
+              ))}
+            </select>
+          </ul>
+        </div>
+      )}
+      {showNumFrontGears && (
+        <div className="front-gears menu-item clickable">
+          <ul>
+            <select
+              name="front-gears"
+              id="frontGears.numberOfGears"
+              onChange={(e) => {
+                handleClick(e);
+                setShowNumFrontGears(false);
+              }}
+            >
+              <option value="">Gears at front</option>
+              {numFrontGears.map((g, i) => (
+                <option value={g} key={i}>
+                  {g}
+                </option>
+              ))}
+            </select>
+          </ul>
+        </div>
+      )}
+      {showNumRearGears && (
+        <div className="rear-gears menu-item clickable">
+          <ul>
+            <select
+              name="rear-gears"
+              id="rearGears.numberOfGears"
+              onChange={(e) => {
+                handleClick(e);
+                setShowNumRearGears(false);
+              }}
+            >
+              <option value="">Gears at rear</option>
+              {numRearGears.map((g, i) => (
+                <option value={g} key={i}>
+                  {g}
+                </option>
+              ))}
+            </select>
+          </ul>
+        </div>
       )}
     </div>
   );
