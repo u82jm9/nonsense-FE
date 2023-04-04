@@ -10,6 +10,7 @@ import FilmQuoteComponent from "../component/FilmQuotes/FilmQuoteComponent";
 const BACK_END_TEST_API = "http://localhost:8088/demo/Test/";
 function HomePage() {
   const [backendOn, setBackendOn] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
   useEffect(() => {
     isBackendOn();
   }, []);
@@ -24,22 +25,24 @@ function HomePage() {
   }
   return (
     <div className="page">
-      {/* <SwitchPages
-        switchedOn={backendOn}
-        text1={"Weather"}
-        text2={"Jokes"}
-        comp1={WeatherDisplayComponent()}
-        comp2={JokeComponent()}
-      />
-      <SwitchPages
-        switchedOn={backendOn}
-        text1={"Notes"}
-        text2={"Bikes"}
-        comp1={StickyNoteComponent()}
-        comp2={BikeBuilderComponent()}
-      /> */}
-      <FilmQuoteComponent />
-      {backendOn ? <></> : <h1>Please Turn on Back End!</h1>}
+      <div className={darkMode ? "dark" : "light"}>
+        <WeatherDisplayComponent />
+        <SwitchPages
+          switchedOn={backendOn}
+          text1={"Quotes"}
+          text2={"Jokes"}
+          comp1={FilmQuoteComponent()}
+          comp2={JokeComponent()}
+        />
+        <SwitchPages
+          switchedOn={backendOn}
+          text1={"Notes"}
+          text2={"Bikes"}
+          comp1={StickyNoteComponent()}
+          comp2={BikeBuilderComponent()}
+        />
+        {backendOn ? <></> : <h1>Please Turn on Back End!</h1>}
+      </div>
     </div>
   );
 }
