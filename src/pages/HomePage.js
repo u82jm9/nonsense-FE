@@ -13,6 +13,8 @@ function HomePage() {
   const [darkMode, setDarkMode] = useState(false);
   useEffect(() => {
     isBackendOn();
+    const interval = setInterval(() => isBackendOn(), 5000);
+    return () => clearInterval(interval);
   }, []);
 
   async function isBackendOn() {
