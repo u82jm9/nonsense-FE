@@ -97,7 +97,7 @@ function JokeComponent() {
   }
 
   return (
-    <div className="note-component">
+    <div className="component display-component">
       <h1>Jokes!</h1>
       <Form.Select
         onClick={(e) => {

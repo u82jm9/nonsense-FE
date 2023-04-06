@@ -17,11 +17,12 @@ const DisplayQuoteList = ({ quoteList }) => {
 
   function createSmallerLists() {
     setSmallerLists([]);
+    console.log("State tempList: ", tempList);
     let sl = [];
     let numberOfLists = Math.ceil(tempList.length / 10);
     for (let i = 0; i < numberOfLists; i++) {
-      let start = i * 10;
-      let end = start + 10;
+      let start = i * 5;
+      let end = start + 5;
       sl.push(tempList.slice(start, end));
     }
     setSmallerLists(sl);
@@ -30,16 +31,20 @@ const DisplayQuoteList = ({ quoteList }) => {
 
   function handleSortClick(e) {
     const sortBy = e.target.value;
-    let ntl = [];
+    console.log("tempList: " + tempList);
+    let ntl = [...tempList];
     if (sortBy === "film") {
-      ntl = tempList.sort(function (a, b) {
+      console.log("Film Sort");
+      ntl = ntl.sort(function (a, b) {
         return a.film.localeCompare(b.film);
       });
     } else if (sortBy === "actor") {
-      ntl = tempList.sort(function (a, b) {
+      console.log("Actor Sort");
+      ntl = ntl.sort(function (a, b) {
         return a.actor.localeCompare(b.actor);
       });
     }
+    console.log("New Temp List", ntl);
     setTempList(ntl);
   }
   function handleSearch(e) {

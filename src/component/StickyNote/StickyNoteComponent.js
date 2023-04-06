@@ -96,7 +96,7 @@ function StickyNoteComponent() {
   };
 
   return (
-    <div className="note-component">
+    <div className="component display-component note-component">
       <h1>Sticky Notes!</h1>
 
       {showGif ? (

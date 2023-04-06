@@ -15,7 +15,7 @@ function FilmQuoteComponent() {
     );
   }
   return (
-    <div>
+    <div className="component display-component">
       <h1>Welcome to the Film Quotes</h1>
       {showList ? (
         <div>

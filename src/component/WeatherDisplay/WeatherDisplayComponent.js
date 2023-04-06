@@ -156,7 +156,7 @@ function WeatherDisplayComponent() {
   }
 
   return (
-    <div className="weather-table">
+    <div className="weather-table display-component">
       <WeatherCitySearch city={actualCity} changeCity={changeCity} />
       {tableSize === "1" ? (
         <SmallWeatherDisplay

@@ -40,7 +40,7 @@ function BikeBuilderComponent() {
   }
 
   return (
-    <div className="bike-component">
+    <div className="bike-component display-component">
       <h1>Welcome to the bike Builder</h1>
       <BikeMenuController
         url={BIKE_BUILDER_API_URL}

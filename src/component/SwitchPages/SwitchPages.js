@@ -11,7 +11,7 @@ const SwitchPages = ({ switchedOn, text1, text2, comp1, comp2 }) => {
         <></>
       ) : (
         <div className="switch-container">
-          <div className="switch">
+          <div className="switch display-component">
             <h1>{text1}</h1>
             <Switch
               offColor="#9BCA31"
