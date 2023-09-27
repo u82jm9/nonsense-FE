@@ -12,7 +12,7 @@ const BikeMenuController = ({
 }) => {
   const [newBikeStarted, setNewBikeStarted] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [designBike, setDesignBike] = useState({ bike });
+  const [designBike, setDesignBike] = useState({});
   const [frameSize, setFrameSize] = useState([46, 48, 50, 52, 54, 56]);
   const [tireClearance, setTireClearance] = useState([23, 28, 33, 38, 48]);
   const [numFrontGears, setNumFrontGears] = useState([1, 2, 3]);
@@ -41,7 +41,7 @@ const BikeMenuController = ({
 
   useEffect(() => {
     setEditMode(false);
-    setDesignBike({ bike });
+    setDesignBike({ ...bike });
   }, [bike]);
 
   async function startBuildingBike() {
@@ -49,7 +49,6 @@ const BikeMenuController = ({
     try {
       let b = await axios.get(url + "StartNewBike");
       console.log("New Bike Created!");
-      setDesignBike(b.data);
       setNewBikeStarted(true);
       changingDisplayBike(b.data);
       setUpdateBikeList(true);
@@ -142,7 +141,8 @@ const BikeMenuController = ({
       let b = await axios.post(url + "UpdateBike", methodBike);
       console.log("Updated bike: ");
       const barData = await getBars();
-      filterOptions(barData, b.data);
+      const brakeData = await getBrakes();
+      filterOptions(brakeData, barData, b.data);
       setDesignBike(b.data);
       changingDisplayBike(b.data);
       console.log(b.data);
@@ -152,42 +152,50 @@ const BikeMenuController = ({
     }
   }
 
-  function filterOptions(bars, methodBike) {
+  function filterOptions(brakes, bars, methodBike) {
     console.log("Updating Selections");
+    const filteredBars = bars;
+    const filteredBrakes = brakes;
+    const filteredTireClearance = tireClearance;
     if (methodBike.frame.frameStyle === "ROAD") {
-      const filteredBars = bars
+      filteredBars
         .filter((bItem) => bItem !== "Flat")
         .filter((bItem) => bItem !== "Bullhorns");
-      setBars(filteredBars);
+      filteredBrakes.filter((bItem) => bItem !== "Not Required");
       setNumFrontGears([1, 2]);
       setNumRearGears([10, 11, 12]);
-      const filteredTireClearance = tireClearance
-        .filter((tItem) => tItem !== 23)
-        .filter((tItem) => tItem !== 28);
-      setTireClearance(filteredTireClearance);
+      filteredTireClearance
+        .filter((tItem) => tItem !== 33)
+        .filter((tItem) => tItem !== 38)
+        .filter((tItem) => tItem !== 48);
     } else if (methodBike.frame.frameStyle === "GRAVEL") {
-      const filteredBars = bars
+      filteredBars
         .filter((bItem) => bItem !== "Flat")
         .filter((bItem) => bItem !== "Bullhorns");
-      setBars(filteredBars);
-      setNumFrontGears([1, 2]);
+      filteredBrakes
+        .filter((bItem) => bItem !== "Rim")
+        .filter((bItem) => bItem !== "Not Required");
+      setNumFrontGears([1]);
       setNumRearGears([10, 11, 12]);
-      const filteredTireClearance = tireClearance
-        .filter((tItem) => tItem !== 23)
-        .filter((tItem) => tItem !== 28);
-      setTireClearance(filteredTireClearance);
+      filteredTireClearance.filter((tItem) => tItem !== 23);
     } else if (methodBike.frame.frameStyle === "TOURING") {
-      const filteredBars = bars.filter((bItem) => bItem !== "Bullhorns");
-      setBars(filteredBars);
+      filteredBrakes
+        .filter((bItem) => bItem !== "Rim")
+        .filter((bItem) => bItem !== "Not Required");
+      setNumFrontGears([1, 2, 3]);
+      setNumRearGears([8, 9, 10, 11, 12]);
+      filteredBars.filter((bItem) => bItem !== "Bullhorns");
     } else if (methodBike.frame.frameStyle === "SINGLE_SPEED") {
       setNumFrontGears([1]);
       setNumRearGears([1]);
-      const filteredBars = bars.filter((bItem) => bItem !== "Flare");
-      setBars(filteredBars);
+      filteredBars.filter((bItem) => bItem !== "Flare");
     } else {
       setNumFrontGears([1, 2, 3]);
       setNumRearGears([8, 9, 10, 11, 12]);
     }
+    setTireClearance(filteredTireClearance);
+    setBars(filteredBars);
+    setBrakes(filteredBrakes);
   }
 
   return (

@@ -13,7 +13,7 @@ const BikeDisplayController = ({ bike }) => {
     let tempList = [];
     console.log("Choosing Images for Bike: ");
     console.log(methodBike);
-    tempList.push(chooseFrame(methodBike.frame.frameStyle));
+    tempList.push(chooseFrame(methodBike));
     tempList.push(chooseBars(methodBike.handleBarType));
     tempList.push(chooseBrakes(methodBike));
     console.log(tempList);
@@ -136,50 +136,71 @@ const BikeDisplayController = ({ bike }) => {
     }
   }
 
-  function chooseFrame(frameStyle) {
-    switch (frameStyle) {
+  function chooseFrame(b) {
+    let obj;
+    switch (b.frame.frameStyle) {
       case "TOUR":
-        return {
+        obj = {
           place: 0,
           component: "Frame",
-          src: "tour_frame.png",
+          src: "tour_xxx.png",
           altText: "Tour Frame",
         };
+        break;
       case "SINGLE_SPEED":
-        return {
+        obj = {
           place: 0,
           component: "Frame",
           src: "fixie_frame.png",
           altText: "Single Speed Frame",
         };
+        break;
       case "ROAD":
-        return {
+        obj = {
           place: 0,
           component: "Frame",
-          src: "road_disc.png",
+          src: "road_xxx.png",
           altText: "Road Frame",
         };
+        break;
       case "GRAVEL":
-        return {
+        obj = {
           place: 0,
           component: "Frame",
           src: "gravel_disc.png",
           altText: "Gravel Frame",
         };
+        break;
       case "NONE_SELECTED":
-        return {
+        obj = {
           place: 0,
           component: "Frame",
           src: "no_image.png",
           altText: "No Frame Selected",
         };
+        break;
       default:
-        return {
+        obj = {
           place: 0,
           component: "Frame",
           src: "no_image.png",
           altText: "No Frame Selected",
         };
+        break;
+    }
+    if (b.brakeType === "RIM") {
+      obj = {
+        ...obj,
+        src: obj.src.replace("xxx", "Rim"),
+        altText: obj.altText.replace("xxx", "Rim"),
+      };
+    } else {
+      obj = {
+        ...obj,
+        src: obj.src.replace("xxx", "Disc"),
+        altText: obj.altText.replace("xxx", "Disc"),
+      };
+      return obj;
     }
   }
 

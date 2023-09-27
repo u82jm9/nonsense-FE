@@ -29,24 +29,16 @@ const BikeMenuBar = ({
   const [showShimanoGroupset, setShowShimanoGroupset] = useState(false);
   const [showSramGroupset, setShowSramGroupset] = useState(false);
   const [showCampagGroupset, setShowCampagGroupset] = useState(false);
-  const [editBike, setEditBike] = useState({});
+  const [editBike, setEditBike] = useState({ ...bike });
   let timer = null;
 
   useEffect(() => {
     if (showingBike) {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        console.log("Updating from Menu Bar");
-        updateBike(editBike);
-      }, 500);
+      console.log("Updating from Menu Bar");
+      updateBike(editBike);
+      checkShowFlags(editBike);
     }
   }, [editBike]);
-
-  useEffect(() => {
-    if (showingBike) {
-      setEditBike(bike);
-    }
-  }, [bike]);
 
   // function exitEditMode() {
   //   console.log("EXIT edit mode");
@@ -65,9 +57,11 @@ const BikeMenuBar = ({
   // }
 
   async function handleNameChange(e) {
+    console.log("Edit Bike: ", editBike);
     try {
       const { id, value } = e.target;
       const tempBike = await { ...editBike, [id]: value };
+      console.log("Handle Name change method! tempBike: ", tempBike);
       setEditBike(tempBike);
       clearTimeout(timer);
       timer = setTimeout(() => {
@@ -84,10 +78,10 @@ const BikeMenuBar = ({
       const fieldId = e.target.id;
       const fieldValue = e.target.value;
       const tempFrame = await {
-        ...editBike.bike.frame,
+        ...editBike.frame,
         [fieldId]: fieldValue.toUpperCase().replace(" ", "_"),
       };
-      const tempBike = await { ...editBike.bike, frame: tempFrame };
+      const tempBike = await { ...editBike, frame: tempFrame };
       console.log(tempBike);
       setEditBike(tempBike);
     } catch (err) {
@@ -102,11 +96,11 @@ const BikeMenuBar = ({
       const fieldId = e.target.id;
       const fieldValue = e.target.value;
       const tempFront = {
-        ...editBike.bike.frontGears,
+        ...editBike.frontGears,
         [fieldId]: fieldValue.toUpperCase().replace(" ", "_"),
       };
       const tempRear = {
-        ...editBike.bike.rearGears,
+        ...editBike.rearGears,
         [fieldId]: fieldValue.toUpperCase().replace(" ", "_"),
       };
       let tempBike = await {
@@ -124,7 +118,7 @@ const BikeMenuBar = ({
     try {
       const { id, value } = e.target;
       const tempBike = await {
-        ...editBike.bike,
+        ...editBike,
         [id]: value.toUpperCase().replace(" ", "_"),
       };
       setEditBike(tempBike);
