@@ -41,7 +41,7 @@ function JokeComponent() {
       };
       j = await axios.request(options);
       console.log("Got a joke, hope it's funny!");
-      setRandomJoke(j.data.body[0]);
+      return j.data.body[0];
     } catch (err) {
       console.error(err);
     }
@@ -88,7 +88,8 @@ function JokeComponent() {
   }
 
   function getAnotherRandomJoke() {
-    getRandomJoke();
+    setRandomJoke("");
+    setRandomJoke(getRandomJoke());
   }
 
   function getAnotherJokeFromCategory() {
@@ -106,8 +107,10 @@ function JokeComponent() {
         }}
       >
         <option>Select Joke Category</option>
-        {categories.map((c) => (
-          <option value={c}>{c}</option>
+        {categories.map((c, i) => (
+          <option key={i} value={c}>
+            {c}
+          </option>
         ))}
       </Form.Select>
       {categoryJoke === "" ? (

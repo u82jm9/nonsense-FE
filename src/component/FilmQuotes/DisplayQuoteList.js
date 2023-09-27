@@ -125,38 +125,40 @@ const DisplayQuoteList = ({ quoteList }) => {
         </ul>
       </div>
       <div>
-        {smallerLists[listRef] &&
-          smallerLists[listRef].map((quote, index) => {
-            return (
-              <div key={index}>
-                <QuoteDisplayer quote={quote} />
-              </div>
-            );
-          })}
-      </div>
-      <div className="controls">
-        <Button
-          onClick={() => {
-            if (listRef !== 0) {
-              setListRef(listRef - 1);
-            } else {
-              setListRef(smallerLists.length - 1);
-            }
-          }}
-        >
-          Back
-        </Button>
-        <Button
-          onClick={() => {
-            if (listRef === smallerLists.length - 1) {
-              setListRef(0);
-            } else {
-              setListRef(listRef + 1);
-            }
-          }}
-        >
-          Next
-        </Button>
+        <div>
+          {smallerLists[listRef] &&
+            smallerLists[listRef].map((quote, i) => {
+              return (
+                <div key={i}>
+                  <QuoteDisplayer quote={quote} />
+                </div>
+              );
+            })}
+        </div>
+        <div className="controls">
+          <Button
+            onClick={() => {
+              if (listRef !== 0) {
+                setListRef(listRef - 1);
+              } else {
+                setListRef(smallerLists.length - 1);
+              }
+            }}
+          >
+            Back
+          </Button>
+          <Button
+            onClick={() => {
+              if (listRef === smallerLists.length - 1) {
+                setListRef(0);
+              } else {
+                setListRef(listRef + 1);
+              }
+            }}
+          >
+            Next
+          </Button>
+        </div>
       </div>
     </div>
   );

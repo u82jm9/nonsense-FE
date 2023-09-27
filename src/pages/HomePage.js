@@ -13,7 +13,7 @@ function HomePage() {
   const [darkMode, setDarkMode] = useState(false);
   useEffect(() => {
     isBackendOn();
-    const interval = setInterval(() => isBackendOn(), 5000);
+    const interval = setInterval(() => isBackendOn(), 10000);
     return () => clearInterval(interval);
   }, []);
 
@@ -30,7 +30,6 @@ function HomePage() {
       <div className={darkMode ? "dark" : "light"}>
         <WeatherDisplayComponent />
         <SwitchPages
-          switchedOn={backendOn}
           text1={"Quotes"}
           text2={"Jokes"}
           comp1={FilmQuoteComponent()}
@@ -43,7 +42,6 @@ function HomePage() {
           comp1={StickyNoteComponent()}
           comp2={BikeBuilderComponent()}
         />
-        {backendOn ? <></> : <h1>Please Turn on Back End!</h1>}
       </div>
     </div>
   );
