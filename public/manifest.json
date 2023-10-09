@@ -11,11 +11,6 @@
       "src": "bike-cartoon-removebg.png",
       "type": "image/png",
       "sizes": "192x192"
-    },
-    {
-      "src": "bike-cartoon-2.jpg",
-      "type": "image/jpg",
-      "sizes": "192x192"
     }
   ],
   "start_url": ".",

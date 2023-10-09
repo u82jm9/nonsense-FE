@@ -24,10 +24,14 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "start-app": "npm install && npm start && npm run open-chrome",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "config": {
+    "chromURL": "http://localhost:3000"
   },
   "eslintConfig": {
     "extends": [
@@ -48,6 +52,7 @@
     ]
   },
   "devDependencies": {
-    "jest": "^29.5.0"
+    "jest": "^29.5.0",
+    "open": "^9.0.0"
   }
 }
