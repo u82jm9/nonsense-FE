@@ -30,7 +30,7 @@ function HomePage() {
       <div className={darkMode ? "dark" : "light"}>
         <WeatherDisplayComponent />
         <SwitchPages
-          switchedOn={backendOn}
+          switchedOn={true}
           text1={"Quotes"}
           text2={"Jokes"}
           comp1={FilmQuoteComponent()}
