@@ -17,18 +17,6 @@ const BikeMenuController = ({
   const [tireClearance, setTireClearance] = useState([23, 28, 33, 38, 48]);
   const [numFrontGears, setNumFrontGears] = useState([1, 2, 3]);
   const [numRearGears, setNumRearGears] = useState([8, 9, 10, 11, 12]);
-  const [groupSets, setGroupSets] = useState(() => {
-    getGroupSets();
-  });
-  const [shimanoGroupsets, setShimanoGroupsets] = useState(() => {
-    getShimanoGroupset();
-  });
-  const [sramGroupsets, setSramGroupsets] = useState(() => {
-    getSramGroupset();
-  });
-  const [campagGroupsets, setCampagGroupsets] = useState(() => {
-    getCampagGroupset();
-  });
   const [frames, setFrames] = useState(() => {
     getFrames();
   });
@@ -51,51 +39,9 @@ const BikeMenuController = ({
       console.log("New Bike Created!");
       setNewBikeStarted(true);
       changingDisplayBike(b.data);
+      console.log(b.data);
+      setDesignBike(b.data);
       setUpdateBikeList(true);
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async function getGroupSets() {
-    console.log("Getting Groupset names");
-    try {
-      let g = await axios.get(url + "GetGroupSets");
-      setGroupSets(g.data);
-      return g.data;
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async function getShimanoGroupset() {
-    console.log("Getting Shimano Groupsets");
-    try {
-      let s = await axios.get(url + "GetShimano");
-      setShimanoGroupsets(s.data);
-      return s.data;
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async function getSramGroupset() {
-    console.log("Getting Sram Groupsets");
-    try {
-      let s = await axios.get(url + "GetSram");
-      setSramGroupsets(s.data);
-      return s.data;
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async function getCampagGroupset() {
-    console.log("Getting Campagnolo Groupsets");
-    try {
-      let c = await axios.get(url + "GetCampag");
-      setCampagGroupsets(c.data);
-      return c.data;
     } catch (err) {
       console.error(err);
     }
@@ -239,10 +185,6 @@ const BikeMenuController = ({
           tireClearance={tireClearance}
           numFrontGears={numFrontGears}
           numRearGears={numRearGears}
-          groupSets={groupSets}
-          shimanoGroupsets={shimanoGroupsets}
-          sramGroupsets={sramGroupsets}
-          campagGroupsets={campagGroupsets}
           frames={frames}
           bars={bars}
           brakes={brakes}

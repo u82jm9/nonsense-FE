@@ -15,6 +15,7 @@ function BikeBuilderComponent() {
   useEffect(() => {
     if (updateBikeList) {
       getReadyBikes();
+      setUpdateBikeList(false)
     }
   }, [displayBike]);
 

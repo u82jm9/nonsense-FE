@@ -7,10 +7,6 @@ const BikeMenuBar = ({
   tireClearance,
   numFrontGears,
   numRearGears,
-  shimanoGroupsets,
-  sramGroupsets,
-  campagGroupsets,
-  groupSets,
   brakes,
   bars,
   frames,
@@ -21,14 +17,10 @@ const BikeMenuBar = ({
   const [showFrameStyle, setShowFrameStyle] = useState(true);
   const [showBar, setShowBar] = useState(false);
   const [showBrake, setShowBrake] = useState(false);
-  const [showGroupset, setShowGroupset] = useState(false);
   const [showTireClearance, setShowTireClearance] = useState(false);
   const [showNumFrontGears, setShowNumFrontGears] = useState(false);
   const [showNumRearGears, setShowNumRearGears] = useState(false);
   const [showFrameSize, setShowFrameSize] = useState(false);
-  const [showShimanoGroupset, setShowShimanoGroupset] = useState(false);
-  const [showSramGroupset, setShowSramGroupset] = useState(false);
-  const [showCampagGroupset, setShowCampagGroupset] = useState(false);
   const [editBike, setEditBike] = useState({ ...bike });
   let timer = null;
 
@@ -46,14 +38,10 @@ const BikeMenuBar = ({
   //   setShowFrameStyle(false);
   //   setShowBar(false);
   //   setShowBrake(false);
-  //   setShowGroupset(false);
   //   setShowTireClearance(false);
   //   setShowNumFrontGears(false);
   //   setShowNumRearGears(false);
   //   setShowFrameSize(false);
-  //   setShowShimanoGroupset(false);
-  //   setShowSramGroupset(false);
-  //   setShowCampagGroupset(false);
   // }
 
   async function handleNameChange(e) {
@@ -131,14 +119,6 @@ const BikeMenuBar = ({
     if (bike.frame.frameStyle === "SINGLE_SPEED") {
       setShowNumFrontGears(false);
       setShowNumRearGears(false);
-      setShowGroupset(false);
-    }
-    if (bike.groupsetBrand === "SHIMANO") {
-      setShowShimanoGroupset(true);
-    } else if (bike.groupsetBrand === "SRAM") {
-      setShowSramGroupset(true);
-    } else if (bike.groupsetBrand === "CAMPAGNOLO") {
-      setShowCampagGroupset(true);
     }
   }
 
@@ -180,99 +160,12 @@ const BikeMenuBar = ({
                 setShowFrameSize(true);
                 setShowBar(true);
                 setShowBrake(true);
-                setShowGroupset(true);
               }}
             >
               <option value="">Choose Your Frame</option>
               {frames.map((f, i) => (
                 <option value={f} key={i}>
                   {f}
-                </option>
-              ))}
-            </select>
-          </ul>
-        </div>
-      )}
-      {showGroupset && (
-        <div className="groupset menu-item clickable">
-          <ul>
-            <select
-              name="group-sets"
-              id="groupsetBrand"
-              onChange={(e) => {
-                handleClick(e);
-                setShowNumFrontGears(true);
-                setShowNumRearGears(true);
-                setShowGroupset(false);
-              }}
-            >
-              <option value="">Choose Your Groupset Brand</option>
-              {groupSets.map((g, i) => (
-                <option value={g} key={i}>
-                  {g}
-                </option>
-              ))}
-            </select>
-          </ul>
-        </div>
-      )}
-      {showShimanoGroupset && (
-        <div className="shimano menu-item clickable">
-          <ul>
-            <select
-              name="shimano-groupset"
-              id="shimanoGroupset"
-              onChange={(e) => {
-                handleGearsClick(e);
-                setShowShimanoGroupset(false);
-              }}
-            >
-              <option value="">Choose Your Series</option>
-              {shimanoGroupsets.map((s, i) => (
-                <option value={s} key={i}>
-                  {s}
-                </option>
-              ))}
-            </select>
-          </ul>
-        </div>
-      )}
-      {showSramGroupset && (
-        <div className="sram menu-item clickable">
-          <ul>
-            <select
-              name="sram-groupset"
-              id="sramGroupset"
-              onChange={(e) => {
-                handleClick(e);
-                setShowSramGroupset(false);
-              }}
-            >
-              <option value="">Choose Your Series</option>
-              {sramGroupsets.map((s, i) => (
-                <option value={s} key={i}>
-                  {s}
-                </option>
-              ))}
-            </select>
-          </ul>
-        </div>
-      )}
-      {showCampagGroupset && (
-        <div className="campag menu-item clickable">
-          <ul>
-            <select
-              name="campag-groupset"
-              id="campagnoloGroupset"
-              onChange={(e) => {
-                handleClick(e);
-                setShowCampagGroupset(false);
-              }}
-            >
-              <option value="">Choose Your Bars</option>
-              {campagGroupsets.map((c, i) => (
-                <option value={c} key={i}>
-                  {c}
                 </option>
               ))}
             </select>

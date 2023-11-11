@@ -73,16 +73,16 @@ const BikeDisplayController = ({ bike }) => {
         altText: "No Brakes Required! Brave :) ",
       };
     }
-    if (b.brakeType === "RIM") {
+    else if (b.brakeType === "RIM") {
       obj = {
         ...obj,
-        src: obj.src.replace("xxx", "Rim"),
+        src: obj.src.replace("xxx", "rim"),
         altText: obj.altText.replace("xxx", "Rim"),
       };
     } else {
       obj = {
         ...obj,
-        src: obj.src.replace("xxx", "Disc"),
+        src: obj.src.replace("xxx", "disc"),
         altText: obj.altText.replace("xxx", "Disc"),
       };
     }
