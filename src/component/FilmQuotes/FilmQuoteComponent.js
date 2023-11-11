@@ -16,7 +16,7 @@ function FilmQuoteComponent() {
   }
   return (
     <div className="component display-component">
-      <h1>Welcome to the Film Quotes</h1>
+      <h1>Quotes!</h1>
       {showList ? (
         <div>
           <DisplayQuoteList quoteList={quoteList} />
@@ -33,6 +33,13 @@ function FilmQuoteComponent() {
         <div>
           <QuoteDisplayer quote={randomQuote} />
           <Button onClick={() => setShowList(true)}>Show quote list</Button>
+          <Button
+            onClick={() => {
+              getRandomQuote();
+            }}
+          >
+            Surprise me!
+          </Button>
         </div>
       )}
     </div>

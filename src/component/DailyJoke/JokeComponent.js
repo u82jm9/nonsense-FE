@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RandomJoke from "./RandomJoke";
 import CategoryJoke from "./CategoryJoke";
 import { Form, Button } from "react-bootstrap";
@@ -9,7 +9,7 @@ const GET_JOKE_BY_CATEGORY_API_URL =
   "https://world-of-jokes1.p.rapidapi.com/v1/jokes/jokes-by-category";
 
 function JokeComponent() {
-  const [randomJoke, setRandomJoke] = useState(getRandomJoke());
+  const [randomJoke, setRandomJoke] = useState("");
   const [categoryJoke, setCategoryJoke] = useState("");
   const [listOfCategoryJokes, setListOfCategoryJokes] = useState([]);
   const categories = [
@@ -25,6 +25,9 @@ function JokeComponent() {
     "Medical",
     "Marriage",
   ];
+  useEffect(() => {
+    getRandomJoke();
+  }, []);
 
   async function getRandomJoke() {
     let j;
@@ -41,7 +44,7 @@ function JokeComponent() {
       };
       j = await axios.request(options);
       console.log("Got a joke, hope it's funny!");
-      return j.data.body[0];
+      setRandomJoke(j.data.body[0]);
     } catch (err) {
       console.error(err);
     }
@@ -69,14 +72,14 @@ function JokeComponent() {
       j = await axios.request(options);
       console.log("Got a list of category jokes!");
       setListOfCategoryJokes(j.data.results);
-      pickCategoryJoke(j.data.results);
+      pickCategoryJoke();
     } catch (err) {
       console.error(err);
     }
   }
 
   async function pickCategoryJoke(jokeList) {
-    const numberOfJokes = jokeList.length;
+    const numberOfJokes = listOfCategoryJokes.length;
     let r = 0 + Math.floor(Math.random() * numberOfJokes);
     try {
       let joke = await jokeList[r];
@@ -89,12 +92,13 @@ function JokeComponent() {
 
   function getAnotherRandomJoke() {
     setRandomJoke("");
-    setRandomJoke(getRandomJoke());
+    setCategoryJoke("");
+    getRandomJoke();
   }
 
   function getAnotherJokeFromCategory() {
     setCategoryJoke("");
-    pickCategoryJoke(listOfCategoryJokes);
+    pickCategoryJoke();
   }
 
   return (

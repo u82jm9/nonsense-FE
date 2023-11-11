@@ -50,7 +50,6 @@ function WeatherDisplayComponent() {
   }
 
   function changeConditionDayText(days) {
-    console.log(days);
     let tempHots = [];
     let tempColds = [];
     days.map((d) => {

@@ -10,16 +10,21 @@ const DisplayQuoteList = ({ quoteList }) => {
   const [listRef, setListRef] = useState(0);
   const [filterSubject, setFilterSubject] = useState("quote");
   const [showSearchBar, setShowSearchBar] = useState(false);
-  let timer = null;
+  const [timer, setTimer] = useState(null);
   useEffect(() => {
     createSmallerLists();
   }, [tempList]);
+  useEffect(() => {
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [timer]);
 
   function createSmallerLists() {
     setSmallerLists([]);
     console.log("State tempList: ", tempList);
     let sl = [];
-    let numberOfLists = Math.ceil(tempList.length / 10);
+    let numberOfLists = Math.ceil(tempList.length / 5);
     for (let i = 0; i < numberOfLists; i++) {
       let start = i * 5;
       let end = start + 5;
@@ -50,28 +55,28 @@ const DisplayQuoteList = ({ quoteList }) => {
   function handleSearch(e) {
     const searchTerm = e.target.value;
     clearTimeout(timer);
-    if (filterSubject === "quote") {
-      setTempList(
-        quoteList.filter((quote) =>
-          quote.line.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      );
-    } else if (filterSubject === "actor") {
-      setTempList(
-        quoteList.filter((quote) =>
-          quote.actor.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      );
-    } else if (filterSubject === "film") {
-      setTempList(
-        quoteList.filter((quote) =>
-          quote.film.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      );
-    }
-    timer = setTimeout(() => {
-      setShowSearchBar(false);
-    }, 2500);
+    const newTimer = setTimeout(() => {
+      if (filterSubject === "quote") {
+        setTempList(
+          quoteList.filter((quote) =>
+            quote.line.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+        );
+      } else if (filterSubject === "actor") {
+        setTempList(
+          quoteList.filter((quote) =>
+            quote.actor.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+        );
+      } else if (filterSubject === "film") {
+        setTempList(
+          quoteList.filter((quote) =>
+            quote.film.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+        );
+      }
+    }, 300);
+    setTimer(newTimer);
   }
   return (
     <div>
@@ -94,8 +99,8 @@ const DisplayQuoteList = ({ quoteList }) => {
         </ul>
         {showSearchBar && (
           <div>
-            <textarea
-              rows="1"
+            <input
+              type="text"
               id="filter"
               placeholder="Search ..."
               onChange={(e) => handleSearch(e)}
@@ -104,7 +109,7 @@ const DisplayQuoteList = ({ quoteList }) => {
                   setShowSearchBar(false);
                 }, 2500);
               }}
-            ></textarea>
+            ></input>
           </div>
         )}
       </div>
