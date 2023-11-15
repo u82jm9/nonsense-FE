@@ -72,8 +72,7 @@ const BikeDisplayController = ({ bike }) => {
         src: "no_image.png",
         altText: "No Brakes Required! Brave :) ",
       };
-    }
-    else if (b.brakeType === "RIM") {
+    } else if (b.brakeType === "RIM") {
       obj = {
         ...obj,
         src: obj.src.replace("xxx", "rim"),
@@ -191,14 +190,14 @@ const BikeDisplayController = ({ bike }) => {
     if (b.brakeType === "RIM") {
       obj = {
         ...obj,
-        src: obj.src.replace("xxx", "Rim"),
-        altText: obj.altText.replace("xxx", "Rim"),
+        src: obj.src.replace("xxx", "rim"),
+        altText: obj.altText.replace("xxx", "rim"),
       };
     } else {
       obj = {
         ...obj,
-        src: obj.src.replace("xxx", "Disc"),
-        altText: obj.altText.replace("xxx", "Disc"),
+        src: obj.src.replace("xxx", "disc"),
+        altText: obj.altText.replace("xxx", "disc"),
       };
       return obj;
     }
