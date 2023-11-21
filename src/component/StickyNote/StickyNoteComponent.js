@@ -6,16 +6,16 @@ import StickyNoteForm from "./StickyNoteForm";
 import StickyNoteCard from "./StickyNoteCard";
 
 const STICKY_NOTE_API_URL = "http://localhost:8088/demo/StickyNotes/";
-function StickyNoteComponent() {
+function StickyNoteComponent(backendOn) {
   const [stickyNotes, setStickyNotes] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [showGif, setShowGif] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     getStickyNotes();
-  }, []);
+  }, [backendOn]);
 
   async function getStickyNotes() {
     console.log("Getting all Sticky Notes!");
@@ -68,7 +68,7 @@ function StickyNoteComponent() {
   }
 
   async function createNewNote(data) {
-    setShowGif(true);
+    setIsLoading(true);
     setShowForm(false);
     console.log("Creating new note!!");
     try {
@@ -78,11 +78,12 @@ function StickyNoteComponent() {
         noteComplete: false,
       });
       getStickyNotes();
-      setTimeout(() => {
-        setShowGif(false);
-      }, 2250);
     } catch (err) {
       console.error(err);
+    } finally {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
     }
   }
 
@@ -98,50 +99,52 @@ function StickyNoteComponent() {
   return (
     <div className="component display-component note-component">
       <h1>Sticky Notes!</h1>
-
-      {showGif ? (
-        <img src={dragonBallGif} alt="Sweet leveling up gif!" />
-      ) : (
-        <div>
-          <div>
-            <Button
-              onClick={() => {
-                console.log("Show Form");
-                setShowForm(true);
-              }}
-            >
-              Create Note
-            </Button>
-            <Button onClick={() => deleteAllNotes()}>Delete All</Button>
+      {isLoading && (
+        <div className="component">
+          <div className="loading-img-container">
+            <img src={dragonBallGif} alt="Sweet leveling up gif!" />
           </div>
-          {showAlert ? (
-            <div className="alert">
-              <h1>{alertMessage}</h1>
-              <Button
-                className="dismiss-button"
-                onClick={() => setShowAlert(false)}
-              >
-                X
-              </Button>
-            </div>
-          ) : null}
-          {showForm ? (
-            <StickyNoteForm addNote={createNewNote} />
-          ) : (
-            <div>
-              {stickyNotes.map((note, i) => (
-                <StickyNoteCard
-                  deleteNote={deleteStickyNote}
-                  updateNote={editStickyNote}
-                  note={note}
-                  key={i}
-                  showAlert={showAlertMessage}
-                />
-              ))}
-            </div>
-          )}
         </div>
       )}
+      <div className={isLoading ? "dark" : "light"}>
+        <div>
+          <Button
+            onClick={() => {
+              console.log("Show Form");
+              setShowForm(true);
+            }}
+          >
+            Create Note
+          </Button>
+          <Button onClick={() => deleteAllNotes()}>Delete All</Button>
+        </div>
+        {showAlert ? (
+          <div className="alert">
+            <h1>{alertMessage}</h1>
+            <Button
+              className="dismiss-button"
+              onClick={() => setShowAlert(false)}
+            >
+              X
+            </Button>
+          </div>
+        ) : null}
+        {showForm ? (
+          <StickyNoteForm addNote={createNewNote} />
+        ) : (
+          <div>
+            {stickyNotes.map((note, i) => (
+              <StickyNoteCard
+                deleteNote={deleteStickyNote}
+                updateNote={editStickyNote}
+                note={note}
+                key={i}
+                showAlert={showAlertMessage}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -10,6 +10,7 @@
 }
 
 .page {
+  transition: opacity 0.5s ease-in-out;
   background-color: #d37373;
   border: 1px solid darkblue;
   border-radius: 15px;
@@ -20,6 +21,24 @@
   width: fit-content;
   align-items: center;
   justify-content: center;
+}
+
+.dark {
+  opacity: 0.1;
+  z-index: 1;
+}
+
+.light {
+  opacity: 1;
+  z-index: 2;
+}
+
+.loading-img-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
 }
 
 .component {

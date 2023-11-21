@@ -6,11 +6,19 @@ import JokeComponent from "../component/DailyJoke/JokeComponent";
 import StickyNoteComponent from "../component/StickyNote/StickyNoteComponent";
 import BikeBuilderComponent from "../component/BikeBuilderComponent/BikeBuilderComponent";
 import FilmQuoteComponent from "../component/FilmQuotes/FilmQuoteComponent";
+import dragonBallGif from "../gifs/dragon_ball_form.gif";
 
 const BACK_END_TEST_API = "http://localhost:8088/demo/Test/";
 function HomePage() {
   const [backendOn, setBackendOn] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2250);
+  }, []);
+
   useEffect(() => {
     isBackendOn();
     const interval = setInterval(() => isBackendOn(), 10000);
@@ -25,9 +33,17 @@ function HomePage() {
       console.error(err);
     }
   }
+
   return (
     <div className="page">
-      <div className={darkMode ? "dark" : "light"}>
+      {isLoading && (
+        <div className="component">
+          <div className="loading-img-container">
+            <img src={dragonBallGif} alt="Sweet leveling up gif!" />
+          </div>
+        </div>
+      )}
+      <div className={isLoading ? "dark" : "light"}>
         <WeatherDisplayComponent />
         <SwitchPages
           switchedOn={true}
@@ -40,8 +56,8 @@ function HomePage() {
           switchedOn={backendOn}
           text1={"Notes"}
           text2={"Bikes"}
-          comp1={StickyNoteComponent()}
-          comp2={BikeBuilderComponent()}
+          comp1={StickyNoteComponent(backendOn)}
+          comp2={BikeBuilderComponent(backendOn)}
         />
       </div>
     </div>
