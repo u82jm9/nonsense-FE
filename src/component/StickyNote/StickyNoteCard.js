@@ -19,7 +19,7 @@ const StickyNoteCard = ({ note, updateNote, deleteNote, showAlert }) => {
         ...note,
         messageMap: updatedMessageMap,
       };
-      console.log(updatedNote);
+      console.log("Updating note from click: ", updatedNote);
       updateNote(updatedNote);
     } catch (err) {
       console.error(err);
@@ -83,7 +83,7 @@ const StickyNoteCard = ({ note, updateNote, deleteNote, showAlert }) => {
           setEditing(false);
         }}
       >
-        <div>
+        <div className="card-display">
           {editing ? (
             <div className="note-edit">
               <input
@@ -113,11 +113,11 @@ const StickyNoteCard = ({ note, updateNote, deleteNote, showAlert }) => {
                 X
               </Button>
               {note.complete ? (
-                <div className="note-done">
+                <div className="note-title note-done">
                   <h1>{note.title}</h1>
                 </div>
               ) : (
-                <div>
+                <div className="note-title">
                   <h1>{note.title}</h1>
                 </div>
               )}

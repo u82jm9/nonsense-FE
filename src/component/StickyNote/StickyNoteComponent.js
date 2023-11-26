@@ -97,8 +97,7 @@ function StickyNoteComponent(backendOn) {
   };
 
   return (
-    <div className="component display-component note-component">
-      <h1>Sticky Notes!</h1>
+    <>
       {isLoading && (
         <div className="component">
           <div className="loading-img-container">
@@ -106,46 +105,52 @@ function StickyNoteComponent(backendOn) {
           </div>
         </div>
       )}
-      <div className={isLoading ? "dark" : "light"}>
-        <div>
-          <Button
-            onClick={() => {
-              console.log("Show Form");
-              setShowForm(true);
-            }}
-          >
-            Create Note
-          </Button>
-          <Button onClick={() => deleteAllNotes()}>Delete All</Button>
+      <div className="component">
+        <div className="display-component">
+          <h1>Sticky Notes!</h1>
+          <div className={isLoading ? "dark" : "light"}>
+           
+              <div>
+                <Button
+                  onClick={() => {
+                    console.log("Show Form");
+                    setShowForm(true);
+                  }}
+                >
+                  Create Note
+                </Button>
+                <Button onClick={() => deleteAllNotes()}>Delete All</Button>
+              </div>
+              {showAlert ? (
+                <div className="alert">
+                  <h1>{alertMessage}</h1>
+                  <Button
+                    className="dismiss-button"
+                    onClick={() => setShowAlert(false)}
+                  >
+                    X
+                  </Button>
+                </div>
+              ) : null}
+              {showForm ? (
+                <StickyNoteForm addNote={createNewNote} />
+              ) : (
+                <div className="note-component">
+                  {stickyNotes.map((note, i) => (
+                    <StickyNoteCard
+                      deleteNote={deleteStickyNote}
+                      updateNote={editStickyNote}
+                      note={note}
+                      key={i}
+                      showAlert={showAlertMessage}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-        {showAlert ? (
-          <div className="alert">
-            <h1>{alertMessage}</h1>
-            <Button
-              className="dismiss-button"
-              onClick={() => setShowAlert(false)}
-            >
-              X
-            </Button>
-          </div>
-        ) : null}
-        {showForm ? (
-          <StickyNoteForm addNote={createNewNote} />
-        ) : (
-          <div>
-            {stickyNotes.map((note, i) => (
-              <StickyNoteCard
-                deleteNote={deleteStickyNote}
-                updateNote={editStickyNote}
-                note={note}
-                key={i}
-                showAlert={showAlertMessage}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
+    </>
   );
 }
 

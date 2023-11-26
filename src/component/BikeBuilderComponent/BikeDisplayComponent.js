@@ -7,14 +7,14 @@ const BikeDisplayComponent = ({ bike }) => {
   useEffect(() => {
     chooseImages();
   }, [bike]);
+
   function chooseImages() {
     let tempList = [];
-    console.log("Choosing Images for Bike: ");
-    console.log(bike);
+    console.log("Choosing Images for Bike: ", bike);
     tempList.push(chooseFrame(bike));
     tempList.push(chooseBars(bike.handleBarType));
     tempList.push(chooseBrakes(bike));
-    console.log(tempList);
+    console.log("Images: ", tempList);
     setListOfImages(tempList);
   }
 
@@ -141,7 +141,7 @@ const BikeDisplayComponent = ({ bike }) => {
           place: 0,
           component: "Frame",
           src: "tour_xxx.png",
-          altText: "Tour Frame",
+          altText: "Tour Frame xxx",
         };
         break;
       case "SINGLE_SPEED":
@@ -157,7 +157,7 @@ const BikeDisplayComponent = ({ bike }) => {
           place: 0,
           component: "Frame",
           src: "road_xxx.png",
-          altText: "Road Frame",
+          altText: "Road Frame xxx",
         };
         break;
       case "GRAVEL":
@@ -189,16 +189,16 @@ const BikeDisplayComponent = ({ bike }) => {
       obj = {
         ...obj,
         src: obj.src.replace("xxx", "rim"),
-        altText: obj.altText.replace("xxx", "rim"),
+        altText: obj.altText.replace("xxx", "Rim"),
       };
     } else {
       obj = {
         ...obj,
         src: obj.src.replace("xxx", "disc"),
-        altText: obj.altText.replace("xxx", "disc"),
+        altText: obj.altText.replace("xxx", "Disc"),
       };
-      return obj;
     }
+    return obj;
   }
 
   return (

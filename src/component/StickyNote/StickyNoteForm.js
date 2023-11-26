@@ -22,31 +22,33 @@ const StickyNoteForm = ({ addNote }) => {
 
   return (
     <div className="component">
-      <Form className="card form" onSubmit={(e) => submit(e)}>
-        <div className="form-field">
-          <Form.Group>
-            <textarea
-              rows="1"
-              id="title"
-              onChange={(e) => handle(e)}
-              value={data.title}
-              placeholder="Title"
-            ></textarea>
-          </Form.Group>
-        </div>
-        <div className="form-field">
-          <Form.Group>
-            <textarea
-              rows="6"
-              id="message"
-              onChange={(e) => handle(e)}
-              value={data.message}
-              placeholder="Message..."
-            ></textarea>
-          </Form.Group>
-        </div>
-        <Button type="submit">Add Note</Button>
-      </Form>
+      <div className="form">
+        <Form className="card" onSubmit={(e) => submit(e)}>
+          <div className="form-field">
+            <Form.Group>
+              <textarea
+                rows="1"
+                id="title"
+                onChange={(e) => handle(e)}
+                value={data.title}
+                placeholder="Title"
+              ></textarea>
+            </Form.Group>
+          </div>
+          <div className="form-field">
+            <Form.Group>
+              <textarea
+                rows="6"
+                id="message"
+                onChange={(e) => handle(e)}
+                value={data.message}
+                placeholder="Message..."
+              ></textarea>
+            </Form.Group>
+          </div>
+          <Button type="submit">Add Note</Button>
+        </Form>
+      </div>
     </div>
   );
 };
