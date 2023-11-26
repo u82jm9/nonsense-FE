@@ -7,27 +7,36 @@ import { Form, Button } from "react-bootstrap";
 const RANDOM_JOKE_API_URL = "https://dad-jokes.p.rapidapi.com/random/joke";
 const GET_JOKE_BY_CATEGORY_API_URL =
   "https://world-of-jokes1.p.rapidapi.com/v1/jokes/jokes-by-category";
-
+const GET_CATEGORIES_API_URL =
+  "https://world-of-jokes1.p.rapidapi.com/v1/jokes/categories";
+const api = axios.create({
+  headers: {
+    "X-RapidAPI-Key": "2e1ecbe8d9msh8883e96a112d435p1360e2jsn1d90503594e6",
+    "X-RapidAPI-Host": "world-of-jokes1.p.rapidapi.com",
+  },
+});
 function JokeComponent() {
   const [randomJoke, setRandomJoke] = useState("");
   const [categoryJoke, setCategoryJoke] = useState("");
   const [listOfCategoryJokes, setListOfCategoryJokes] = useState([]);
-  const categories = [
-    "Puns",
-    "Women",
-    "Sports",
-    "Old Age",
-    "Miscellaneous",
-    "Money",
-    "Office Jokes",
-    "lightbulb",
-    "Men",
-    "Medical",
-    "Marriage",
-  ];
+  const [categories, setCategories] = useState([]);
   useEffect(() => {
     getRandomJoke();
+    categories.length === 0 && getCategories();
   }, []);
+  useEffect(() => {
+    pickCategoryJoke();
+  }, [listOfCategoryJokes]);
+
+  async function getCategories() {
+    try {
+      console.log("Getting Categories!");
+      const r = await api.get(GET_CATEGORIES_API_URL);
+      setCategories(r.data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   async function getRandomJoke() {
     let j;
@@ -51,43 +60,29 @@ function JokeComponent() {
   }
 
   async function getJokeByCategory(category) {
-    let j;
     try {
       console.log("Getting joke in Category: ", category);
-      const options = {
-        method: "GET",
-        url: GET_JOKE_BY_CATEGORY_API_URL,
+      const r = await api.get(GET_JOKE_BY_CATEGORY_API_URL, {
         params: {
           limit: "100",
           page: "1",
           category: category,
           sortBy: "score:desc",
         },
-        headers: {
-          "X-RapidAPI-Key":
-            "2e1ecbe8d9msh8883e96a112d435p1360e2jsn1d90503594e6",
-          "X-RapidAPI-Host": "world-of-jokes1.p.rapidapi.com",
-        },
-      };
-      j = await axios.request(options);
-      console.log("Got a list of category jokes!");
-      setListOfCategoryJokes(j.data.results);
-      pickCategoryJoke();
+      });
+      console.log("Got " + r.data.results.length + " Jokes!");
+      setListOfCategoryJokes(r.data.results);
     } catch (err) {
       console.error(err);
     }
   }
 
-  async function pickCategoryJoke(jokeList) {
+  async function pickCategoryJoke() {
+    console.log("Picking single joke from selcted category.");
     const numberOfJokes = listOfCategoryJokes.length;
     let r = 0 + Math.floor(Math.random() * numberOfJokes);
-    try {
-      let joke = await jokeList[r];
-      setCategoryJoke(joke.body);
-      console.log("Category Joke: ", joke.body);
-    } catch (err) {
-      console.error(err);
-    }
+    let joke = listOfCategoryJokes[r];
+    setCategoryJoke(joke.body);
   }
 
   function getAnotherRandomJoke() {
