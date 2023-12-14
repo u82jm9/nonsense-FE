@@ -3,10 +3,10 @@ import axios from "axios";
 import "../../css/Bike.css";
 import "../../css/App.css";
 import dragonBallGif from "../../gifs/dragon_ball_form.gif";
-import BikeDisplayComponent from "./BikeDisplayComponent";
 import BikeMenuComponent from "./BikeMenuComponent";
 import BikePartsTable from "./BikePartsTable";
 import { Button } from "react-bootstrap";
+import DisplayBikeImages from "./DisplayBikeImages";
 
 const BIKE_OPTIONS_API_URL = "http://localhost:8088/demo/Options/";
 const BIKE_BUILDER_API_URL = "http://localhost:8088/demo/FullBike/";
@@ -134,7 +134,22 @@ function BikeBuilderComponent(backendOn) {
     } finally {
       setTimeout(() => {
         setIsLoading(false);
-      }, 2500);
+      }, 1500);
+    }
+  }
+
+  function resetOptions(bike) {
+    console.log("Resetting Design bike.");
+    deleteBike(bike);
+    handleCreateBikeClick();
+  }
+
+  function deleteBike(bike) {
+    try {
+      console.log("Deleting Design bike with Id: ", bike);
+      axios.delete(BIKE_BUILDER_API_URL + "DeleteBike", bike);
+    } catch (err) {
+      console.error(err);
     }
   }
 
@@ -152,7 +167,7 @@ function BikeBuilderComponent(backendOn) {
           <h1>Welcome to the bike Builder</h1>
           {editMode && (
             <BikeMenuComponent
-              resetOptions={getOptionsForNewBike}
+              resetOptions={resetOptions}
               updateBikeAndOptions={updateBikeAndOptions}
               options={options}
               url={BIKE_OPTIONS_API_URL}
@@ -166,7 +181,7 @@ function BikeBuilderComponent(backendOn) {
           {displayingBike && (
             <Button onClick={() => handleGetPartsClick()}>Get Parts!</Button>
           )}
-          {displayingBike && <BikeDisplayComponent bike={bikeOnDisplay} />}
+          {displayingBike && <DisplayBikeImages bike={bikeOnDisplay} />}
           {showParts && <BikePartsTable parts={parts} />}
           <h3>Check out some of our stock bikes</h3>
           <h3>Built Bikes:</h3>

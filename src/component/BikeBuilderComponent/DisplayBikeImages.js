@@ -1,8 +1,26 @@
 import { Button } from "react-bootstrap";
 import { useState } from "react";
 
-const DisplayBikeImages = ({ listOfImages }) => {
+const BIKE_IMAGES_API_URL = "http://localhost:8088/demo/Image/";
+const DisplayBikeImages = ({ bike }) => {
   const [imageRef, setImageRef] = useState(0);
+  const [listOfImages, setListOfImages] = useState([]);
+
+  useEffect(() => {
+    chooseImages();
+  }, [bike]);
+
+  async function chooseImages() {
+    console.log("Getting Images for Bike: ", bike);
+    try {
+      let tempList = await axios.post(BIKE_IMAGES_API_URL + "GetImages", bike);
+      console.log("Images: ", tempList.data);
+      setListOfImages(tempList.data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   return (
     <div className="bike-display">
       <div className="image-container slider">

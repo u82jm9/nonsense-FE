@@ -62,7 +62,6 @@ const BikeMenuComponent = ({
 
   return (
     <div>
-      <h1>Menu Component</h1>
       <div className="bike-menu">
         <div
           onClick={() => {
@@ -172,7 +171,28 @@ const BikeMenuComponent = ({
             </ul>
           </div>
         )}
-
+        {options.showWheelPreference && (
+          <div className="wheels menu-item clickable">
+            <ul>
+              <select
+                name="wheelPreference"
+                id="wheelPreference"
+                onChange={(e) => {
+                  handleClick(e);
+                  options = { ...options, showWheelPreference: false };
+                  console.log(options.showWheelPreference)
+                }}
+              >
+                <option value="">Wheel Preference</option>
+                {options.wheelPreference.map((g, i) => (
+                  <option value={g} key={i}>
+                    {g}
+                  </option>
+                ))}
+              </select>
+            </ul>
+          </div>
+        )}
         {options.showFrontGears && (
           <div className="front-gears menu-item clickable">
             <ul>
@@ -215,11 +235,12 @@ const BikeMenuComponent = ({
             </ul>
           </div>
         )}
+
         {selectionMade && (
           <div
             className="menu-item clickable"
             onClick={() => {
-              resetOptions();
+              resetOptions(bike);
               setSelectionMade(false);
             }}
           >
