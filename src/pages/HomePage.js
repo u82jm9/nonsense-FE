@@ -30,7 +30,7 @@ function HomePage() {
       let r = await axios.get(BACK_END_TEST_API + "IsThisThingOn");
       setBackendOn(r.data);
     } catch (err) {
-      setBackendOn(false)
+      setBackendOn(false);
       console.error(err);
     }
   }

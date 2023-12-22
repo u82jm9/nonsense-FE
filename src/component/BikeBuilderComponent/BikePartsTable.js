@@ -5,7 +5,7 @@ const BikePartsTable = ({ parts }) => {
     <div>
       <h1>Parts Table!</h1>
       <div className="bike-table">
-        <h3>Total: £{parts.totalBikePrice}</h3>
+        <h3>Total: {parts.totalPriceAsString}</h3>
         <table>
           <thead>
             <tr>
