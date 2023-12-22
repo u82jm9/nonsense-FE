@@ -8,9 +8,9 @@ const SwitchPages = ({ switchedOn, text1, text2, comp1, comp2 }) => {
   return (
     <div className="component">
       {!switchedOn ? (
-        <>
+        <div className="display-component">
           <h1>Please Turn on Back End!</h1>
-        </>
+          </div>
       ) : (
         <div className="switch-container">
           <div className="switch display-component">

@@ -7,6 +7,7 @@ import StickyNoteComponent from "../component/StickyNote/StickyNoteComponent";
 import BikeBuilderComponent from "../component/BikeBuilderComponent/BikeBuilderComponent";
 import FilmQuoteComponent from "../component/FilmQuotes/FilmQuoteComponent";
 import dragonBallGif from "../gifs/dragon_ball_form.gif";
+import SnakeGame from "../component/Snake/SnakeGame";
 
 const BACK_END_TEST_API = "http://localhost:8088/demo/Test/";
 function HomePage() {
@@ -60,6 +61,7 @@ function HomePage() {
           comp1={StickyNoteComponent(backendOn)}
           comp2={BikeBuilderComponent(backendOn)}
         />
+        <SnakeGame/>
       </div>
     </div>
   );

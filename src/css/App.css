@@ -103,6 +103,7 @@
 }
 
 .display-component {
+  min-width: 500px;
   background-color: rgb(246, 183, 183);
   border-radius: 15px;
   border: 1px solid black;
