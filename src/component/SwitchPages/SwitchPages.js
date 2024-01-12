@@ -10,23 +10,25 @@ const SwitchPages = ({ switchedOn, text1, text2, comp1, comp2 }) => {
       {!switchedOn ? (
         <div className="display-component">
           <h1>Please Turn on Back End!</h1>
-          </div>
+        </div>
       ) : (
-        <div className="switch-container">
-          <div className="switch display-component">
-            <h1>{text1}</h1>
-            <Switch
-              offColor="#9BCA31"
-              onColor="#E3E545"
-              uncheckedIcon={<FaLessThan />}
-              checkedIcon={<FaGreaterThan />}
-              className="switch-toggle"
-              checked={checked}
-              onChange={() => {
-                setChecked(!checked);
-              }}
-            />
-            <h1>{text2}</h1>
+        <div>
+          <div className="display-component">
+            <div className="switch">
+              <h1>{text1}</h1>
+              <Switch
+                offColor="#9BCA31"
+                onColor="#E3E545"
+                uncheckedIcon={<FaLessThan />}
+                checkedIcon={<FaGreaterThan />}
+                className="switch-toggle"
+                checked={checked}
+                onChange={() => {
+                  setChecked(!checked);
+                }}
+              />
+              <h1>{text2}</h1>
+            </div>
           </div>
           {checked === false ? comp1 : comp2}
         </div>

@@ -187,6 +187,10 @@
   font-size: x-small;
 }
 
+.switch-container {
+  align-items: center;
+}
+
 .switch h1 {
   font-size: 2em;
   padding: 5px;
