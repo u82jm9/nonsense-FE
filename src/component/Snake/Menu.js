@@ -3,7 +3,7 @@ import "../../css/Snake.css";
   
 const Menu = ({ onRouteChange }) => { 
     return ( 
-        <div className="wrapper"> 
+        <div className="snake-component"> 
             <div> 
                 <input 
                     onClick={onRouteChange} 
