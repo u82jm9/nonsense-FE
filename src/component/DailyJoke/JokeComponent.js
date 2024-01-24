@@ -1,8 +1,16 @@
 import axios from "axios";
+import Logger from "../Logger";
 import { useState, useEffect } from "react";
-import RandomJoke from "./RandomJoke";
-import CategoryJoke from "./CategoryJoke";
-import { Form, Button } from "react-bootstrap";
+import RandomJoke from "../DailyJoke/RandomJoke";
+import CategoryJoke from "../DailyJoke/CategoryJoke";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import {
+  Collapse,
+  List,
+  ListItemButton,
+  ListItemText,
+  Button,
+} from "@mui/material";
 
 const RANDOM_JOKE_API_URL = "https://dad-jokes.p.rapidapi.com/random/joke";
 const GET_JOKE_BY_CATEGORY_API_URL =
@@ -15,33 +23,39 @@ const api = axios.create({
     "X-RapidAPI-Host": "world-of-jokes1.p.rapidapi.com",
   },
 });
+
 function JokeComponent() {
-  const [randomJoke, setRandomJoke] = useState("");
-  const [categoryJoke, setCategoryJoke] = useState("");
+  const [joke, setJoke] = useState(null);
+  const [displayingJoke, setDisplayingJoke] = useState(false);
+  const [jokeType, setJokeType] = useState(false);
   const [listOfCategoryJokes, setListOfCategoryJokes] = useState([]);
   const [categories, setCategories] = useState([]);
-  useEffect(() => {
-    getRandomJoke();
-    categories.length === 0 && getCategories();
-  }, []);
-  useEffect(() => {
-    pickCategoryJoke();
-  }, [listOfCategoryJokes]);
+  const [showCategories, setShowCategories] = useState(false);
 
-  async function getCategories() {
-    try {
-      console.log("Getting Categories!");
-      const r = await api.get(GET_CATEGORIES_API_URL);
-      setCategories(r.data);
-    } catch (err) {
-      console.error(err);
+  useEffect(() => {
+    if (!displayingJoke) {
+      getRandomJoke();
     }
-  }
+  }, [displayingJoke]);
+
+  useEffect(() => {
+    Logger.infoLog("Joke Component did mount");
+    async function fetchData() {
+      try {
+        Logger.infoLog("Getting Categories!");
+        const categoriesData = await getCategories();
+        setCategories(categoriesData);
+        Logger.warnLog(categoriesData);
+      } catch (err) {
+        Logger.errorLog(err);
+      }
+    }
+    fetchData();
+  }, []);
 
   async function getRandomJoke() {
-    let j;
     try {
-      console.log("Getting Random Joke!");
+      Logger.infoLog("Getting Random Joke!");
       const options = {
         method: "GET",
         url: RANDOM_JOKE_API_URL,
@@ -51,17 +65,40 @@ function JokeComponent() {
           "X-RapidAPI-Host": "dad-jokes.p.rapidapi.com",
         },
       };
-      j = await axios.request(options);
-      console.log("Got a joke, hope it's funny!");
-      setRandomJoke(j.data.body[0]);
+      let j = await axios.request(options);
+      Logger.infoLog("Setting Joke to Random Joke");
+      setJokeType(true);
+      setJoke(j.data.body[0]);
+      Logger.warnLog(j);
     } catch (err) {
-      console.error(err);
+      Logger.errorLog(err);
+    } finally {
+      setDisplayingJoke(true);
+    }
+  }
+
+  async function getCategories() {
+    try {
+      Logger.infoLog("Getting Categories!");
+      const r = await api.get(GET_CATEGORIES_API_URL);
+      Logger.warnLog(r);
+      if (r.data.message && r.data.message.includes("exceeded")) {
+        Logger.errorLog(
+          "Returning empty array due to reaching limit on Categories API"
+        );
+        return [];
+      } else {
+        return r.data;
+      }
+    } catch (err) {
+      Logger.errorLog(err);
+      return [];
     }
   }
 
   async function getJokeByCategory(category) {
     try {
-      console.log("Getting joke in Category: ", category);
+      Logger.infoLog("Getting joke in Category: {}", category);
       const r = await api.get(GET_JOKE_BY_CATEGORY_API_URL, {
         params: {
           limit: "100",
@@ -70,80 +107,93 @@ function JokeComponent() {
           sortBy: "score:desc",
         },
       });
-      console.log("Got " + r.data.results.length + " Jokes!");
+      Logger.warnLog("Got {} category Jokes!", r.data.results.length);
       setListOfCategoryJokes(r.data.results);
+      Logger.warnLog(r);
     } catch (err) {
-      console.error(err);
+      Logger.errorLog(err);
+    } finally {
+      pickCategoryJoke();
     }
   }
 
   async function pickCategoryJoke() {
-    console.log("Picking single joke from selcted category.");
+    Logger.infoLog("Setting joke to category Joke");
     const numberOfJokes = listOfCategoryJokes.length;
     let r = 0 + Math.floor(Math.random() * numberOfJokes);
-    let joke = listOfCategoryJokes[r];
-    setCategoryJoke(joke.body);
-  }
-
-  function getAnotherRandomJoke() {
-    setRandomJoke("");
-    setCategoryJoke("");
-    getRandomJoke();
-  }
-
-  function getAnotherJokeFromCategory() {
-    setCategoryJoke("");
-    pickCategoryJoke();
+    setJoke(listOfCategoryJokes[r]);
+    Logger.warnLog(listOfCategoryJokes[r]);
   }
 
   return (
     <div className="component display-component">
       <h1>Jokes!</h1>
-      <Form.Select
-        onClick={(e) => {
-          console.log("Option Clicked: ", e.target.value);
-          getJokeByCategory(e.target.value);
-        }}
-      >
-        <option>Select Joke Category</option>
-        {categories.map((c, i) => (
-          <option key={i} value={c}>
-            {c}
-          </option>
-        ))}
-      </Form.Select>
-      {categoryJoke === "" ? (
+      {categories.length > 0 && (
+        <List>
+          <ListItemButton
+            onClick={() => {
+              setShowCategories(!showCategories);
+            }}
+          >
+            <ListItemText primary="Select Joke Category" />
+            {showCategories ? <FaAngleUp /> : <FaAngleDown />}
+          </ListItemButton>
+          <Collapse in={showCategories} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              {categories.map((c, i) => (
+                <ListItemButton
+                  key={i}
+                  onClick={() => {
+                    Logger.warnLog("Option Clicked: ", c);
+                    getJokeByCategory(c);
+                    setJokeType(false);
+                  }}
+                >
+                  <ListItemText primary={c} />
+                </ListItemButton>
+              ))}
+            </List>
+          </Collapse>
+        </List>
+      )}
+      {displayingJoke && (
         <div>
-          <RandomJoke joke={randomJoke} anotherJoke={getAnotherRandomJoke} />
-          <Button
-            onClick={() => {
-              getAnotherRandomJoke();
-            }}
-          >
-            Surprise me!
-          </Button>
-        </div>
-      ) : (
-        <div>
-          <CategoryJoke joke={categoryJoke} />
-          <Button
-            onClick={() => {
-              getAnotherJokeFromCategory();
-            }}
-          >
-            Next in category!
-          </Button>
-          <Button
-            onClick={() => {
-              getAnotherRandomJoke();
-            }}
-          >
-            Surprise me!
-          </Button>
+          {jokeType ? (
+            <div>
+              <RandomJoke joke={joke} />
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setDisplayingJoke(false);
+                }}
+              >
+                Surprise me!
+              </Button>
+            </div>
+          ) : (
+            <div>
+              <CategoryJoke joke={joke} />
+              <Button
+                variant="contained"
+                onClick={() => {
+                  pickCategoryJoke();
+                }}
+              >
+                Next in category!
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setDisplayingJoke(false);
+                }}
+              >
+                Surprise me!
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </div>
   );
 }
-
 export default JokeComponent;
