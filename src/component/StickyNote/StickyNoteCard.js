@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import OutsideClickHandler from "react-outside-click-handler";
+import Logger from "../Logger";
 
 const StickyNoteCard = ({ note, updateNote, deleteNote, showAlert }) => {
   const [editing, setEditing] = useState(false);
@@ -19,10 +20,10 @@ const StickyNoteCard = ({ note, updateNote, deleteNote, showAlert }) => {
         ...note,
         messageMap: updatedMessageMap,
       };
-      console.log("Updating note from click: ", updatedNote);
+      Logger.warnLog("Updating note from click: ", updatedNote);
       updateNote(updatedNote);
     } catch (err) {
-      console.error(err);
+      Logger.errorLog(err);
     }
   };
 
@@ -52,11 +53,11 @@ const StickyNoteCard = ({ note, updateNote, deleteNote, showAlert }) => {
         title: editedTitle,
         messageMap,
       };
-      console.log(updatedNote);
+      Logger.warnLog("Note saved: " + updatedNote);
       updateNote(updatedNote);
       setEditing(false);
     } catch (err) {
-      console.error(err);
+      Logger.errorLog(err);
     }
   };
 

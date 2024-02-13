@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import QuoteDisplayer from "./QuoteDisplayer";
+import Logger from "../Logger";
 
 const DisplayQuoteList = ({ quoteList }) => {
   const [tempList, setTempList] = useState(
@@ -21,8 +22,9 @@ const DisplayQuoteList = ({ quoteList }) => {
   }, [timer]);
 
   function createSmallerLists() {
+    Logger.infoLog("Creating smaller Quote lists for displaying");
     setSmallerLists([]);
-    console.log("State tempList: ", tempList);
+    Logger.warnLog("State tempList: ", tempList);
     let sl = [];
     let numberOfLists = Math.ceil(tempList.length / 5);
     for (let i = 0; i < numberOfLists; i++) {
@@ -31,28 +33,30 @@ const DisplayQuoteList = ({ quoteList }) => {
       sl.push(tempList.slice(start, end));
     }
     setSmallerLists(sl);
-    console.log(sl);
+    Logger.warnLog("After smaller list created: " + sl);
   }
 
   function handleSortClick(e) {
     const sortBy = e.target.value;
-    console.log("tempList: " + tempList);
+    Logger.infoLog("Sort Quotes Clicked: " + tempList);
     let ntl = [...tempList];
     if (sortBy === "film") {
-      console.log("Film Sort");
+      Logger.infoLog("Film Sort");
       ntl = ntl.sort(function (a, b) {
         return a.film.localeCompare(b.film);
       });
     } else if (sortBy === "actor") {
-      console.log("Actor Sort");
+      Logger.infoLog("Actor Sort");
       ntl = ntl.sort(function (a, b) {
         return a.actor.localeCompare(b.actor);
       });
     }
-    console.log("New Temp List", ntl);
+    Logger.warnLog("New Temp List", ntl);
     setTempList(ntl);
   }
+
   function handleSearch(e) {
+    Logger.infoLog("Search Quotes: " + e.target);
     const searchTerm = e.target.value;
     clearTimeout(timer);
     const newTimer = setTimeout(() => {
@@ -86,7 +90,6 @@ const DisplayQuoteList = ({ quoteList }) => {
             name="filter"
             id="filter"
             onClick={(e) => {
-              console.log("Filter click");
               setFilterSubject(e.target.value);
               setShowSearchBar(true);
             }}
@@ -119,7 +122,6 @@ const DisplayQuoteList = ({ quoteList }) => {
             name="sort"
             id="sorter"
             onClick={(e) => {
-              console.log("Sort click");
               handleSortClick(e);
             }}
           >

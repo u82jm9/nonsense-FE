@@ -4,6 +4,7 @@ import WeatherCitySearch from "./WeatherCitySearch";
 import SmallWeatherDisplay from "./SmallWeatherDisplayTable";
 import MediumWeatherDisplay from "./MediumWeatherDisplayTable";
 import LargeWeatherDisplay from "./LargeWeatherDisplayTable";
+import Logger from "../Logger";
 
 const WEATHER_API_URL = "https://weatherapi-com.p.rapidapi.com/forecast.json";
 function WeatherDisplayComponent() {
@@ -21,7 +22,7 @@ function WeatherDisplayComponent() {
   async function getWeatherForecast(city) {
     let w;
     try {
-      console.log("Getting Weather Forecast for: " + city);
+      Logger.infoLog("Getting Weather Forecast for: " + city);
       const options = {
         method: "GET",
         url: WEATHER_API_URL,
@@ -33,11 +34,11 @@ function WeatherDisplayComponent() {
         },
       };
       w = await axios.request(options);
-      console.log("Got the Forecast!");
+      Logger.warnLog("Got the Forecast!" + w.data);
       changeConditionDayText(w.data.forecast.forecastday);
       setActualCity(w.data.location.name);
     } catch (err) {
-      console.error(err);
+      Logger.errorLog(err);
     }
   }
 
@@ -79,6 +80,7 @@ function WeatherDisplayComponent() {
       } else {
         d.day.condition.text = "Cloudy";
       }
+      Logger.warnLog("Setting weather data: " + days);
       setWeatherData(days);
       setHottestHours(tempHots);
       setColdestHours(tempColds);

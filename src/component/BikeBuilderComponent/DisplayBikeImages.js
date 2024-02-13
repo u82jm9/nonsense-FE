@@ -1,6 +1,7 @@
 import { Button } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Logger from "../Logger";
 
 const BIKE_IMAGES_API_URL = "http://localhost:8088/demo/Image/";
 const DisplayBikeImages = ({ bike }) => {
@@ -12,21 +13,19 @@ const DisplayBikeImages = ({ bike }) => {
   }, [bike]);
 
   async function chooseImages() {
-    console.log("Getting Images for Bike: ", bike);
+    Logger.infoLog("Getting Images for Bike: ", bike);
     try {
       let tempList = await axios.post(BIKE_IMAGES_API_URL + "GetImages", bike);
-      console.log("Images: ", tempList.data);
+      Logger.warnLog("Images: ", tempList.data);
       setListOfImages(tempList.data);
     } catch (err) {
-      console.error(err);
+      Logger.errorLog(err);
     }
   }
 
   return (
-    <>
-      {listOfImages.length < 1 ? (
-        <></>
-      ) : (
+    <div>
+      {listOfImages.length > 1 && (
         <div className="bike-display">
           <div className="image-container slider">
             <h1>{listOfImages[imageRef].altText}</h1>
@@ -63,7 +62,7 @@ const DisplayBikeImages = ({ bike }) => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

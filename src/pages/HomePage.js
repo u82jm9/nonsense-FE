@@ -8,6 +8,7 @@ import BikeBuilderComponent from "../component/BikeBuilderComponent/BikeBuilderC
 import FilmQuoteComponent from "../component/FilmQuotes/FilmQuoteComponent";
 import dragonBallGif from "../gifs/dragon_ball_form.gif";
 import SnakeGame from "../component/Snake/SnakeGame";
+import Logger from "..component/Logger.js";
 
 const BACK_END_TEST_API = "http://localhost:8088/demo/Test/";
 function HomePage() {
@@ -28,11 +29,13 @@ function HomePage() {
 
   async function isBackendOn() {
     try {
+      Logger.infoLog("Checking BE is running");
       let r = await axios.get(BACK_END_TEST_API + "IsThisThingOn");
       setBackendOn(r.data);
+      Logger.warnLog("Is backend Running? " + r.data);
     } catch (err) {
       setBackendOn(false);
-      console.error(err);
+      Logger.errorLog(err);
     }
   }
 
@@ -61,7 +64,7 @@ function HomePage() {
           comp1={StickyNoteComponent(backendOn)}
           comp2={BikeBuilderComponent(backendOn)}
         />
-        <SnakeGame/>
+        <SnakeGame />
       </div>
     </div>
   );

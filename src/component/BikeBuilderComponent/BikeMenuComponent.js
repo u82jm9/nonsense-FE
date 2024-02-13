@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import { GiCartwheel } from "react-icons/gi";
+import Logger from "../Logger";
 
 const BikeMenuComponent = ({
   resetOptions,
@@ -13,25 +14,25 @@ const BikeMenuComponent = ({
   let timer = null;
 
   async function handleNameChange(e) {
-    console.log("Bike: ", bike);
+    Logger.infoLog("Changing Bike name: ", bike);
     try {
       const { id, value } = e.target;
       const tempBike = await { ...bike, [id]: value };
-      console.log("Handle Name change method! tempBike: ", tempBike);
+      Logger.warnLog("Handle Name change method! tempBike: ", tempBike);
       updateBikeAndOptions(tempBike, options);
       clearTimeout(timer);
       timer = setTimeout(() => {
         setShowChangeName(false);
       }, 3000);
     } catch (err) {
-      console.log(err);
+      Logger.errorLog(err);
     }
   }
 
   async function handleFrameClick(e) {
     setSelectionMade(true);
     try {
-      console.log("Handle Frame Click: ", e);
+      Logger.infoLog("Handle Frame Click: ", e);
       const fieldId = e.target.id;
       const fieldValue = e.target.value;
       const tempFrame = await {
@@ -39,15 +40,16 @@ const BikeMenuComponent = ({
         [fieldId]: fieldValue.toUpperCase().replace(" ", "_"),
       };
       const tempBike = await { ...bike, frame: tempFrame };
-      console.log("Temp Bike: ", tempBike);
+      Logger.warnLog("Temp Bike: ", tempBike);
       updateBikeAndOptions(tempBike, options);
     } catch (err) {
-      console.error(err);
+      Logger.errorLog(err);
     }
   }
 
   async function handleClick(e) {
     setSelectionMade(true);
+    Logger.infoLog("Updating Bike design: " + e.target);
     try {
       const { id, value } = e.target;
       const tempBike = await {
@@ -56,7 +58,7 @@ const BikeMenuComponent = ({
       };
       updateBikeAndOptions(tempBike, options);
     } catch (err) {
-      console.log(err);
+      Logger.errorLog(err);
     }
   }
 
@@ -180,7 +182,6 @@ const BikeMenuComponent = ({
                 onChange={(e) => {
                   handleClick(e);
                   options = { ...options, showWheelPreference: false };
-                  console.log(options.showWheelPreference)
                 }}
               >
                 <option value="">Wheel Preference</option>

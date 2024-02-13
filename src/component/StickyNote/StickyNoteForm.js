@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import Logger from "../Logger";
 
 const StickyNoteForm = ({ addNote }) => {
   const [data, setData] = useState({
@@ -15,7 +16,7 @@ const StickyNoteForm = ({ addNote }) => {
 
   function submit(e) {
     e.preventDefault();
-    console.log(data);
+    Logger.warnLog("Submitting Note Form: " + data);
     addNote(data);
     setData({ title: "", message: "" });
   }

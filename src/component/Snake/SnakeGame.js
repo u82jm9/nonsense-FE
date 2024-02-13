@@ -5,9 +5,9 @@ import Button from "./Button.js";
 import Menu from "./Menu.js";
 import "../../css/App.css";
 import "../../css/Snake.css";
+import Logger from "../Logger";
 
 const getRandomFood = () => {
-  console.log("Getting Food");
   let min = 1;
   let max = 98;
   let x = Math.floor((Math.random() * (max - min + 1) + min) / 2) * 2;
@@ -173,6 +173,9 @@ function SnakeGame() {
 
   const gameOver = () => {
     alert(`GAME OVER, your score is ${initialState.snakeDots.length - 2}`);
+    Logger.infoLog(
+      `GAME OVER, your score is ${initialState.snakeDots.length - 2}`
+    );
     setInitialState({
       food: getRandomFood(),
       direction: "RIGHT",

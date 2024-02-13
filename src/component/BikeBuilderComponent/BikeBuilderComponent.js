@@ -7,6 +7,7 @@ import BikeMenuComponent from "./BikeMenuComponent";
 import BikePartsTable from "./BikePartsTable";
 import { Button } from "react-bootstrap";
 import DisplayBikeImages from "./DisplayBikeImages";
+import Logger from "../Logger";
 
 const BIKE_OPTIONS_API_URL = "http://localhost:8088/demo/Options/";
 const BIKE_BUILDER_API_URL = "http://localhost:8088/demo/FullBike/";
@@ -39,19 +40,19 @@ function BikeBuilderComponent(backendOn) {
   }
 
   async function updateBike(methodBike) {
-    console.log("Updating Design Bike! Bike: ", methodBike);
+    Logger.infoLog("Updating Design Bike! Bike: ", methodBike);
     try {
       let b = await axios.post(BIKE_BUILDER_API_URL + "UpdateBike", methodBike);
-      console.log("Updated bike: ", b.data);
+      Logger.warnLog("Updated bike: ", b.data);
       changeBike(b.data);
     } catch (err) {
-      console.error(err);
+      Logger.errorLog(err);
     }
   }
 
   async function updateOptions(methodBike, methodOptions) {
-    console.log("Updating Options! Options: ", methodOptions);
-    console.log("Bike: ", methodBike);
+    Logger.infoLog("Updating Options! Options: ", methodOptions);
+    Logger.infoLog("Bike: ", methodBike);
     try {
       let combinedData = {
         bike: methodBike,
@@ -61,21 +62,21 @@ function BikeBuilderComponent(backendOn) {
         BIKE_OPTIONS_API_URL + "GetOptions",
         combinedData
       );
-      console.log("Updated Options: ", b.data);
+      Logger.warnLog("Updated Options: ", b.data);
       setOptions(b.data);
     } catch (err) {
-      console.error(err);
+      Logger.errorLog(err);
     }
   }
 
   async function getDatabaseBikes() {
-    console.log("Getting all Bikes on DB");
+    Logger.infoLog("Getting all Bikes on DB");
     try {
       let b = await axios.get(BIKE_BUILDER_API_URL + "GetAll");
-      console.log("Got ", b.data.length, " built Bikes");
+      Logger.warnLog("Got ", b.data.length, " built Bikes");
       setDatabaseBikes(b.data);
     } catch (err) {
-      console.error(err);
+      Logger.errorLog(err);
     }
   }
 
@@ -92,24 +93,24 @@ function BikeBuilderComponent(backendOn) {
   }
 
   async function getOptionsForNewBike() {
-    console.log("Getting Options for a new Bike");
+    Logger.infoLog("Getting Options for a new Bike");
     try {
       let b = await axios.get(BIKE_OPTIONS_API_URL + "StartNewBike");
       setOptions(b.data);
-      console.log("Options: ", b.data);
+      Logger.warnLog("Options: ", b.data);
     } catch (err) {
-      console.error(err);
+      Logger.errorLog(err);
     }
   }
 
   async function startNewBike() {
-    console.log("Starting to design a new Bike");
+    Logger.infoLog("Starting to design a new Bike!");
     try {
       let b = await axios.get(BIKE_BUILDER_API_URL + "StartNewBike");
       changeBike(b.data);
-      console.log("Bike: ", b.data);
+      Logger.warnLog("Bike: ", b.data);
     } catch (err) {
-      console.error(err);
+      Logger.errorLog(err);
     }
   }
 
@@ -120,17 +121,17 @@ function BikeBuilderComponent(backendOn) {
   }
 
   async function getParts() {
-    console.log("Getting Parts for Bike: ", bikeOnDisplay);
+    Logger.infoLog("Getting Parts for Bike: ", bikeOnDisplay);
     try {
-      console.log("Request Payload: ", bikeOnDisplay);
+      Logger.warnLog("Request Payload: ", bikeOnDisplay);
       let b = await axios.post(
         BIKE_BUILDER_API_URL + "GetAllParts",
         bikeOnDisplay
       );
-      console.log("Parts: ", b.data);
+      Logger.warnLog("Parts: ", b.data);
       setParts(b.data);
     } catch (err) {
-      console.error(err);
+      Logger.errorLog(err);
     } finally {
       setTimeout(() => {
         setIsLoading(false);
@@ -139,17 +140,17 @@ function BikeBuilderComponent(backendOn) {
   }
 
   function resetOptions(bike) {
-    console.log("Resetting Design bike.");
+    Logger.infoLog("Resetting Design bike.");
     deleteBike(bike);
     handleCreateBikeClick();
   }
 
   function deleteBike(bike) {
     try {
-      console.log("Deleting Design bike with Id: ", bike);
+      Logger.infoLog("Deleting Design bike with Id: ", bike);
       axios.delete(BIKE_BUILDER_API_URL + "DeleteBike", bike);
     } catch (err) {
-      console.error(err);
+      Logger.errorLog(err);
     }
   }
 
