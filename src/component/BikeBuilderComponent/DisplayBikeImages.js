@@ -13,10 +13,10 @@ const DisplayBikeImages = ({ bike }) => {
   }, [bike]);
 
   async function chooseImages() {
-    Logger.infoLog("Getting Images for Bike: ", bike);
+    Logger.infoLog("Getting Images for Bike.");
     try {
       let tempList = await axios.post(BIKE_IMAGES_API_URL + "GetImages", bike);
-      Logger.warnLog("Images: ", tempList.data);
+      Logger.warnLog("Images returned: ", tempList.data);
       setListOfImages(tempList.data);
     } catch (err) {
       Logger.errorLog(err);

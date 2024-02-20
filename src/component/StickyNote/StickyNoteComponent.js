@@ -22,7 +22,7 @@ function StickyNoteComponent(backendOn) {
     Logger.infoLog("Getting all Sticky Notes!");
     try {
       let r = await axios.get(STICKY_NOTE_API_URL + "GetAll");
-      Logger.warnLog("Got Sticky Notes!" + r.data);
+      Logger.warnLog("Sticky Notes returned: " + r.data);
       setStickyNotes(r.data);
     } catch (err) {
       Logger.errorLog(err);
@@ -30,7 +30,7 @@ function StickyNoteComponent(backendOn) {
   }
 
   async function editStickyNote(note) {
-    Logger.infoLog("Edit note Service method, for note: " + note);
+    Logger.infoLog("Editing Sticky note");
     try {
       await axios.post(STICKY_NOTE_API_URL + "EditNote", {
         stickyNoteId: note.stickyNoteId,
@@ -45,8 +45,7 @@ function StickyNoteComponent(backendOn) {
   }
 
   async function deleteStickyNote(note) {
-    Logger.infoLog("Deleting note!!" + note);
-    Logger.warnLog("Deleting note!!" + note);
+    Logger.infoLog("Deleting note!!");
     try {
       await axios.delete(
         STICKY_NOTE_API_URL + "DeleteNote/" + note.stickyNoteId
@@ -59,7 +58,6 @@ function StickyNoteComponent(backendOn) {
 
   async function deleteAllNotes() {
     Logger.infoLog("Deleting all notes!!!");
-    Logger.warnLog("Deleting all notes!!!");
     Logger.errorLog("Deleting all notes!!!");
     try {
       await axios.delete(STICKY_NOTE_API_URL + "DeleteAllNotes");
@@ -72,7 +70,7 @@ function StickyNoteComponent(backendOn) {
   async function createNewNote(data) {
     setIsLoading(true);
     setShowForm(false);
-    Logger.infoLog("Creating new note!! " + data);
+    Logger.infoLog("Creating new note!!");
     try {
       await axios.post(STICKY_NOTE_API_URL + "AddNote", {
         noteTitle: data.title,

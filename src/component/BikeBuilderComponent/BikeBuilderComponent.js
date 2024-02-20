@@ -40,10 +40,10 @@ function BikeBuilderComponent(backendOn) {
   }
 
   async function updateBike(methodBike) {
-    Logger.infoLog("Updating Design Bike! Bike: ", methodBike);
+    Logger.infoLog("Updating Design Bike!");
     try {
       let b = await axios.post(BIKE_BUILDER_API_URL + "UpdateBike", methodBike);
-      Logger.warnLog("Updated bike: ", b.data);
+      Logger.warnLog("Update bike: ", b.data);
       changeBike(b.data);
     } catch (err) {
       Logger.errorLog(err);
@@ -51,8 +51,7 @@ function BikeBuilderComponent(backendOn) {
   }
 
   async function updateOptions(methodBike, methodOptions) {
-    Logger.infoLog("Updating Options! Options: ", methodOptions);
-    Logger.infoLog("Bike: ", methodBike);
+    Logger.infoLog("Updating Options!");
     try {
       let combinedData = {
         bike: methodBike,
@@ -97,7 +96,7 @@ function BikeBuilderComponent(backendOn) {
     try {
       let b = await axios.get(BIKE_OPTIONS_API_URL + "StartNewBike");
       setOptions(b.data);
-      Logger.warnLog("Options: ", b.data);
+      Logger.warnLog("Options for new Bike: ", b.data);
     } catch (err) {
       Logger.errorLog(err);
     }
@@ -108,7 +107,7 @@ function BikeBuilderComponent(backendOn) {
     try {
       let b = await axios.get(BIKE_BUILDER_API_URL + "StartNewBike");
       changeBike(b.data);
-      Logger.warnLog("Bike: ", b.data);
+      Logger.warnLog("Starting new Bike: ", b.data);
     } catch (err) {
       Logger.errorLog(err);
     }
@@ -121,14 +120,14 @@ function BikeBuilderComponent(backendOn) {
   }
 
   async function getParts() {
-    Logger.infoLog("Getting Parts for Bike: ", bikeOnDisplay);
+    Logger.infoLog("Getting Parts for Bike!");
     try {
-      Logger.warnLog("Request Payload: ", bikeOnDisplay);
+      Logger.warnLog("Get parts for Bike: ", bikeOnDisplay);
       let b = await axios.post(
         BIKE_BUILDER_API_URL + "GetAllParts",
         bikeOnDisplay
       );
-      Logger.warnLog("Parts: ", b.data);
+      Logger.warnLog("Parts returned: ", b.data);
       setParts(b.data);
     } catch (err) {
       Logger.errorLog(err);
@@ -147,7 +146,7 @@ function BikeBuilderComponent(backendOn) {
 
   function deleteBike(bike) {
     try {
-      Logger.infoLog("Deleting Design bike with Id: ", bike);
+      Logger.infoLog("Deleting single Design bike");
       axios.delete(BIKE_BUILDER_API_URL + "DeleteBike", bike);
     } catch (err) {
       Logger.errorLog(err);

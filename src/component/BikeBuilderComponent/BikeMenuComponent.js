@@ -14,11 +14,11 @@ const BikeMenuComponent = ({
   let timer = null;
 
   async function handleNameChange(e) {
-    Logger.infoLog("Changing Bike name: ", bike);
+    Logger.infoLog("Changing Bike name.");
     try {
       const { id, value } = e.target;
       const tempBike = await { ...bike, [id]: value };
-      Logger.warnLog("Handle Name change method! tempBike: ", tempBike);
+      Logger.warnLog("Bike Name change method! Bike: ", tempBike);
       updateBikeAndOptions(tempBike, options);
       clearTimeout(timer);
       timer = setTimeout(() => {
@@ -32,7 +32,6 @@ const BikeMenuComponent = ({
   async function handleFrameClick(e) {
     setSelectionMade(true);
     try {
-      Logger.infoLog("Handle Frame Click: ", e);
       const fieldId = e.target.id;
       const fieldValue = e.target.value;
       const tempFrame = await {
@@ -40,7 +39,7 @@ const BikeMenuComponent = ({
         [fieldId]: fieldValue.toUpperCase().replace(" ", "_"),
       };
       const tempBike = await { ...bike, frame: tempFrame };
-      Logger.warnLog("Temp Bike: ", tempBike);
+      Logger.warnLog("Frame option clicked Bike: ", tempBike);
       updateBikeAndOptions(tempBike, options);
     } catch (err) {
       Logger.errorLog(err);
@@ -49,7 +48,7 @@ const BikeMenuComponent = ({
 
   async function handleClick(e) {
     setSelectionMade(true);
-    Logger.infoLog("Updating Bike design: " + e.target);
+    Logger.infoLog("Updating Bike design.");
     try {
       const { id, value } = e.target;
       const tempBike = await {

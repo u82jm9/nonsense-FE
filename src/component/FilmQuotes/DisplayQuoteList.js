@@ -24,7 +24,7 @@ const DisplayQuoteList = ({ quoteList }) => {
   function createSmallerLists() {
     Logger.infoLog("Creating smaller Quote lists for displaying");
     setSmallerLists([]);
-    Logger.warnLog("State tempList: ", tempList);
+    Logger.warnLog("Quotes tempList: ", tempList);
     let sl = [];
     let numberOfLists = Math.ceil(tempList.length / 5);
     for (let i = 0; i < numberOfLists; i++) {
@@ -38,7 +38,7 @@ const DisplayQuoteList = ({ quoteList }) => {
 
   function handleSortClick(e) {
     const sortBy = e.target.value;
-    Logger.infoLog("Sort Quotes Clicked: " + tempList);
+    Logger.infoLog("Sorting Quotes!");
     let ntl = [...tempList];
     if (sortBy === "film") {
       Logger.infoLog("Film Sort");
@@ -51,12 +51,12 @@ const DisplayQuoteList = ({ quoteList }) => {
         return a.actor.localeCompare(b.actor);
       });
     }
-    Logger.warnLog("New Temp List", ntl);
+    Logger.warnLog("New Quotes List", ntl);
     setTempList(ntl);
   }
 
   function handleSearch(e) {
-    Logger.infoLog("Search Quotes: " + e.target);
+    Logger.infoLog("Searching Quotes!");
     const searchTerm = e.target.value;
     clearTimeout(timer);
     const newTimer = setTimeout(() => {

@@ -13,9 +13,13 @@ const Logger = {
   },
 
   warnLog: async (m) => {
-    const log = { level: "WARN", message: m };
+    const log = {
+      level: "WARN",
+      message: m,
+      timeStamp: new Date().toISOString(),
+    };
     try {
-      await axios.put(LOGGER_API, log);
+      logToLocalStorage(log);
     } catch (err) {
       console.error(err);
     }
@@ -23,13 +27,21 @@ const Logger = {
 
   errorLog: async (m) => {
     console.error(m);
-    const log = { level: "ERROR", message: m };
+    let log = { level: "ERROR", message: m };
     try {
       await axios.put(LOGGER_API, log);
+      log.timeStamp = new Date().toISOString();
+      logToLocalStorage(log);
     } catch (err) {
       console.error(err);
     }
   },
 };
+
+function logToLocalStorage(l) {
+  const existingLogs = JSON.parse(localStorage.getItem("logs") || []);
+  const updatedLogs = [...existingLogs, l];
+  localStorage.setItem("logs", JSON.stringify(updatedLogs));
+}
 
 export default Logger;

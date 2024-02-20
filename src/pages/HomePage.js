@@ -29,12 +29,11 @@ function HomePage() {
 
   async function isBackendOn() {
     try {
-      Logger.infoLog("Checking BE is running");
       let r = await axios.get(BACK_END_TEST_API + "IsThisThingOn");
       setBackendOn(r.data);
-      Logger.warnLog("Is backend Running? " + r.data);
     } catch (err) {
       setBackendOn(false);
+      Logger.errorLog("Backend is NOT ON :(!!!")
       Logger.errorLog(err);
     }
   }

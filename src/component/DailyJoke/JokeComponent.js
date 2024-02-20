@@ -39,13 +39,11 @@ function JokeComponent() {
   }, [displayingJoke]);
 
   useEffect(() => {
-    Logger.infoLog("Joke Component did mount");
+    Logger.infoLog("Joke Component did mount.");
     async function fetchData() {
       try {
-        Logger.infoLog("Getting Categories!");
         const categoriesData = await getCategories();
         setCategories(categoriesData);
-        Logger.warnLog(categoriesData);
       } catch (err) {
         Logger.errorLog(err);
       }
@@ -69,7 +67,7 @@ function JokeComponent() {
       Logger.infoLog("Setting Joke to Random Joke");
       setJokeType(true);
       setJoke(j.data.body[0]);
-      Logger.warnLog(j.data);
+      Logger.warnLog("Joke Returned: ", j.data);
     } catch (err) {
       Logger.errorLog(err);
     } finally {
@@ -81,7 +79,7 @@ function JokeComponent() {
     try {
       Logger.infoLog("Getting Categories!");
       const r = await api.get(GET_CATEGORIES_API_URL);
-      Logger.warnLog(r.data);
+      Logger.warnLog("Categories returned: ", r.data);
       if (r.data.message && r.data.message.includes("exceeded")) {
         Logger.errorLog(
           "Returning empty array due to reaching limit on Categories API"
@@ -98,7 +96,7 @@ function JokeComponent() {
 
   async function getJokeByCategory(category) {
     try {
-      Logger.infoLog("Getting joke in Category: " + category);
+      Logger.infoLog("Getting joke in Category.");
       const r = await api.get(GET_JOKE_BY_CATEGORY_API_URL, {
         params: {
           limit: "100",
@@ -109,7 +107,7 @@ function JokeComponent() {
       });
       Logger.warnLog("Got " + r.data.results.length + " category Jokes!");
       setListOfCategoryJokes(r.data.results);
-      Logger.warnLog(r.data);
+      Logger.warnLog("Category Jokes returned: ",r.data.results);
     } catch (err) {
       Logger.errorLog(err);
     } finally {

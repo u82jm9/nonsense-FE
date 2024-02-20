@@ -20,7 +20,7 @@ const StickyNoteCard = ({ note, updateNote, deleteNote, showAlert }) => {
         ...note,
         messageMap: updatedMessageMap,
       };
-      Logger.warnLog("Updating note from click: ", updatedNote);
+      Logger.warnLog("Updating Sticky Note from click: ", updatedNote);
       updateNote(updatedNote);
     } catch (err) {
       Logger.errorLog(err);

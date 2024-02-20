@@ -60,7 +60,7 @@ function JokeComponent() {
       };
       j = await axios.request(options);
       logger.info("Got a joke, hope it's funny!");
-      logger.warn(j.data.body[0])
+      logger.warn("Random joke returned: ",j.data.body[0])
       setRandomJoke(j.data.body[0]);
     } catch (err) {
       logger.error(err);
@@ -89,7 +89,7 @@ function JokeComponent() {
       j = await axios.request(options);
       logger.info("Got a list of category jokes!");
       setListOfCategoryJokes(j.data.results);
-      logger.warn(j.data.results)
+      logger.warn("Jokes in category returned: ", j.data.results)
       pickCategoryJoke();
     } catch (err) {
       logger.error(err);
