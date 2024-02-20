@@ -69,7 +69,7 @@ function JokeComponent() {
       Logger.infoLog("Setting Joke to Random Joke");
       setJokeType(true);
       setJoke(j.data.body[0]);
-      Logger.warnLog(j);
+      Logger.warnLog(j.data);
     } catch (err) {
       Logger.errorLog(err);
     } finally {
@@ -81,7 +81,7 @@ function JokeComponent() {
     try {
       Logger.infoLog("Getting Categories!");
       const r = await api.get(GET_CATEGORIES_API_URL);
-      Logger.warnLog(r);
+      Logger.warnLog(r.data);
       if (r.data.message && r.data.message.includes("exceeded")) {
         Logger.errorLog(
           "Returning empty array due to reaching limit on Categories API"
@@ -98,7 +98,7 @@ function JokeComponent() {
 
   async function getJokeByCategory(category) {
     try {
-      Logger.infoLog("Getting joke in Category: {}", category);
+      Logger.infoLog("Getting joke in Category: " + category);
       const r = await api.get(GET_JOKE_BY_CATEGORY_API_URL, {
         params: {
           limit: "100",
@@ -107,9 +107,9 @@ function JokeComponent() {
           sortBy: "score:desc",
         },
       });
-      Logger.warnLog("Got {} category Jokes!", r.data.results.length);
+      Logger.warnLog("Got " + r.data.results.length + " category Jokes!");
       setListOfCategoryJokes(r.data.results);
-      Logger.warnLog(r);
+      Logger.warnLog(r.data);
     } catch (err) {
       Logger.errorLog(err);
     } finally {
@@ -122,7 +122,7 @@ function JokeComponent() {
     const numberOfJokes = listOfCategoryJokes.length;
     let r = 0 + Math.floor(Math.random() * numberOfJokes);
     setJoke(listOfCategoryJokes[r]);
-    Logger.warnLog(listOfCategoryJokes[r]);
+    Logger.warnLog("Setting category joke to: " + listOfCategoryJokes[r]);
   }
 
   return (
@@ -144,7 +144,7 @@ function JokeComponent() {
                 <ListItemButton
                   key={i}
                   onClick={() => {
-                    Logger.warnLog("Option Clicked: ", c);
+                    Logger.warnLog("Option Clicked: " + c);
                     getJokeByCategory(c);
                     setJokeType(false);
                   }}

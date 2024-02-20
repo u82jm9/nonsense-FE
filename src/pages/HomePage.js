@@ -8,7 +8,7 @@ import BikeBuilderComponent from "../component/BikeBuilderComponent/BikeBuilderC
 import FilmQuoteComponent from "../component/FilmQuotes/FilmQuoteComponent";
 import dragonBallGif from "../gifs/dragon_ball_form.gif";
 import SnakeGame from "../component/Snake/SnakeGame";
-import Logger from "..component/Logger.js";
+import Logger from "../component/Logger";
 
 const BACK_END_TEST_API = "http://localhost:8088/demo/Test/";
 function HomePage() {
