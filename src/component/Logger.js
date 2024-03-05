@@ -1,12 +1,16 @@
 import axios from "axios";
 
 const LOGGER_API = "http://localhost:8088/demo/Test/LogThis";
-
+const stamp = new Date().toISOString();
 const Logger = {
   infoLog: async (m) => {
-    const log = { level: "INFO", message: m };
+    const log = {
+      level: "INFO",
+      message: m,
+      timeStamp: stamp,
+    };
     try {
-      await axios.put(LOGGER_API, log);
+      await axios.post(LOGGER_API, log);
     } catch (err) {
       console.error(err);
     }
@@ -16,7 +20,7 @@ const Logger = {
     const log = {
       level: "WARN",
       message: m,
-      timeStamp: new Date().toISOString(),
+      timeStamp: stamp,
     };
     try {
       logToLocalStorage(log);
@@ -27,10 +31,13 @@ const Logger = {
 
   errorLog: async (m) => {
     console.error(m);
-    let log = { level: "ERROR", message: m };
+    let log = {
+      level: "ERROR",
+      message: m,
+      timeStamp: stamp,
+    };
     try {
-      await axios.put(LOGGER_API, log);
-      log.timeStamp = new Date().toISOString();
+      await axios.post(LOGGER_API, log);
       logToLocalStorage(log);
     } catch (err) {
       console.error(err);
@@ -39,7 +46,7 @@ const Logger = {
 };
 
 function logToLocalStorage(l) {
-  const existingLogs = JSON.parse(localStorage.getItem("logs") || []);
+  const existingLogs = JSON.parse(localStorage.getItem("logs")) || [];
   const updatedLogs = [...existingLogs, l];
   localStorage.setItem("logs", JSON.stringify(updatedLogs));
 }
