@@ -17,7 +17,7 @@ function WeatherDisplayComponent() {
     if (weatherData.length === 0) {
       getWeatherForecast("Edinburgh");
     }
-  });
+  }, []);
 
   async function getWeatherForecast(city) {
     let w;
@@ -157,26 +157,30 @@ function WeatherDisplayComponent() {
   }
 
   return (
-    <div className="weather-table display-component">
-      <WeatherCitySearch city={actualCity} changeCity={changeCity} />
-      {tableSize === "1" ? (
-        <SmallWeatherDisplay
-          data={weatherData}
-          changeTableSize={changeTableSize}
-        />
-      ) : tableSize === "2" ? (
-        <MediumWeatherDisplay
-          data={weatherData}
-          changeTableSize={changeTableSize}
-        />
-      ) : (
-        <LargeWeatherDisplay
-          data={weatherData}
-          changeTableSize={changeTableSize}
-          hotHours={hottestHours}
-          coldHours={coldestHours}
-        />
-      )}
+    <div className="component">
+      <div className="display-component">
+        <WeatherCitySearch city={actualCity} changeCity={changeCity} />
+        <div className="weather-table">
+          {tableSize === "1" ? (
+            <SmallWeatherDisplay
+              data={weatherData}
+              changeTableSize={changeTableSize}
+            />
+          ) : tableSize === "2" ? (
+            <MediumWeatherDisplay
+              data={weatherData}
+              changeTableSize={changeTableSize}
+            />
+          ) : (
+            <LargeWeatherDisplay
+              data={weatherData}
+              changeTableSize={changeTableSize}
+              hotHours={hottestHours}
+              coldHours={coldestHours}
+            />
+          )}
+        </div>
+      </div>
     </div>
   );
 }
