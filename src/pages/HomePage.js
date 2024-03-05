@@ -1,4 +1,5 @@
 import axios from "axios";
+import "../css/App.css"
 import React, { useEffect, useState } from "react";
 import SwitchPages from "../component/SwitchPages/SwitchPages";
 import WeatherDisplayComponent from "../component/WeatherDisplay/WeatherDisplayComponent";
@@ -40,9 +41,9 @@ function HomePage() {
   }
 
   return (
-    <div>
+    <div className="App">
+    <BankHolidayComponent />
       <div className="page">
-      <BankHolidayComponent />
         {isLoading && (
           <div className="component">
             <div className="loading-img-container">
