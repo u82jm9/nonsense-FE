@@ -9,6 +9,7 @@ import FilmQuoteComponent from "../component/FilmQuotes/FilmQuoteComponent";
 import dragonBallGif from "../gifs/dragon_ball_form.gif";
 import SnakeGame from "../component/Snake/SnakeGame";
 import Logger from "../component/Logger";
+import BankHolidayComponent from "../component/BankHoliday/BankHolidayComponent";
 
 const BACK_END_TEST_API = "http://localhost:8088/demo/Test/";
 function HomePage() {
@@ -33,37 +34,40 @@ function HomePage() {
       setBackendOn(r.data);
     } catch (err) {
       setBackendOn(false);
-      Logger.errorLog("Backend is NOT ON :(!!!")
+      Logger.errorLog("Backend is NOT ON :(!!!");
       Logger.errorLog(err);
     }
   }
 
   return (
-    <div className="page">
-      {isLoading && (
-        <div className="component">
-          <div className="loading-img-container">
-            <img src={dragonBallGif} alt="Sweet leveling up gif!" />
+    <div>
+      <div className="page">
+      <BankHolidayComponent />
+        {isLoading && (
+          <div className="component">
+            <div className="loading-img-container">
+              <img src={dragonBallGif} alt="Sweet leveling up gif!" />
+            </div>
           </div>
+        )}
+        <div className={isLoading ? "dark" : "light"}>
+          <WeatherDisplayComponent />
+          <SwitchPages
+            switchedOn={true}
+            text1={"Quotes"}
+            text2={"Jokes"}
+            comp1={FilmQuoteComponent()}
+            comp2={JokeComponent()}
+          />
+          <SwitchPages
+            switchedOn={backendOn}
+            text1={"Notes"}
+            text2={"Bikes"}
+            comp1={StickyNoteComponent(backendOn)}
+            comp2={BikeBuilderComponent(backendOn)}
+          />
+          <SnakeGame />
         </div>
-      )}
-      <div className={isLoading ? "dark" : "light"}>
-        <WeatherDisplayComponent />
-        <SwitchPages
-          switchedOn={true}
-          text1={"Quotes"}
-          text2={"Jokes"}
-          comp1={FilmQuoteComponent()}
-          comp2={JokeComponent()}
-        />
-        <SwitchPages
-          switchedOn={backendOn}
-          text1={"Notes"}
-          text2={"Bikes"}
-          comp1={StickyNoteComponent(backendOn)}
-          comp2={BikeBuilderComponent(backendOn)}
-        />
-        <SnakeGame />
       </div>
     </div>
   );
