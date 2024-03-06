@@ -28,6 +28,35 @@
   text-align: center;
 }
 
+.banner {
+  background-color: rgb(238, 207, 85);
+  border-radius: 100px;
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  z-index: 3;
+  transform: rotate(45deg);
+}
+
+.banner h1 {
+  margin: 10px 0 10px 0;
+}
+
+.banner h2 {
+  margin: 10px 0 10px 0;
+}
+
+.bottom-sticker {
+  background-color: rgb(238, 207, 85);
+  border-radius: 100px;
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  right: 100px;
+  top: 175px;
+  z-index: 3;
+}
+
 .card {
   align-items: center;
   background-color: rgb(237, 231, 159);
@@ -121,31 +150,6 @@
   width: 85%;
 }
 
-.left-banner {
-  background-color: rgb(238, 207, 85);
-  border-radius: 100px;
-  height: 200px;
-  width: 200px;
-  position: absolute;
-  z-index: 3;
-  transform: rotate(-45deg);
-}
-
-.left-banner h1 {
-  margin: 10px 0 10px 0;
-}
-
-.left-sticker {
-  background-color: rgb(238, 207, 85);
-  border-radius: 100px;
-  height: 200px;
-  width: 200px;
-  position: absolute;
-  left: 50px;
-  top: 0;
-  z-index: 3;
-}
-
 .light {
   opacity: 1;
   position: relative;
@@ -199,35 +203,6 @@
   z-index: 1;
 }
 
-.right-banner {
-  background-color: rgb(238, 207, 85);
-  border-radius: 100px;
-  height: 200px;
-  width: 200px;
-  position: absolute;
-  z-index: 3;
-  transform: rotate(45deg);
-}
-
-.right-banner h1 {
-  margin: 10px 0 10px 0;
-}
-
-.right-banner h2 {
-  margin: 10px 0 10px 0;
-}
-
-.right-sticker {
-  background-color: rgb(238, 207, 85);
-  border-radius: 100px;
-  height: 200px;
-  width: 200px;
-  position: absolute;
-  right: 50px;
-  top: 0;
-  z-index: 3;
-}
-
 .switch {
   align-items: center;
   display: inline-flex;
@@ -255,6 +230,17 @@
   align-content: center;
   border-right: 1px solid black;
   padding: 5px 5px 0 5px;
+}
+
+.top-sticker {
+  background-color: rgb(238, 207, 85);
+  border-radius: 100px;
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  right: 50px;
+  top: 0;
+  z-index: 3;
 }
 
 .weather-search h1 {

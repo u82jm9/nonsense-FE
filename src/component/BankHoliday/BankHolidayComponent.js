@@ -44,18 +44,18 @@ const BankHolidayComponent = () => {
 
   return (
     <>
-      <div className="right-sticker">
+      <div className="top-sticker">
         {showHoliday && (
-          <div className="right-banner">
+          <div className="banner">
             <h1>Bank Holiday</h1>
             <h2>{nextBankDay.title}</h2>
             <h2>{nextBankDay.date.split("-").reverse().join("/")}</h2>
           </div>
         )}
       </div>
-      {nextBankDay.bunting && (
-        <div className="left-sticker">
-          <div className="left-banner">
+      {showHoliday && nextBankDay.bunting && (
+        <div className="bottom-sticker">
+          <div className="banner">
             <h1>GET OUT THE BUNTING!!</h1>
           </div>
         </div>
