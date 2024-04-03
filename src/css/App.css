@@ -134,7 +134,7 @@
   background-color: rgb(246, 183, 183);
   border: 1px solid black;
   border-radius: 15px;
-  margin: 10px 0 10px 0;
+  margin: 10px 10px 10px 10px;
   min-width: 500px;
   padding: 10px;
 }
@@ -241,6 +241,10 @@
   right: 50px;
   top: 0;
   z-index: 3;
+}
+
+.weather-buttons {
+  margin: 0 10px 0 10px;
 }
 
 .weather-search h1 {

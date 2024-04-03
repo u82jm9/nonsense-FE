@@ -1,5 +1,5 @@
 import axios from "axios";
-import "../css/App.css"
+import "../css/App.css";
 import React, { useEffect, useState } from "react";
 import SwitchPages from "../component/SwitchPages/SwitchPages";
 import WeatherDisplayComponent from "../component/WeatherDisplay/WeatherDisplayComponent";
@@ -7,6 +7,7 @@ import JokeComponent from "../component/DailyJoke/JokeComponent";
 import StickyNoteComponent from "../component/StickyNote/StickyNoteComponent";
 import BikeBuilderComponent from "../component/BikeBuilderComponent/BikeBuilderComponent";
 import FilmQuoteComponent from "../component/FilmQuotes/FilmQuoteComponent";
+import { ChakraProvider } from "@chakra-ui/react";
 import dragonBallGif from "../gifs/dragon_ball_form.gif";
 import SnakeGame from "../component/Snake/SnakeGame";
 import Logger from "../component/Logger";
@@ -41,36 +42,38 @@ function HomePage() {
   }
 
   return (
-    <div className="App">
-    <BankHolidayComponent />
-      <div className="page">
-        {isLoading && (
-          <div className="component">
-            <div className="loading-img-container">
-              <img src={dragonBallGif} alt="Sweet leveling up gif!" />
+    <ChakraProvider>
+      <div className="App">
+        <BankHolidayComponent />
+        <div className="page">
+          {isLoading && (
+            <div className="component">
+              <div className="loading-img-container">
+                <img src={dragonBallGif} alt="Sweet leveling up gif!" />
+              </div>
             </div>
+          )}
+          <div className={isLoading ? "dark" : "light"}>
+            <WeatherDisplayComponent />
+            <SwitchPages
+              switchedOn={true}
+              text1={"Quotes"}
+              text2={"Jokes"}
+              comp1={FilmQuoteComponent()}
+              comp2={JokeComponent()}
+            />
+            <SwitchPages
+              switchedOn={backendOn}
+              text1={"Notes"}
+              text2={"Bikes"}
+              comp1={StickyNoteComponent(backendOn)}
+              comp2={BikeBuilderComponent(backendOn)}
+            />
+            <SnakeGame />
           </div>
-        )}
-        <div className={isLoading ? "dark" : "light"}>
-          <WeatherDisplayComponent />
-          <SwitchPages
-            switchedOn={true}
-            text1={"Quotes"}
-            text2={"Jokes"}
-            comp1={FilmQuoteComponent()}
-            comp2={JokeComponent()}
-          />
-          <SwitchPages
-            switchedOn={backendOn}
-            text1={"Notes"}
-            text2={"Bikes"}
-            comp1={StickyNoteComponent(backendOn)}
-            comp2={BikeBuilderComponent(backendOn)}
-          />
-          <SnakeGame />
         </div>
       </div>
-    </div>
+    </ChakraProvider>
   );
 }
 

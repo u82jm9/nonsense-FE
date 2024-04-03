@@ -5,12 +5,16 @@ import RandomJoke from "../DailyJoke/RandomJoke";
 import CategoryJoke from "../DailyJoke/CategoryJoke";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import {
-  Collapse,
-  List,
-  ListItemButton,
-  ListItemText,
+  TableContainer,
+  Table,
+  FormControl,
+  FormLabel,
+  Thead,
+  Tr,
+  Td,
   Button,
-} from "@mui/material";
+  Box,
+} from "@chakra-ui/react";
 
 const RANDOM_JOKE_API_URL = "https://dad-jokes.p.rapidapi.com/random/joke";
 const GET_JOKE_BY_CATEGORY_API_URL =
@@ -97,6 +101,7 @@ function JokeComponent() {
   async function getJokeByCategory(category) {
     try {
       Logger.infoLog("Getting joke in Category.");
+      setShowCategories(false);
       const r = await api.get(GET_JOKE_BY_CATEGORY_API_URL, {
         params: {
           limit: "100",
@@ -107,52 +112,61 @@ function JokeComponent() {
       });
       Logger.warnLog("Got " + r.data.results.length + " category Jokes!");
       setListOfCategoryJokes(r.data.results);
-      Logger.warnLog("Category Jokes returned: ",r.data.results);
+      Logger.warnLog("Category Jokes returned: ", r.data.results);
+      pickCategoryJoke(r.data.results);
     } catch (err) {
       Logger.errorLog(err);
-    } finally {
-      pickCategoryJoke();
     }
   }
 
-  async function pickCategoryJoke() {
+  async function pickCategoryJoke(jokeList) {
     Logger.infoLog("Setting joke to category Joke");
-    const numberOfJokes = listOfCategoryJokes.length;
+    const numberOfJokes = jokeList.length;
     let r = 0 + Math.floor(Math.random() * numberOfJokes);
-    setJoke(listOfCategoryJokes[r]);
-    Logger.warnLog("Setting category joke to: " + listOfCategoryJokes[r]);
+    setJoke(jokeList[r]);
+    Logger.warnLog("Setting category joke to: " + jokeList[r]);
   }
 
   return (
     <div className="component display-component">
       <h1>Jokes!</h1>
       {categories.length > 0 && (
-        <List>
-          <ListItemButton
-            onClick={() => {
-              setShowCategories(!showCategories);
-            }}
-          >
-            <ListItemText primary="Select Joke Category" />
-            {showCategories ? <FaAngleUp /> : <FaAngleDown />}
-          </ListItemButton>
-          <Collapse in={showCategories} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              {categories.map((c, i) => (
-                <ListItemButton
-                  key={i}
-                  onClick={() => {
-                    Logger.warnLog("Option Clicked: " + c);
-                    getJokeByCategory(c);
-                    setJokeType(false);
-                  }}
-                >
-                  <ListItemText primary={c} />
-                </ListItemButton>
-              ))}
-            </List>
-          </Collapse>
-        </List>
+        <Box>
+          <FormControl>
+            <FormLabel>Select Joke Category</FormLabel>
+            <Button variant='ghost'
+              onClick={() => {
+                setShowCategories(!showCategories);
+              }}
+            >
+              {showCategories ? <FaAngleUp /> : <FaAngleDown />}
+            </Button>
+          </FormControl>
+          {showCategories ? (
+            <TableContainer>
+              <Table>
+                <Thead>
+                  {categories.map((c, i) => (
+                    <Tr key={i}>
+                      <Button
+                        variant="ghost"
+                        onClick={() => {
+                          Logger.warnLog("Option Clicked: " + c);
+                          getJokeByCategory(c);
+                          setJokeType(false);
+                        }}
+                      >
+                        <Td>{c}</Td>
+                      </Button>
+                    </Tr>
+                  ))}
+                </Thead>
+              </Table>
+            </TableContainer>
+          ) : (
+            <></>
+          )}
+        </Box>
       )}
       {displayingJoke && (
         <div>
@@ -160,7 +174,7 @@ function JokeComponent() {
             <div>
               <RandomJoke joke={joke} />
               <Button
-                variant="contained"
+                variant="solid"
                 onClick={() => {
                   setDisplayingJoke(false);
                 }}
@@ -172,7 +186,7 @@ function JokeComponent() {
             <div>
               <CategoryJoke joke={joke} />
               <Button
-                variant="contained"
+                variant="solid"
                 onClick={() => {
                   pickCategoryJoke();
                 }}
@@ -180,7 +194,7 @@ function JokeComponent() {
                 Next in category!
               </Button>
               <Button
-                variant="contained"
+                variant="solid"
                 onClick={() => {
                   setDisplayingJoke(false);
                 }}

@@ -2,17 +2,23 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import RandomJoke from "./RandomJoke";
 import CategoryJoke from "./CategoryJoke";
-import { Form, Button } from "react-bootstrap";
-import log4js from 'log4js';
+import { Form } from "react-bootstrap";
+import log4js from "log4js";
 import path from "path";
+import { Button } from "@chakra-ui/react";
 
 const RANDOM_JOKE_API_URL = "https://dad-jokes.p.rapidapi.com/random/joke";
 const GET_JOKE_BY_CATEGORY_API_URL =
   "https://world-of-jokes1.p.rapidapi.com/v1/jokes/jokes-by-category";
 
 function JokeComponent() {
-  const currentDirectory = path.dirname(require.resolve('./JokeComponent.js'));
-  const logFilePath = path.join(currentDirectory, '..', 'logs', 'Jokes_logs.log');
+  const currentDirectory = path.dirname(require.resolve("./JokeComponent.js"));
+  const logFilePath = path.join(
+    currentDirectory,
+    "..",
+    "logs",
+    "Jokes_logs.log"
+  );
   const [randomJoke, setRandomJoke] = useState("");
   const [categoryJoke, setCategoryJoke] = useState("");
   const [listOfCategoryJokes, setListOfCategoryJokes] = useState([]);
@@ -32,17 +38,17 @@ function JokeComponent() {
   useEffect(() => {
     getRandomJoke();
   }, []);
-  
+
   log4js.configure({
     appenders: {
-      console: { type: 'console' },
-      file: { type: 'file', filename: logFilePath },
+      console: { type: "console" },
+      file: { type: "file", filename: logFilePath },
     },
     categories: {
-      default: { appenders: ['console', 'file'], level: 'debug' },
+      default: { appenders: ["console", "file"], level: "debug" },
     },
   });
-  
+
   const logger = log4js.getLogger();
 
   async function getRandomJoke() {
@@ -60,7 +66,7 @@ function JokeComponent() {
       };
       j = await axios.request(options);
       logger.info("Got a joke, hope it's funny!");
-      logger.warn("Random joke returned: ",j.data.body[0])
+      logger.warn("Random joke returned: ", j.data.body[0]);
       setRandomJoke(j.data.body[0]);
     } catch (err) {
       logger.error(err);
@@ -89,7 +95,7 @@ function JokeComponent() {
       j = await axios.request(options);
       logger.info("Got a list of category jokes!");
       setListOfCategoryJokes(j.data.results);
-      logger.warn("Jokes in category returned: ", j.data.results)
+      logger.warn("Jokes in category returned: ", j.data.results);
       pickCategoryJoke();
     } catch (err) {
       logger.error(err);
@@ -118,7 +124,7 @@ function JokeComponent() {
     setCategoryJoke("");
     pickCategoryJoke();
   }
-  
+
   return (
     <div className="component display-component">
       <h1>Jokes!</h1>
@@ -139,6 +145,7 @@ function JokeComponent() {
         <div>
           <RandomJoke joke={randomJoke} anotherJoke={getAnotherRandomJoke} />
           <Button
+            variant="solid"
             onClick={() => {
               getAnotherRandomJoke();
             }}
@@ -150,6 +157,7 @@ function JokeComponent() {
         <div>
           <CategoryJoke joke={categoryJoke} />
           <Button
+            variant="solid"
             onClick={() => {
               getAnotherJokeFromCategory();
             }}
@@ -157,6 +165,7 @@ function JokeComponent() {
             Next in category!
           </Button>
           <Button
+            variant="solid"
             onClick={() => {
               getAnotherRandomJoke();
             }}

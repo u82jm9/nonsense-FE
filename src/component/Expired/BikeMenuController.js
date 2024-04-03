@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import BikeMenuBar from "./BikeMenuBar";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 
 const BikeMenuController = ({
   changingDisplayBike,
@@ -149,6 +149,7 @@ const BikeMenuController = ({
       {showingBike ? (
         <div>
           <Button
+            variant="solid"
             onClick={() => {
               startBuildingBike();
               setEditMode(true);
@@ -157,6 +158,7 @@ const BikeMenuController = ({
             Start New Bike
           </Button>
           <Button
+            variant="solid"
             onClick={() => {
               setEditMode(true);
             }}
@@ -167,6 +169,7 @@ const BikeMenuController = ({
       ) : (
         <div>
           <Button
+            variant="solid"
             onClick={() => {
               startBuildingBike();
               setEditMode(true);

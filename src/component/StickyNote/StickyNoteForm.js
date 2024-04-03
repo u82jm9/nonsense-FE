@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-// import { Form, Button } from "react-bootstrap";
 import Logger from "../Logger";
-import { Box, Button, FormControl, Input, InputLabel } from "@mui/material";
+import { Box, Button, FormControl, Input, FormLabel } from "@chakra-ui/react";
 
 const StickyNoteForm = ({ addNote }) => {
   const [data, setData] = useState({
@@ -27,17 +26,17 @@ const StickyNoteForm = ({ addNote }) => {
       <div className="form">
         <Box component="form" className="card">
           <FormControl className="form-field">
-            <InputLabel>Title</InputLabel>
+            <FormLabel>Title</FormLabel>
             <Input
               type="text"
               id="title"
-              value={data.title}
+              defaultValue={data.title}
               placeholder="Title"
               onChange={(e) => handle(e)}
             />
           </FormControl>
           <FormControl className="form-field">
-            <InputLabel>Message</InputLabel>
+            <FormLabel>Message</FormLabel>
             <Input
               type="text"
               id="message"

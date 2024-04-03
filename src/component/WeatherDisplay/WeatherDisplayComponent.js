@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Button } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import WeatherCitySearch from "./WeatherCitySearch";
 import SmallWeatherDisplay from "./SmallWeatherDisplayTable";
@@ -13,6 +14,7 @@ function WeatherDisplayComponent() {
   const [tableSize, setTableSize] = useState("1");
   const [hottestHours, setHottestHours] = useState([]);
   const [coldestHours, setColdestHours] = useState([]);
+
   useEffect(() => {
     if (weatherData.length === 0) {
       getWeatherForecast("Edinburgh");
@@ -42,8 +44,26 @@ function WeatherDisplayComponent() {
     }
   }
 
-  function changeTableSize(newSize) {
-    setTableSize(newSize);
+  function changeTableSize(entry) {
+    if (tableSize === "1") {
+      if (entry === "up") {
+        setTableSize("2");
+      } else {
+        setTableSize("3");
+      }
+    } else if (tableSize === "2") {
+      if (entry === "up") {
+        setTableSize("3");
+      } else {
+        setTableSize("1");
+      }
+    } else if (tableSize === "3") {
+      if (entry === "up") {
+        setTableSize("1");
+      } else {
+        setTableSize("2");
+      }
+    }
   }
 
   function changeCity(newCity) {
@@ -162,23 +182,34 @@ function WeatherDisplayComponent() {
         <WeatherCitySearch city={actualCity} changeCity={changeCity} />
         <div className="weather-table">
           {tableSize === "1" ? (
-            <SmallWeatherDisplay
-              data={weatherData}
-              changeTableSize={changeTableSize}
-            />
+            <SmallWeatherDisplay data={weatherData} />
           ) : tableSize === "2" ? (
-            <MediumWeatherDisplay
-              data={weatherData}
-              changeTableSize={changeTableSize}
-            />
+            <MediumWeatherDisplay data={weatherData} />
           ) : (
             <LargeWeatherDisplay
               data={weatherData}
-              changeTableSize={changeTableSize}
               hotHours={hottestHours}
               coldHours={coldestHours}
             />
           )}
+        </div>
+        <div className="weather-buttons">
+          <Button
+            variant="solid"
+            onClick={() => {
+              changeTableSize("up");
+            }}
+          >
+            More
+          </Button>
+          <Button
+            variant="solid"
+            onClick={() => {
+              changeTableSize("down");
+            }}
+          >
+            Less
+          </Button>
         </div>
       </div>
     </div>

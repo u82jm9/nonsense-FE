@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import axios from "axios";
 import dragonBallGif from "../../gifs/dragon_ball_form.gif";
 import StickyNoteForm from "./StickyNoteForm";
@@ -111,6 +111,7 @@ function StickyNoteComponent(backendOn) {
           <div className={isLoading ? "dark" : "light"}>
             <div>
               <Button
+                variant="solid"
                 onClick={() => {
                   setShowForm(true);
                 }}
@@ -123,6 +124,7 @@ function StickyNoteComponent(backendOn) {
               <div className="alert">
                 <h1>{alertMessage}</h1>
                 <Button
+                  variant="solid"
                   className="dismiss-button"
                   onClick={() => setShowAlert(false)}
                 >

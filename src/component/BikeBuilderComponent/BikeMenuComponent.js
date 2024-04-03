@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { GiCartwheel } from "react-icons/gi";
 import Logger from "../Logger";
-import { Box, FormControl, InputLabel, Input } from "@mui/material";
+import { Box, FormControl, FormLabel, Input } from "@chakra-ui/react";
 
 const BikeMenuComponent = ({
   resetOptions,
@@ -76,11 +76,12 @@ const BikeMenuComponent = ({
         {showChangeName && (
           <div className="menu-item text-box">
             <Box component="form">
-              <FormControl>
-                <InputLabel>Bike Name</InputLabel>
+              <FormControl component="form">
+                <FormLabel>Bike Name</FormLabel>
                 <Input
                   type="text"
                   id="bikeName"
+                  placeholder={bike.bikeName}
                   value={bike.bikeName}
                   onChange={(e) => handleNameChange(e)}
                   onBlur={() => setShowChangeName(false)}

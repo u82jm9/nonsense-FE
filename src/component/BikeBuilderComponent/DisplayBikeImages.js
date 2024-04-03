@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Logger from "../Logger";
@@ -37,7 +37,7 @@ const DisplayBikeImages = ({ bike }) => {
             </div>
           </div>
           <div className="controls">
-            <Button
+            <Button variant='solid'
               onClick={() => {
                 if (imageRef !== 0) {
                   setImageRef(imageRef - 1);
@@ -48,7 +48,7 @@ const DisplayBikeImages = ({ bike }) => {
             >
               Back
             </Button>
-            <Button
+            <Button variant='solid'
               onClick={() => {
                 if (imageRef === listOfImages.length - 1) {
                   setImageRef(0);

@@ -12,6 +12,7 @@ const DisplayQuoteList = ({ quoteList }) => {
   const [filterSubject, setFilterSubject] = useState("quote");
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [timer, setTimer] = useState(null);
+  
   useEffect(() => {
     createSmallerLists();
   }, [tempList]);

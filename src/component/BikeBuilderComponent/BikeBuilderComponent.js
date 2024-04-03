@@ -5,7 +5,7 @@ import "../../css/App.css";
 import dragonBallGif from "../../gifs/dragon_ball_form.gif";
 import BikeMenuComponent from "./BikeMenuComponent";
 import BikePartsTable from "./BikePartsTable";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import DisplayBikeImages from "./DisplayBikeImages";
 import Logger from "../Logger";
 
@@ -174,7 +174,7 @@ function BikeBuilderComponent(backendOn) {
               bike={bikeOnDisplay}
             />
           )}
-          <Button onClick={() => handleCreateBikeClick()}>
+          <Button variant='solid' onClick={() => handleCreateBikeClick()}>
             Create New Bike
           </Button>
 
