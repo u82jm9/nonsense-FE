@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Button } from "@mui/material";
 import { useState, useEffect } from "react";
 import WeatherCitySearch from "./WeatherCitySearch";
 import SmallWeatherDisplay from "./SmallWeatherDisplayTable";
@@ -10,7 +11,7 @@ const WEATHER_API_URL = "https://weatherapi-com.p.rapidapi.com/forecast.json";
 function WeatherDisplayComponent() {
   const [actualCity, setActualCity] = useState("");
   const [weatherData, setWeatherData] = useState([]);
-  const [tableSize, setTableSize] = useState("1");
+  const [tableSize, setTableSize] = useState(1);
   const [hottestHours, setHottestHours] = useState([]);
   const [coldestHours, setColdestHours] = useState([]);
   useEffect(() => {
@@ -42,8 +43,20 @@ function WeatherDisplayComponent() {
     }
   }
 
-  function changeTableSize(newSize) {
-    setTableSize(newSize);
+  function changeTableSize(command) {
+    if (command === "up") {
+      if (tableSize === 3) {
+        setTableSize(1);
+      } else {
+        setTableSize(tableSize + 1);
+      }
+    } else {
+      if (tableSize === 1) {
+        setTableSize(3);
+      } else {
+        setTableSize(tableSize - 1);
+      }
+    }
   }
 
   function changeCity(newCity) {
@@ -161,25 +174,34 @@ function WeatherDisplayComponent() {
       <div className="display-component">
         <WeatherCitySearch city={actualCity} changeCity={changeCity} />
         <div className="weather-table">
-          {tableSize === "1" ? (
-            <SmallWeatherDisplay
-              data={weatherData}
-              changeTableSize={changeTableSize}
-            />
-          ) : tableSize === "2" ? (
-            <MediumWeatherDisplay
-              data={weatherData}
-              changeTableSize={changeTableSize}
-            />
+          {tableSize === 1 ? (
+            <SmallWeatherDisplay data={weatherData} />
+          ) : tableSize === 2 ? (
+            <MediumWeatherDisplay data={weatherData} />
           ) : (
             <LargeWeatherDisplay
               data={weatherData}
-              changeTableSize={changeTableSize}
               hotHours={hottestHours}
               coldHours={coldestHours}
             />
           )}
         </div>
+        <Button
+          variant="contained"
+          onClick={() => {
+            changeTableSize("up");
+          }}
+        >
+          {tableSize === 3 ? "Least" : "More"}
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => {
+            changeTableSize("down");
+          }}
+        >
+          {tableSize === 1 ? "Most" : "Less"}
+        </Button>
       </div>
     </div>
   );

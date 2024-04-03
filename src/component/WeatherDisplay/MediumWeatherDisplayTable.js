@@ -1,8 +1,7 @@
 import React from "react";
 import moment from "moment/moment";
-import { Button } from "react-bootstrap";
 
-const MediumWeatherDisplayTable = ({ data, changeTableSize }) => {
+const MediumWeatherDisplayTable = ({ data }) => {
   return (
     <div className="medium-table">
       <table>
@@ -83,20 +82,6 @@ const MediumWeatherDisplayTable = ({ data, changeTableSize }) => {
           ))}
         </tbody>
       </table>
-      <Button
-        onClick={() => {
-          changeTableSize("1");
-        }}
-      >
-        Least
-      </Button>
-      <Button
-        onClick={() => {
-          changeTableSize("3");
-        }}
-      >
-        Most
-      </Button>
     </div>
   );
 };
