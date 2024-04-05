@@ -1,7 +1,6 @@
-import { Button } from "@mui/material";
 import React from "react";
 import { useState } from "react";
-import Form from "react-bootstrap/Form";
+import { Form, Button } from "react-bootstrap";
 
 const WeatherCitySearch = ({ city, changeCity }) => {
   const [tempCity, setTempCity] = useState("");
@@ -21,9 +20,7 @@ const WeatherCitySearch = ({ city, changeCity }) => {
             setTempCity(e.target.value);
           }}
         />
-        <Button variant="contained" onClick={() => changeCity(tempCity)}>
-          Search
-        </Button>
+        <Button onClick={() => changeCity(tempCity)}>Search</Button>
       </Form>
     </div>
   );

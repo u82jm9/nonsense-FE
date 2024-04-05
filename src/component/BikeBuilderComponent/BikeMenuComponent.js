@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { GiCartwheel } from "react-icons/gi";
 import Logger from "../Logger";
-import { Box, FormControl, InputLabel, Input } from "@mui/material";
+import { Form } from "react-bootstrap";
 
 const BikeMenuComponent = ({
   resetOptions,
@@ -75,18 +75,16 @@ const BikeMenuComponent = ({
         </div>
         {showChangeName && (
           <div className="menu-item text-box">
-            <Box component="form">
-              <FormControl>
-                <InputLabel>Bike Name</InputLabel>
-                <Input
-                  type="text"
-                  id="bikeName"
-                  value={bike.bikeName}
-                  onChange={(e) => handleNameChange(e)}
-                  onBlur={() => setShowChangeName(false)}
-                ></Input>
-              </FormControl>
-            </Box>
+            <Form>
+              <Form.Label>Bike Name</Form.Label>
+              <Form.Control
+                type="text"
+                id="bikeName"
+                value={bike.bikeName}
+                onChange={(e) => handleNameChange(e)}
+                onBlur={() => setShowChangeName(false)}
+              ></Form.Control>
+            </Form>
           </div>
         )}
         {options.showFrameStyles && (

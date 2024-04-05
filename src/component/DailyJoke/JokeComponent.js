@@ -4,13 +4,7 @@ import { useState, useEffect } from "react";
 import RandomJoke from "../DailyJoke/RandomJoke";
 import CategoryJoke from "../DailyJoke/CategoryJoke";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
-import {
-  Collapse,
-  List,
-  ListItemButton,
-  ListItemText,
-  Button,
-} from "@mui/material";
+import { ListGroup, Button, ListGroupItem } from "react-bootstrap";
 
 const RANDOM_JOKE_API_URL = "https://dad-jokes.p.rapidapi.com/random/joke";
 const GET_JOKE_BY_CATEGORY_API_URL =
@@ -107,7 +101,7 @@ function JokeComponent() {
       });
       Logger.warnLog("Got " + r.data.results.length + " category Jokes!");
       setListOfCategoryJokes(r.data.results);
-      Logger.warnLog("Category Jokes returned: ",r.data.results);
+      Logger.warnLog("Category Jokes returned: ", r.data.results);
     } catch (err) {
       Logger.errorLog(err);
     } finally {
@@ -127,19 +121,19 @@ function JokeComponent() {
     <div className="component display-component">
       <h1>Jokes!</h1>
       {categories.length > 0 && (
-        <List>
-          <ListItemButton
+        <ListGroup>
+          <Button
             onClick={() => {
               setShowCategories(!showCategories);
             }}
           >
-            <ListItemText primary="Select Joke Category" />
+            Select Joke Category
             {showCategories ? <FaAngleUp /> : <FaAngleDown />}
-          </ListItemButton>
-          <Collapse in={showCategories} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              {categories.map((c, i) => (
-                <ListItemButton
+          </Button>
+          <div>
+            {categories.map((c, i) => (
+              <ListGroupItem>
+                <Button
                   key={i}
                   onClick={() => {
                     Logger.warnLog("Option Clicked: " + c);
@@ -147,12 +141,12 @@ function JokeComponent() {
                     setJokeType(false);
                   }}
                 >
-                  <ListItemText primary={c} />
-                </ListItemButton>
-              ))}
-            </List>
-          </Collapse>
-        </List>
+                  {c}
+                </Button>
+              </ListGroupItem>
+            ))}
+          </div>
+        </ListGroup>
       )}
       {displayingJoke && (
         <div>
